@@ -23,7 +23,7 @@
   <div aria-hidden="true" style="position:absolute; left:0; right:0; top:0; height:240px; opacity:0.85; background:linear-gradient(to top, rgba(10,22,14,0) 0%, rgba(10,22,14,0.18) 45%, rgba(10,22,14,0.35) 75%, rgba(10,22,14,0.5) 100%);"></div>
   <div aria-hidden="true" style="position:absolute; inset:0; opacity:0.14; mix-blend-mode:screen; pointer-events:none; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);"></div>
   <sc-if value="{{ showWaves }}" hint-placeholder-val="{{ true }}">
-    <img src="assets/ondas.svg" alt="" aria-hidden="true" style="position:absolute; right:0; bottom:0; width:{{ waveW }}px; height:auto; display:block; pointer-events:none;">
+    <img src="assets/ondas.svg" alt="" aria-hidden="true" style="position:absolute; right:0; bottom:0; width:{{ waveW }}px; height:auto; display:block; pointer-events:none; opacity:{{ waveOp }};">
   </sc-if>
   <div ref="{{ heroNav }}" style="position:absolute; left:0; right:0; top:0; z-index:2;">
     <dc-import name="Navbar" device="{{ navDevice }}" layout="{{ navLayout }}" logo="{{ navLogo }}" open-calls="{{ openCalls }}" hint-size="100%,120px"></dc-import>
@@ -57,7 +57,7 @@ class Component extends DCLogic {
     if (wav) fetch(wav.src).then(r => r.text()).then(txt => {
       const box = document.createElement('div'); box.innerHTML = txt; const svg = box.querySelector('svg'); if (!svg) return;
       svg.setAttribute('aria-hidden', 'true'); svg.removeAttribute('width'); svg.removeAttribute('height');
-      svg.style.cssText = 'position:absolute; right:0; bottom:0; width:' + wav.offsetWidth + 'px; height:auto; display:block; pointer-events:none; overflow:visible;';
+      svg.style.cssText = 'position:absolute; right:0; bottom:0; width:' + wav.offsetWidth + 'px; height:auto; display:block; pointer-events:none; overflow:visible; opacity:' + (getComputedStyle(wav).opacity || 1) + ';';
       wav.style.visibility = 'hidden'; wav.after(svg);
       Array.prototype.forEach.call(svg.querySelectorAll('path'), (pth, k) => { const L = pth.getTotalLength ? pth.getTotalLength() : 1400; pth.setAttribute('stroke-width', '1.6'); pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L; pth.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 2200, delay: 700 + k * 55, easing: E, fill: 'forwards' }); });
     }).catch(() => {});
@@ -120,7 +120,7 @@ class Component extends DCLogic {
       contentBottom: L.cb, locBottom: L.lb, gapA: L.gap, btnTop: L.bt,
       radial: L.radial, imgPos: p.imagePosition || L.pos,
       showSide: (p.showSideShade ?? true) && !isMobile, side: L.side,
-      waveW: Math.round(L.ww * 1.25), showWaves: p.showWaves ?? true,
+      waveW: Math.round(L.ww * 1.25), showWaves: p.showWaves ?? true, waveOp: isMobile ? 0.3 : 1,
       btnDir: isMobile ? 'column' : 'row', btnSize: isMobile ? 'lg' : 'md',
       image: p.image || 'assets/fotos/home-hero.webp',
       imageAlt: p.imageAlt ?? 'Vista aérea del valle y el pueblo de Querocoto',
