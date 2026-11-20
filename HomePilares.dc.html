@@ -17,7 +17,7 @@
   <sc-if value="{{ isSplit }}" hint-placeholder-val="{{ true }}">
   <div style="position:relative; box-sizing:border-box; padding:{{ padY }}px {{ mx }}px; display:grid; grid-template-columns:{{ splitCols }}; gap:{{ gap }}px; align-items:start;">
     <div style="position:sticky; top:{{ stickTop }}px; height:{{ stickH }}; min-height:520px; border-radius:20px; overflow:hidden; background:#ECECEA; display:flex; align-items:flex-end; isolation:isolate;">
-      <sc-if value="{{ hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:-2;"></sc-if>
+      <sc-if value="{{ hasImage }}" hint-placeholder-val="{{ false }}"><img data-zoom="" src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:-2; transform:scale(1.25); transform-origin:50% 50%; will-change:transform;"></sc-if>
       <sc-if value="{{ noImage }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="position:absolute; inset:0; z-index:-2; display:flex; align-items:center; justify-content:center; color:#A9A9A6; font-size:44px;"><i class="ph ph-image"></i></span></sc-if>
       <span aria-hidden="true" style="position:absolute; inset:0; z-index:-1; background:linear-gradient(to bottom, rgba(10,23,14,0) 50%, rgba(10,23,14,0.55) 100%);"></span>
       <h2 id="pilares-titulo" style="margin:0; padding:{{ h2Pad }}; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.1; letter-spacing:-0.02em; color:#FFFFFF; text-shadow:0 2px 12px rgba(10,23,14,0.35);">{{ titleStart }} <span style="color:#AACC4A;">{{ titleHighlight }}</span></h2>
@@ -38,7 +38,7 @@
   <sc-if value="{{ isStacked }}" hint-placeholder-val="{{ false }}">
   <div style="position:relative; box-sizing:border-box; padding:{{ padY }}px {{ mx }}px; display:grid; grid-template-columns:{{ cols }}; grid-template-rows:{{ rows }}; gap:{{ gap }}px;">
     <div style="position:relative; grid-row:{{ photoRow }}; grid-column:{{ photoCol }}; min-height:{{ photoH }}px; border-radius:20px; overflow:hidden; background:#ECECEA; display:flex; align-items:flex-end; isolation:isolate;">
-      <sc-if value="{{ hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:-2;"></sc-if>
+      <sc-if value="{{ hasImage }}" hint-placeholder-val="{{ false }}"><img data-zoom="" src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:-2; transform:scale(1.25); transform-origin:50% 50%; will-change:transform;"></sc-if>
       <sc-if value="{{ noImage }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="position:absolute; inset:0; z-index:-2; display:flex; align-items:center; justify-content:center; color:#A9A9A6; font-size:44px;"><i class="ph ph-image"></i></span></sc-if>
       <span aria-hidden="true" style="position:absolute; inset:0; z-index:-1; background:linear-gradient(to bottom, rgba(10,23,14,0) 50%, rgba(10,23,14,0.55) 100%);"></span>
       <h2 id="pilares-titulo" style="margin:0; padding:{{ h2Pad }}; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.1; letter-spacing:-0.02em; color:#FFFFFF; text-shadow:0 2px 12px rgba(10,23,14,0.35);">{{ titleStart }} <span style="color:#AACC4A;">{{ titleHighlight }}</span></h2>
@@ -60,7 +60,26 @@
 class Component extends DCLogic {
   state = { auto: 'laptop' };
   rootRef = React.createRef();
+  startZoom() {
+    if (this._zf || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let cur = null;
+    const tick = () => {
+      const root = this.rootRef.current;
+      if (root) {
+        const r = root.getBoundingClientRect(), vh = innerHeight;
+        if (r.bottom > -50 && r.top < vh + 50) {
+          const t = Math.max(0, Math.min(1, (vh - r.top) / (r.height + vh * 0.2)));
+          cur = cur === null ? t : cur + (t - cur) * 0.1;
+          const e = 1 - Math.pow(1 - cur, 2), s = (1.25 - e * 0.25).toFixed(4);
+          root.querySelectorAll('img[data-zoom]').forEach(im => { im.style.transform = 'scale(' + s + ')'; });
+        }
+      }
+      this._zf = requestAnimationFrame(tick);
+    };
+    this._zf = requestAnimationFrame(tick);
+  }
   componentDidMount() {
+    this.startZoom();
     const el = this.rootRef.current;
     if (!window.ResizeObserver) return;
     if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
@@ -78,7 +97,7 @@ class Component extends DCLogic {
     this._measure(el.offsetWidth);
     if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
   }
-  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  componentWillUnmount() { cancelAnimationFrame(this._zf); clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
   renderVals() {
     const p = this.props;
     const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
