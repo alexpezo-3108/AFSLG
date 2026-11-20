@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de privacidad · Fondo Social La Granja</title>
+<meta name="description" content="Política de privacidad de la AFSLG.">
+<meta name="theme-color" content="#17331F">
+<link rel="icon" type="image/png" href="assets/isotipo-orquidea.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style id="afslg-critical">html{background:#FDFCF8}html:not(.afslg-done) main{opacity:0;animation:afslgFail 0s 7s forwards}@keyframes afslgFail{to{opacity:1}}</style>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./site.js?v=14"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<style>html{scrollbar-gutter:stable} html.lenis,html.lenis body{height:auto} .lenis.lenis-smooth{scroll-behavior:auto !important} body{margin:0;background:#E2E2E2;overflow-x:clip} a{color:#32502A} a:hover{color:#17331F}</style>
+</helmet>
+<div style="display:flex; justify-content:center; width:100%;">
+  <main style="width:{{ frameW }}; flex:none; zoom:{{ scale }}; background:#FDFCF8;">
+    <dc-import name="EncabezadoInterno" device="{{ device }}" active="" show-filters="false" breadcrumb="{{ breadcrumb }}" title="Política de privacidad" subtitle="Última actualización: [fecha por definir]" hint-size="100%,480px"></dc-import>
+    <dc-import name="ContenidoLegal" device="{{ device }}" tipo="privacidad" hint-size="100%,2000px"></dc-import>
+    <dc-import name="Footer" device="{{ device }}" hint-size="100%,804px"></dc-import>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { vw: window.innerWidth };
+  componentDidMount() {
+    this.onR = () => this.setState({ vw: window.innerWidth }); window.addEventListener('resize', this.onR);
+    this.initLenis();
+  }
+  initLenis() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || this.lenis) return;
+    if (!window.Lenis) { this.t = setTimeout(() => this.initLenis(), 200); return; }
+    this.lenis = new window.Lenis({ lerp: 0.09, smoothWheel: true }); window.__lenis = this.lenis;
+    const loop = t => { this.lenis && this.lenis.raf(t); this.raf = requestAnimationFrame(loop); };
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); clearTimeout(this.t); cancelAnimationFrame(this.raf); this.lenis && this.lenis.destroy(); window.__lenis = null; }
+  renderVals() {
+    const device = this.props.device ?? 'auto';
+    const F = { mobile: 390, laptop: 1440, desktop: 1920 }[device];
+    return {
+      device, frameW: F ? F + 'px' : '100%', scale: F ? Math.min(1, this.state.vw / F) : 1,
+      blocks: [{ type: 'p', text: 'Compartimos el comunicado oficial del Consejo Directivo de la Asociación Fondo Social La Granja. Puedes leerlo completo o descargarlo en PDF.' }, { type: 'p', text: 'Texto del comunicado (opcional): el equipo puede pegar aquí el contenido del documento para que se pueda leer, buscar y escuchar con lectores de pantalla.' }],
+      breadcrumb: [{ label: 'Política de privacidad' }]
+    };
+  }
+}
+</script>
+</body>
+</html>

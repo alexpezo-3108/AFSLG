@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="galeria-titulo" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:0 {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; gap:{{ headGap }}px;">
+    <h2 id="galeria-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F;">{{ title }}</h2>
+    <ul style="list-style:none; margin:0; padding:0; display:grid; grid-template-columns:{{ cols }}; gap:{{ gap }}px;">
+      <sc-for list="{{ photos }}" as="g" hint-placeholder-count="6">
+        <li style="display:flex;">
+          <button type="button" onClick="{{ g.open }}" aria-label="{{ g.aria }}" style="position:relative; width:100%; aspect-ratio:{{ ratio }}; padding:0; border:0; border-radius:{{ radius }}px; overflow:hidden; background:#E2E2E2; cursor:zoom-in;" style-hover="filter:brightness(0.92);" style-focus="outline:3px solid #ECC725; outline-offset:3px;">
+            <sc-if value="{{ g.hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ g.src }}" alt="{{ g.alt }}" loading="lazy" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if><sc-if value="{{ g.noImage }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="position:absolute; inset:0; background:#ECECEA; display:flex; align-items:center; justify-content:center;"><i class="ph ph-image" style="font-size:32px; color:#A9A9A6;"></i></span></sc-if>
+          </button>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+  <sc-if value="{{ isOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="{{ dialogLabel }}" onClick="{{ close }}" data-lenis-prevent="true" style="position:fixed; inset:0; z-index:200; background:rgba(17,38,23,0.94); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:{{ lbPad }};">
+      <img src="{{ cur.src }}" alt="{{ cur.alt }}" onClick="{{ stop }}" style="max-width:100%; max-height:calc(100vh - 160px); border-radius:12px; object-fit:contain; display:block;">
+      <span style="font-family:Montserrat, sans-serif; font-weight:600; font-size:14px; color:rgba(255,255,255,0.85);">{{ counter }}</span>
+      <button type="button" ref="{{ closeRef }}" onClick="{{ close }}" aria-label="Cerrar galería" style="position:absolute; top:20px; right:20px; width:48px; height:48px; border-radius:50%; border:0; background:rgba(255,255,255,0.14); color:#FFFFFF; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;" style-hover="background:rgba(255,255,255,0.24);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph-bold ph-x" aria-hidden="true"></i></button>
+      <button type="button" onClick="{{ prev }}" aria-label="Foto anterior" style="position:absolute; left:{{ arrowX }}px; top:50%; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; border:0; background:rgba(255,255,255,0.14); color:#FFFFFF; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer;" style-hover="background:rgba(255,255,255,0.24);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph-bold ph-caret-left" aria-hidden="true"></i></button>
+      <button type="button" onClick="{{ next }}" aria-label="Foto siguiente" style="position:absolute; right:{{ arrowX }}px; top:50%; transform:translateY(-50%); width:48px; height:48px; border-radius:50%; border:0; background:rgba(255,255,255,0.14); color:#FFFFFF; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer;" style-hover="background:rgba(255,255,255,0.24);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph-bold ph-caret-right" aria-hidden="true"></i></button>
+    </div>
+  </sc-if>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Galería del proyecto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;photos&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{src,alt}[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop', open: -1 };
+  rootRef = React.createRef();
+  closeRef = React.createRef();
+  componentDidMount() {
+    this.onKey = e => {
+      if (this.state.open < 0) return;
+      if (e.key === 'Escape') this.close();
+      if (e.key === 'ArrowRight') this.step(1);
+      if (e.key === 'ArrowLeft') this.step(-1);
+    };
+    window.addEventListener('keydown', this.onKey);
+    this.observe();
+  }
+  observe() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.observe(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); this.ro && this.ro.disconnect(); clearTimeout(this._rt); this.unlock(); }
+  lock() { document.documentElement.style.overflow = 'hidden'; window.__lenis && window.__lenis.stop(); }
+  unlock() { document.documentElement.style.overflow = ''; window.__lenis && window.__lenis.start(); }
+  openAt(i, e) { this._from = e && e.currentTarget; this.setState({ open: i }, () => this.closeRef.current && this.closeRef.current.focus()); this.lock(); }
+  close() { this.setState({ open: -1 }); this.unlock(); this._from && this._from.focus(); }
+  step(d) { const n = this.list().length; this.setState(s => ({ open: (s.open + d + n) % n })); }
+  list() {
+    return (this.props.photos ?? [1, 2, 3, 4, 5, 6].map(() => ({ src: '', alt: '' })));
+  }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const raw = this.list();
+    const photos = raw.map((g, i) => ({ ...g, alt: g.alt || 'Foto ' + (i + 1) + ' del proyecto', aria: 'Ampliar foto ' + (i + 1) + ' de ' + raw.length, hasImage: !!g.src, noImage: !g.src, open: e => { if (g.src) this.openAt(i, e); } }));
+    const o = this.state.open;
+    return {
+      rootRef: this.rootRef, closeRef: this.closeRef, photos,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padB: m ? 64 : 120, headGap: m ? 32 : 40,
+      h2: m ? 28 : (d ? 52 : 44), cols: m ? 'repeat(2, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))', gap: m ? 12 : 16,
+      ratio: m ? '169 / 122' : '522 / 449', radius: m ? 16 : 16,
+      isOpen: o >= 0, cur: o >= 0 ? photos[o] : { src: '', alt: '' }, counter: (o + 1) + ' / ' + photos.length,
+      dialogLabel: 'Galería: foto ' + (o + 1) + ' de ' + photos.length, lbPad: m ? '80px 16px 24px' : '72px 96px 32px', arrowX: m ? 8 : 24,
+      close: () => this.close(), prev: e => { e.stopPropagation(); this.step(-1); }, next: e => { e.stopPropagation(); this.step(1); }, stop: e => e.stopPropagation(),
+      title: p.title ?? 'Galería del proyecto'
+    };
+  }
+}
+</script>
+</body>
+</html>

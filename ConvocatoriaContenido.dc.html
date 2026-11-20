@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-label="Contenido de la convocatoria" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; max-width:{{ maxW }}; margin:0 auto; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:grid; grid-template-columns:{{ cols }}; column-gap:72px; row-gap:40px; align-items:start;">
+    <div style="display:flex; flex-direction:column; gap:24px; min-width:0;">
+      <h2 style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ h2 }}px; color:#32502A;">{{ docsTitle }}</h2>
+      <div style="padding:{{ cardPad }}; border-radius:20px; background:#FFFFFF; box-shadow:0 1px 2px rgba(17,38,23,0.04);">
+        <sc-for list="{{ docs }}" as="d" hint-placeholder-count="7">
+          <dc-import name="FilaDocumento" format="{{ d.format }}" title="{{ d.title }}" file-size="{{ d.fileSize }}" href="{{ d.href }}" last="{{ d.last }}" size="{{ rowSize }}" hint-size="100%,84px"></dc-import>
+        </sc-for>
+      </div>
+      <div style="display:flex; align-items:flex-start; gap:12px; padding:{{ notePad }}; border-radius:12px; background:#F6F3EA; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; line-height:1.55; color:#1C1C1B;">
+        <i class="ph-fill ph-info" aria-hidden="true" style="flex:none; font-size:20px; color:#32502A; margin-top:1px;"></i><span>{{ note }}</span>
+      </div>
+      <div style="display:flex; flex-direction:{{ shareDir }}; align-items:{{ shareAlign }}; justify-content:space-between; gap:20px; padding:24px 0; border-top:1px solid #E2E2E2; border-bottom:1px solid #E2E2E2;">
+        <div style="display:flex; flex-direction:{{ shareDir }}; align-items:{{ shareAlign }}; gap:{{ shareGap }}px;">
+          <span style="font-family:Montserrat, sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">Compartir</span>
+          <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            <sc-for list="{{ shares }}" as="s" hint-placeholder-count="6">
+              <a href="{{ s.href }}" target="_blank" rel="noopener" aria-label="{{ s.label }}" style="width:44px; height:44px; border-radius:50%; background:{{ s.bg }}; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:22px; transition:filter .15s;" style-hover="filter:brightness(1.1);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><span aria-hidden="true" style="width:{{ s.sz }}px; height:{{ s.sz }}px; background:#FFFFFF; -webkit-mask:url({{ s.svg }}) center / contain no-repeat; mask:url({{ s.svg }}) center / contain no-repeat;"></span></a>
+            </sc-for>
+          </div>
+        </div>
+        <button type="button" onClick="{{ copy }}" style="align-self:flex-start; display:flex; align-items:center; gap:8px; height:44px; padding:0 20px; border-radius:8px; border:1px solid #E2E2E2; background:#FFFFFF; color:#17331F; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; cursor:pointer;" style-hover="border-color:#32502A;" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph ph-{{ copyIcon }}" aria-hidden="true" style="font-size:16px;"></i><span aria-live="polite">{{ copyLabel }}</span></button>
+      </div>
+    </div>
+    <aside aria-label="Afiche de la convocatoria" style="position:{{ asidePos }}; top:24px; display:flex; flex-direction:column; gap:12px; padding:12px; border-radius:20px; background:#FFFFFF; box-shadow:0 1px 2px rgba(17,38,23,0.04);">
+      <div style="position:relative; aspect-ratio:{{ posterRatio }}; border-radius:12px; overflow:hidden; background:#ECECEA; display:flex; align-items:center; justify-content:center;">
+        <sc-if value="{{ hasPoster }}" hint-placeholder-val="{{ false }}"><img src="{{ poster }}" alt="{{ posterAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if>
+        <sc-if value="{{ noPoster }}" hint-placeholder-val="{{ true }}"><span style="display:flex; flex-direction:column; align-items:center; gap:8px; color:#A9A9A6; font-family:Montserrat, sans-serif; font-weight:500; font-size:13px;"><i class="ph ph-image" aria-hidden="true" style="font-size:36px;"></i>Afiche de la convocatoria</span></sc-if>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px;">
+        <dc-import name="Button" variant="secundario-claro" icon="magnifying-glass-plus" label="Ampliar" href="{{ posterHref }}" full-width="true" shadow="false" hint-size="100%,44px"></dc-import>
+        <dc-import name="Button" variant="secundario-claro" icon="download-simple" label="Descargar" href="{{ posterHref }}" full-width="true" shadow="false" hint-size="100%,44px"></dc-import>
+      </div>
+    </aside>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;docsTitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Documentos&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;note&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Los documentos PDF se abren en el visor; los formatos en Excel y Word se descargan para completarlos.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;poster&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;posterAlt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Afiche de la convocatoria&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;docs&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{format,title,fileSize,href}[]&quot;},&quot;shareUrl&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;},&quot;shareText&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop', copied: false };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const st = w < 1024;
+      if (d !== this.state.auto || st !== this.state.stack) this.setState({ auto: d, stack: st });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); clearTimeout(this.t); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const stack = m || (isAuto && this.state.stack);
+    const docs = (p.docs ?? [
+      { format: 'pdf', title: 'Términos de referencia', fileSize: '1,2 MB' },
+      { format: 'xls', title: 'Formato de consultas (Anexo A.3)', fileSize: '48 KB' },
+      { format: 'doc', title: 'Certificado de visita de campo (Anexo A.2)', fileSize: '36 KB' },
+      { format: 'pdf', title: 'Acta de verificación de ofertas', fileSize: '820 KB' },
+      { format: 'pdf', title: 'Acta de otorgamiento de buena pro', fileSize: '640 KB' },
+      { format: 'pdf', title: 'Acta de consentimiento de buena pro', fileSize: '410 KB' },
+      { format: 'pdf', title: 'Reglamento de Contrataciones vigente', fileSize: '2,4 MB' }
+    ]).map((x, i, a) => ({ href: '#', ...x, last: i === a.length - 1 }));
+    const url = encodeURIComponent(p.shareUrl ?? location.href), txt = encodeURIComponent(p.shareText ?? document.title);
+    const poster = p.poster || '';
+    return {
+      rootRef: this.rootRef, docs, asidePos: stack ? 'relative' : 'sticky',
+      maxW: d ? '1522px' : (stack ? 'none' : '1296px'), mx: m ? 20 : 56,
+      padT: m ? 24 : 72, padB: m ? 64 : 120,
+      cols: stack ? '1fr' : 'minmax(0, 1.84fr) minmax(0, 1fr)',
+      h2: m ? 22 : 26, cardPad: m ? '4px 16px' : '6px 24px', rowSize: m ? 'sm' : 'md', notePad: m ? '18px 20px' : '16px 20px',
+      shareDir: m ? 'column' : 'row', shareAlign: m ? 'flex-start' : 'center', shareGap: m ? 14 : 24,
+      shares: [
+        { label: 'Compartir en WhatsApp', icon: 'whatsapp-logo', svg: 'assets/social/whatsapp.svg', sz: 20, bg: '#25D366', href: 'https://wa.me/?text=' + txt + '%20' + url },
+        { label: 'Compartir en Facebook', icon: 'facebook-logo', svg: 'assets/social/facebook.svg', sz: 22, bg: '#1877F2', href: 'https://www.facebook.com/sharer/sharer.php?u=' + url },
+        { label: 'Compartir en LinkedIn', icon: 'linkedin-logo', svg: 'assets/social/linkedin.svg', sz: 20, bg: '#0A66C2', href: 'https://www.linkedin.com/sharing/share-offsite/?url=' + url },
+        { label: 'Compartir en X', icon: 'x-logo', svg: 'assets/social/x.svg', sz: 16, bg: '#000000', href: 'https://twitter.com/intent/tweet?url=' + url + '&text=' + txt },
+        { label: 'Compartir en Telegram', icon: 'telegram-logo', svg: 'assets/social/telegram.svg', sz: 22, bg: '#2AABEE', href: 'https://t.me/share/url?url=' + url + '&text=' + txt },
+        { label: 'Compartir por correo', icon: 'envelope-simple', svg: 'assets/social/email.svg', sz: 22, bg: '#32502A', href: 'mailto:?subject=' + txt + '&body=' + url }
+      ],
+      copyLabel: this.state.copied ? '¡Enlace copiado!' : 'Copiar enlace', copyIcon: this.state.copied ? 'check' : 'link',
+      copy: () => { try { navigator.clipboard.writeText(p.shareUrl ?? location.href); } catch (e) {} this.setState({ copied: true }); clearTimeout(this.t); this.t = setTimeout(() => this.setState({ copied: false }), 2500); },
+      hasPoster: !!poster, noPoster: !poster, poster, posterAlt: p.posterAlt ?? 'Afiche de la convocatoria', posterHref: poster || '#', posterRatio: '1 / 1',
+      docsTitle: p.docsTitle ?? 'Documentos',
+      note: p.note ?? 'Los documentos PDF se abren en el visor; los formatos en Excel y Word se descargan para completarlos.'
+    };
+  }
+}
+</script>
+</body>
+</html>

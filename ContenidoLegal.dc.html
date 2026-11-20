@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</helmet>
+<section ref="{{ rootRef }}" aria-label="Contenido legal" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:grid; grid-template-columns:{{ cols }}; column-gap:{{ colGap }}px; row-gap:24px; align-items:start;">
+    <nav aria-label="Contenido" style="position:{{ navPos }}; top:{{ navTop }}px; z-index:5; padding:{{ navPad }}; border-radius:16px; background:#FFFFFF; box-shadow:0 2px 12px rgba(17,38,23,0.06);">
+      <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+        <span style="display:block; padding:0 0 12px; font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">Contenido</span>
+        <ol style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px;">
+          <sc-for list="{{ toc }}" as="t" hint-placeholder-count="10">
+            <li><a href="{{ t.href }}" onClick="{{ t.go }}" aria-current="{{ t.current }}" style="display:block; padding:10px 12px; border-radius:8px; background:{{ t.bg }}; font-family:Montserrat, sans-serif; font-weight:500; font-size:14px; line-height:1.4; color:{{ t.fg }}; text-decoration:none;" style-hover="background:#F3F4EC;">{{ t.label }}</a></li>
+          </sc-for>
+        </ol>
+      </sc-if>
+      <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+        <label style="position:relative; display:flex; flex-direction:column; gap:2px;">
+          <span style="font-family:Montserrat, sans-serif; font-weight:600; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">Contenido</span>
+          <select value="{{ activeId }}" onChange="{{ pick }}" style="appearance:none; -webkit-appearance:none; width:100%; padding:2px 28px 0 0; border:0; background:transparent; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#17331F; cursor:pointer;">
+            <sc-for list="{{ toc }}" as="t" hint-placeholder-count="10"><option value="{{ t.id }}">{{ t.label }}</option></sc-for>
+          </select>
+          <i class="ph ph-caret-down" aria-hidden="true" style="position:absolute; right:0; bottom:2px; font-size:16px; color:#17331F; pointer-events:none;"></i>
+        </label>
+      </sc-if>
+    </nav>
+    <article style="min-width:0; max-width:1120px;">
+      <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ introSize }}px; line-height:1.6; color:#17331F;">{{ intro }}</p>
+      <sc-for list="{{ sections }}" as="s" hint-placeholder-count="10">
+        <section id="{{ s.id }}" style="scroll-margin-top:{{ scrollM }}px; margin-top:{{ secGap }}px;">
+          <h2 style="margin:0 0 16px; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ h2 }}px; line-height:1.3; color:#17331F;">{{ s.title }}</h2>
+          <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ pSize }}px; line-height:1.65; color:#4D4D4A; text-wrap:pretty;">{{ s.text }}</p>
+          <sc-if value="{{ s.hasList }}" hint-placeholder-val="{{ false }}">
+            <ul style="margin:16px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:10px;">
+              <sc-for list="{{ s.list }}" as="li" hint-placeholder-count="3"><li style="display:flex; gap:12px; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ pSize }}px; line-height:1.55; color:#4D4D4A;"><span aria-hidden="true" style="flex:none; width:6px; height:6px; margin-top:9px; border-radius:50%; background:#AACC4A;"></span>{{ li }}</li></sc-for>
+            </ul>
+          </sc-if>
+        </section>
+      </sc-for>
+    </article>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;tipo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;privacidad&quot;,&quot;terminos&quot;],&quot;default&quot;:&quot;privacidad&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;intro&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;sections&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{title,text?,list?}[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop', active: 's1' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => { const w = e.contentRect.width; const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop'; if (d !== this.state.auto || w !== this.state.w) this.setState({ auto: d, w }); });
+    this.ro.observe(el);
+    this.onScroll = () => { const secs = el.querySelectorAll('article > section'); let cur = 's1'; secs.forEach(s => { if (s.getBoundingClientRect().top < 160) cur = s.id; }); if (cur !== this.state.active) this.setState({ active: cur }); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); window.removeEventListener('scroll', this.onScroll); }
+  goTo(id) { const t = document.getElementById(id); if (!t) return; const y = t.getBoundingClientRect().top + window.scrollY - (this.state.auto === 'mobile' ? 100 : 32); window.__lenis ? window.__lenis.scrollTo(y) : window.scrollTo({ top: y, behavior: 'smooth' }); this.setState({ active: id }); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const stack = m || (isAuto && (this.state.w || window.innerWidth) < 1024);
+    const T = 'Colocar aquí texto de ejemplo. Este párrafo será reemplazado por el texto legal definitivo que entregue la Asociación, redactado conforme a la Ley N.° 29733, Ley de Protección de Datos Personales, y su reglamento.';
+    const tipo = p.tipo ?? 'privacidad';
+    const raw = p.sections ?? (tipo === 'terminos'
+      ? ['Aceptación de los términos', 'Uso del sitio web', 'Propiedad intelectual', 'Enlaces a sitios de terceros', 'Limitación de responsabilidad', 'Modificaciones', 'Ley aplicable', 'Contacto'].map(t => ({ title: t, text: 'Colocar aquí texto de ejemplo. Este párrafo será reemplazado por el texto legal definitivo que entregue la Asociación.' }))
+      : [{ title: 'Responsable del tratamiento' }, { title: 'Datos personales que recopilamos', list: ['Colocar aquí ejemplo de dato (nombres y apellidos).', 'Colocar aquí ejemplo de dato (celular y correo).', 'Colocar aquí ejemplo de dato (mensaje enviado).'] }, { title: 'Finalidad del tratamiento' }, { title: 'Base legal' }, { title: 'Plazo de conservación' }, { title: 'Derechos de los titulares (ARCO)', list: ['Acceso', 'Rectificación', 'Cancelación', 'Oposición'] }, { title: 'Seguridad de la información' }, { title: 'Uso de cookies' }, { title: 'Cambios a esta política' }, { title: 'Contacto' }]);
+    const sections = raw.map((s, i) => ({ id: 's' + (i + 1), title: (i + 1) + '. ' + s.title, text: s.text || T, list: s.list || [], hasList: !!(s.list && s.list.length) }));
+    const toc = sections.map(s => { const a = s.id === this.state.active; return { id: s.id, href: '#' + s.id, label: s.title, current: a ? 'true' : undefined, bg: a ? '#F1F5E4' : 'transparent', fg: a ? '#17331F' : '#4D4D4A', go: e => { e.preventDefault(); this.goTo(s.id); } }; });
+    return {
+      rootRef: this.rootRef, toc, sections, isWide: !m, isMobile: m, activeId: this.state.active, pick: e => this.goTo(e.target.value),
+      mx: { mobile: 16, laptop: 56, desktop: 160 }[dev], padT: m ? 16 : 40, padB: m ? 72 : 120,
+      cols: stack ? '1fr' : (d ? '352px minmax(0,1fr)' : '320px minmax(0,1fr)'), colGap: d ? 68 : 78,
+      navPos: 'sticky', navTop: m ? 12 : 24, navPad: m ? '12px 16px' : '16px 16px 20px',
+      introSize: m ? 16 : 17, secGap: m ? 36 : 48, h2: m ? 18 : 26, pSize: m ? 14 : 16, scrollM: m ? 100 : 32,
+      intro: p.intro ?? 'Colocar aquí texto de ejemplo. Introducción breve: quién es la Asociación Fondo Social La Granja, por qué recopila datos personales a través de este sitio web y el compromiso de protegerlos.'
+    };
+  }
+}
+</script>
+</body>
+</html>

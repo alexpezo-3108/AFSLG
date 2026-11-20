@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="cta-titulo" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px;">
+    <div style="position:relative; display:grid; grid-template-columns:{{ cols }}; border-radius:20px; overflow:hidden; background:radial-gradient(ellipse 45% 70% at 8% 10%, #F2D766 0%, rgba(242,215,102,0) 100%), radial-gradient(ellipse 35% 60% at 62% 85%, #F2D766 0%, rgba(242,215,102,0) 100%), #ECC725; isolation:isolate;">
+      <div style="position:relative; box-sizing:border-box; padding:{{ contentPad }}; display:flex; flex-direction:column; align-items:flex-start; gap:{{ gap }}px;">
+        <span style="font-family:Montserrat, sans-serif; font-weight:700; font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:#17331F;">{{ eyebrow }}</span>
+        <h2 id="cta-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F; text-wrap:pretty;">{{ title }}</h2>
+        <p style="margin:0; max-width:840px; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.65; color:#17331F; text-wrap:pretty;">{{ body }}</p>
+        <div style="margin-top:{{ btnTop }}px; display:flex; flex-direction:{{ btnDir }}; align-items:{{ btnAlign }}; gap:{{ btnGap }}px; width:{{ btnW }}; position:relative; z-index:1;">
+          <dc-import name="Button" variant="secundario-claro" label="{{ primaryLabel }}" href="{{ primaryHref }}" size="{{ btnSize }}" full-width="{{ isMobile }}" hint-size="228px,44px"></dc-import>
+          <sc-if value="{{ hasSecondary }}" hint-placeholder-val="{{ true }}">
+            <a href="{{ secondaryHref }}" style="display:flex; align-items:center; justify-content:center; gap:8px; min-height:44px; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; color:#17331F; text-decoration:none;" style-hover="text-decoration:underline;" style-focus="outline:3px solid #17331F; outline-offset:3px;">{{ secondaryLabel }}<i class="ph ph-arrow-up-right" aria-hidden="true" style="font-size:14px;"></i></a>
+          </sc-if>
+        </div>
+        <sc-if value="{{ showLeaves }}" hint-placeholder-val="{{ true }}">
+          <img ref="{{ leafL }}" src="assets/hojas-inferior.png" alt="" aria-hidden="true" style="opacity:0; transform-origin:0% 100%; position:absolute; left:-10px; bottom:-10px; width:{{ leafW }}px; height:auto; pointer-events:none; z-index:2;">
+        </sc-if>
+      </div>
+      <div style="position:relative; min-height:{{ photoH }}px; background:#D9C25A; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+        <sc-if value="{{ hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if>
+        <sc-if value="{{ noImage }}" hint-placeholder-val="{{ true }}"><i class="ph ph-image" aria-hidden="true" style="font-size:40px; color:rgba(23,51,31,0.35);"></i></sc-if>
+        <sc-if value="{{ showLeaves }}" hint-placeholder-val="{{ true }}">
+          <img ref="{{ leafR }}" src="assets/hojas-superior.png" alt="" aria-hidden="true" style="opacity:0; transform-origin:100% 0%; position:absolute; top:0; right:0; width:{{ leafW2 }}px; height:auto; pointer-events:none;">
+          <img ref="{{ waveRef }}" src="assets/ondas.svg" alt="" aria-hidden="true" style="position:absolute; right:0; bottom:0; width:{{ waveW }}px; height:auto; opacity:0.7; pointer-events:none;">
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;showLeaves&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;eyebrow&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;¿Tienes consultas?&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Estamos cerca de ti. Escríbenos o visítanos en Querocoto.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;body&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Atendemos consultas, solicitudes y trámites a través de nuestra mesa de partes virtual o directamente en nuestra oficina.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;primaryLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Mesa de partes virtual&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botones&quot;},&quot;primaryHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botones&quot;},&quot;secondaryLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ver documentos&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botones&quot;},&quot;secondaryHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botones&quot;},&quot;image&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Imagen&quot;},&quot;imageAlt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Imagen&quot;}}">
+class Component extends DCLogic {
+  leafL = React.createRef(); leafR = React.createRef(); waveRef = React.createRef();
+  startMotion() {
+    if (this._mraf) return;
+    const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let t0 = null, drawn = false;
+    const ease = t => 1 - Math.pow(1 - t, 4);
+    const draw = () => {
+      const w = this.waveRef.current; if (!w || drawn) return; drawn = true;
+      if (RM) return;
+      fetch(w.src).then(r => r.text()).then(txt => {
+        const box = document.createElement('div'); box.innerHTML = txt; const svg = box.querySelector('svg'); if (!svg) return;
+        svg.setAttribute('aria-hidden', 'true'); svg.removeAttribute('width'); svg.removeAttribute('height');
+        svg.style.cssText = 'position:absolute; right:0; bottom:0; width:' + w.offsetWidth + 'px; height:auto; opacity:' + (getComputedStyle(w).opacity || 0.7) + '; pointer-events:none; overflow:visible;';
+        w.style.visibility = 'hidden'; w.after(svg);
+        Array.prototype.forEach.call(svg.querySelectorAll('path'), (p, k) => { const L = p.getTotalLength ? p.getTotalLength() : 1400; p.style.strokeDasharray = L; p.style.strokeDashoffset = L; p.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 2200, delay: 300 + k * 55, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'forwards' }); });
+      }).catch(() => {});
+    };
+    const loop = now => {
+      this._mraf = requestAnimationFrame(loop);
+      const A = this.leafL.current, B = this.leafR.current, root = this.rootRef.current; if (!root) return;
+      if (t0 === null) { const rc = root.getBoundingClientRect(); if (rc.top < innerHeight * 0.8 && rc.bottom > 0) { t0 = now; draw(); } else return; }
+      const e = RM ? 1 : ease(Math.min(1, (now - t0) / 1500)), w = RM ? 0 : now / 1000;
+      if (A) { A.style.opacity = e; A.style.transform = 'translate3d(' + ((1 - e) * -70 + Math.sin(w * 0.7) * 6) + 'px,' + ((1 - e) * 50 + Math.sin(w * 0.9 + 1) * 5) + 'px,0) rotate(' + ((1 - e) * -14 + Math.sin(w * 0.8) * 5.5 + Math.sin(w * 1.9) * 1.6) + 'deg)'; }
+      if (B) { B.style.opacity = e; B.style.transform = 'translate3d(' + ((1 - e) * 70 + Math.sin(w * 0.6 + 2) * 6) + 'px,' + ((1 - e) * -50 + Math.sin(w * 0.85 + 0.5) * 5) + 'px,0) rotate(' + ((1 - e) * 14 + Math.sin(w * 0.75 + 1.3) * -5 + Math.sin(w * 2.1) * 1.4) + 'deg)'; }
+    };
+    this._mraf = requestAnimationFrame(loop);
+  }
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    this.startMotion();
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const st = w < 1100;
+      if (d !== this.state.auto || st !== this.state.stack) this.setState({ auto: d, stack: st });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { cancelAnimationFrame(this._mraf); clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const stack = m || (isAuto && this.state.stack);
+    const image = p.image || '';
+    return {
+      leafL: this.leafL, leafR: this.leafR, waveRef: this.waveRef, rootRef: this.rootRef, isMobile: m,
+      mx: { mobile: 16, laptop: 56, desktop: 160 }[dev], padT: m ? 24 : 40, padB: m ? 64 : 120,
+      cols: stack ? '1fr' : 'minmax(0, 1.3fr) minmax(0, 1fr)',
+      contentPad: m ? '40px 24px 72px' : (d ? '72px 72px 72px' : '64px 56px 64px'), gap: m ? 14 : 16,
+      h2: m ? 28 : (d ? 40 : 36), btnTop: m ? 12 : 16,
+      btnDir: m ? 'column' : 'row', btnAlign: m ? 'stretch' : 'center', btnGap: m ? 8 : 24, btnW: m ? '100%' : 'auto', btnSize: m ? 'lg' : 'md',
+      photoH: stack ? (m ? 240 : 320) : 0,
+      showLeaves: p.showLeaves ?? true, leafW: m ? 80 : 92, leafW2: m ? 88 : 112, leafTopX: m ? '45%' : '32%', waveW: m ? 390 : (d ? 760 : 620),
+      hasImage: !!image, noImage: !image, image, imageAlt: p.imageAlt ?? '',
+      eyebrow: p.eyebrow ?? '¿Tienes consultas?',
+      title: p.title ?? 'Estamos cerca de ti. Escríbenos o visítanos en Querocoto.',
+      body: p.body ?? 'Atendemos consultas, solicitudes y trámites a través de nuestra mesa de partes virtual o directamente en nuestra oficina.',
+      primaryLabel: p.primaryLabel ?? 'Mesa de partes virtual', primaryHref: p.primaryHref ?? 'Contacto.dc.html',
+      secondaryLabel: p.secondaryLabel ?? 'Ver documentos', secondaryHref: p.secondaryHref ?? 'Documentos.dc.html',
+      hasSecondary: !!(p.secondaryLabel ?? 'Ver documentos')
+    };
+  }
+}
+</script>
+</body>
+</html>

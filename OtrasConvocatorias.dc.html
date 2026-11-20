@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="otras-titulo" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; gap:{{ headGap }}px;">
+    <header style="display:flex; flex-direction:{{ headDir }}; align-items:{{ headAlign }}; justify-content:space-between; gap:{{ headInner }}px;">
+      <h2 id="otras-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F;">{{ title }}</h2>
+      <dc-import name="Button" variant="link" label="{{ linkLabel }}" href="{{ linkHref }}" hint-size="260px,44px"></dc-import>
+    </header>
+    <ul style="list-style:none; margin:0; padding:0; display:grid; grid-template-columns:{{ cols }}; gap:16px;">
+      <sc-for list="{{ items }}" as="c" hint-placeholder-count="3">
+        <li style="display:flex;">
+          <dc-import name="TarjetaConvocatoria" size="{{ cardSize }}" status="{{ c.status }}" title="{{ c.title }}" date="{{ c.date }}" image="{{ c.image }}" href="{{ c.href }}" style="width:100%;" hint-size="100%,680px"></dc-import>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Otras convocatorias&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;linkLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ver todas las convocatorias&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;linkHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Convocatorias.dc.html&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;items&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{status,title,date,image?,href}[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const cols = w < 768 ? 1 : w < 1100 ? 2 : 3;
+      if (d !== this.state.auto || cols !== this.state.cols) this.setState({ auto: d, cols });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const cols = isAuto ? (this.state.cols ?? 3) : (m ? 1 : 3);
+    const all = (p.items ?? [
+      { status: 'abierta', title: 'Licitación pública N.° 013-2026 – Mejoramiento del camino vecinal La Granja – Checos', date: '18 oct 2026' },
+      { status: 'abierta', title: 'Comparativo de precios N.° 004-2026 – Materiales para invernaderos comunales', date: '15 oct 2026' },
+      { status: 'en-evaluacion', title: 'Licitación pública N.° 012-2026 – Tuberías PVC-U para 29 canales de regadío', date: '18 ago 2026' }
+    ]).map(x => ({ image: '', ...x, href: (!x.href || x.href === '#') ? 'Convocatoria%20Detalle.dc.html' : x.href }));
+    const max = m ? 2 : (cols === 2 ? 2 : 3);
+    return {
+      rootRef: this.rootRef, items: all.slice(0, max),
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padT: m ? 56 : 96, padB: m ? 64 : 112,
+      headGap: m ? 32 : 48, headDir: m ? 'column' : 'row', headAlign: m ? 'flex-start' : 'center', headInner: m ? 12 : 24,
+      h2: m ? 28 : (d ? 52 : 44),
+      cols: 'repeat(' + cols + ', minmax(0, 1fr))', cardSize: m ? 'sm' : 'md',
+      title: p.title ?? 'Otras convocatorias',
+      linkLabel: p.linkLabel ?? 'Ver todas las convocatorias', linkHref: p.linkHref ?? 'Convocatorias.dc.html'
+    };
+  }
+}
+</script>
+</body>
+</html>

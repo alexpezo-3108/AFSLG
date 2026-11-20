@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<div style="display:flex; flex-direction:{{ dir }}; align-items:{{ align }}; justify-content:space-between; gap:20px; padding:24px 0; border-top:1px solid #E2E2E2; border-bottom:1px solid #E2E2E2;">
+  <div style="display:flex; flex-direction:{{ dir }}; align-items:{{ align }}; gap:{{ gap }}px;">
+    <span style="font-family:Montserrat, sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">{{ label }}</span>
+    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+      <sc-for list="{{ shares }}" as="s" hint-placeholder-count="6">
+        <a href="{{ s.href }}" target="_blank" rel="noopener" aria-label="{{ s.label }}" style="width:44px; height:44px; border-radius:50%; background:{{ s.bg }}; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:20px;" style-hover="filter:brightness(1.1);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><span aria-hidden="true" style="width:{{ s.sz }}px; height:{{ s.sz }}px; background:#FFFFFF; -webkit-mask:url({{ s.svg }}) center / contain no-repeat; mask:url({{ s.svg }}) center / contain no-repeat;"></span></a>
+      </sc-for>
+    </div>
+  </div>
+  <button type="button" onClick="{{ copy }}" style="align-self:flex-start; display:flex; align-items:center; gap:8px; height:44px; padding:0 20px; border-radius:8px; border:1px solid #E2E2E2; background:#FFFFFF; color:#17331F; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; cursor:pointer;" style-hover="border-color:#32502A;" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph ph-{{ copyIcon }}" aria-hidden="true" style="font-size:16px;"></i><span aria-live="polite">{{ copyLabel }}</span></button>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:800,&quot;height&quot;:100},&quot;label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Compartir&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;size&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;md&quot;,&quot;sm&quot;],&quot;default&quot;:&quot;md&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;url&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;},&quot;text&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { copied: false };
+  componentWillUnmount() { clearTimeout(this.t); }
+  renderVals() {
+    const p = this.props;
+    const m = p.size === 'sm';
+    const raw = p.url ?? location.href;
+    const url = encodeURIComponent(raw), txt = encodeURIComponent(p.text ?? document.title);
+    return {
+      label: p.label ?? 'Compartir', dir: m ? 'column' : 'row', align: m ? 'flex-start' : 'center', gap: m ? 14 : 24,
+      shares: [
+        { label: 'Compartir en WhatsApp', icon: 'whatsapp-logo', svg: 'assets/social/whatsapp.svg', sz: 20, bg: '#25D366', href: 'https://wa.me/?text=' + txt + '%20' + url },
+        { label: 'Compartir en Facebook', icon: 'facebook-logo', svg: 'assets/social/facebook.svg', sz: 22, bg: '#1877F2', href: 'https://www.facebook.com/sharer/sharer.php?u=' + url },
+        { label: 'Compartir en LinkedIn', icon: 'linkedin-logo', svg: 'assets/social/linkedin.svg', sz: 20, bg: '#0A66C2', href: 'https://www.linkedin.com/sharing/share-offsite/?url=' + url },
+        { label: 'Compartir en X', icon: 'x-logo', svg: 'assets/social/x.svg', sz: 16, bg: '#000000', href: 'https://twitter.com/intent/tweet?url=' + url + '&text=' + txt },
+        { label: 'Compartir en Telegram', icon: 'telegram-logo', svg: 'assets/social/telegram.svg', sz: 22, bg: '#2AABEE', href: 'https://t.me/share/url?url=' + url + '&text=' + txt },
+        { label: 'Compartir por correo', icon: 'envelope-simple', svg: 'assets/social/email.svg', sz: 22, bg: '#32502A', href: 'mailto:?subject=' + txt + '&body=' + url }
+      ],
+      copyLabel: this.state.copied ? '¡Enlace copiado!' : 'Copiar enlace', copyIcon: this.state.copied ? 'check' : 'link',
+      copy: () => { try { navigator.clipboard.writeText(raw); } catch (e) {} this.setState({ copied: true }); clearTimeout(this.t); this.t = setTimeout(() => this.setState({ copied: false }), 2500); }
+    };
+  }
+}
+</script>
+</body>
+</html>

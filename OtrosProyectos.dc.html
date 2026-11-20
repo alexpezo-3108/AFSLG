@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="otros-proyectos" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate; overflow:hidden;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:{{ padT }}px 0 {{ padB }}px; display:flex; flex-direction:column; gap:{{ headGap }}px;">
+    <header style="box-sizing:border-box; padding:0 {{ mx }}px; display:flex; flex-direction:{{ headDir }}; align-items:{{ headAlign }}; justify-content:space-between; gap:{{ headInner }}px;">
+      <h2 id="otros-proyectos" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F;">{{ title }}</h2>
+      <dc-import name="Button" variant="link" label="{{ linkLabel }}" href="{{ linkHref }}" hint-size="230px,44px"></dc-import>
+    </header>
+    <ul data-lenis-prevent="true" style="list-style:none; margin:0; padding:0 {{ mx }}px; display:{{ listDisplay }}; grid-template-columns:{{ cols }}; gap:16px; overflow-x:{{ ovx }}; scroll-snap-type:x mandatory; scroll-padding-left:{{ mx }}px; scrollbar-width:none;">
+      <sc-for list="{{ items }}" as="x" hint-placeholder-count="2">
+        <li style="display:flex; flex:none; width:{{ itemW }}; scroll-snap-align:start;">
+            <a href="{{ x.href }}" aria-label="{{ x.aria }}" style="position:relative; width:100%; height:{{ cardH }}px; border-radius:20px; overflow:hidden; background:#32502A; display:flex; flex-direction:column; justify-content:flex-end; text-decoration:none; isolation:isolate;" style-hover="box-shadow:0 6px 18px rgba(17,38,23,0.10);" style-focus="outline:3px solid #ECC725; outline-offset:3px;">
+              <sc-if value="{{ x.hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ x.image }}" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2;"></sc-if>
+              <sc-if value="{{ x.noImage }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="position:absolute; inset:0; z-index:-2; background:#5E6B57; display:flex; align-items:center; justify-content:center; padding-bottom:20%;"><i class="ph ph-image" style="font-size:40px; color:rgba(255,255,255,0.45);"></i></span></sc-if>
+              <span aria-hidden="true" style="position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(23,51,31,0) 45%, rgba(23,51,31,0.55) 70%, rgba(23,51,31,0.92) 100%);"></span>
+              <div style="display:flex; align-items:flex-end; gap:16px; padding:{{ bodyPad }};">
+                <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:12px;">
+                  <h3 style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ titleSize }}px; line-height:1.3; color:#FFFFFF; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">{{ x.title }}</h3>
+                  <div style="display:flex; align-items:center; gap:16px; font-family:Montserrat, sans-serif; overflow:hidden;">
+                    <span style="flex:none; display:flex; align-items:center; gap:5px; padding:5px 10px; border-radius:6px; background:#ECC725; color:#17331F; font-weight:700; font-size:12px; white-space:nowrap;"><i class="ph ph-map-pin" aria-hidden="true" style="font-size:13px;"></i>{{ x.place }}</span>
+                    <sc-if value="{{ showDate }}" hint-placeholder-val="{{ true }}"><span style="display:flex; align-items:center; gap:6px; font-weight:500; font-size:13px; color:rgba(255,255,255,0.85); white-space:nowrap;"><i class="ph ph-calendar-blank" aria-hidden="true" style="font-size:14px;"></i>{{ x.date }}</span></sc-if>
+                  </div>
+                </div>
+                <span aria-hidden="true" style="flex:none; width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg, #E5F01F 0%, #AACC4A 100%); color:#17331F; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 4px 12px rgba(0,0,0,0.2);"><i class="ph-bold ph-arrow-up-right"></i></span>
+              </div>
+            </a>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Otros proyectos&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;linkLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ver todos los proyectos&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;linkHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Proyectos.dc.html&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;items&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{title,place,date,image?,href}[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const items = (p.items ?? [
+      { title: 'Mantenimiento de 29 canales de regadío', place: 'Distrito de Querocoto', date: 'set 2026' },
+      { title: 'Aulas prefabricadas en la I.E. de La Pampa', place: 'C.P. La Pampa', date: 'ago 2026' }
+    ]).map(x => ({ image: '', href: 'Proyecto Detalle.dc.html', ...x, hasImage: !!x.image, noImage: !x.image, aria: x.title + ' — ' + x.place + ', ' + x.date }));
+    return {
+      rootRef: this.rootRef, items, showDate: !m,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padT: m ? 56 : 96, padB: m ? 64 : 104,
+      headGap: m ? 28 : 40, headDir: m ? 'column' : 'row', headAlign: m ? 'flex-start' : 'center', headInner: m ? 16 : 24,
+      h2: m ? 28 : (d ? 52 : 44),
+      listDisplay: m ? 'flex' : 'grid', cols: 'repeat(2, minmax(0, 1fr))', ovx: m ? 'auto' : 'visible', itemW: m ? '280px' : 'auto',
+      cardH: m ? 315 : (d ? 507 : 420), bodyPad: m ? '0 16px 24px 24px' : '0 24px 24px', titleSize: m ? 17 : (d ? 22 : 19),
+      title: p.title ?? 'Otros proyectos', linkLabel: p.linkLabel ?? 'Ver todos los proyectos', linkHref: p.linkHref ?? 'Proyectos.dc.html'
+    };
+  }
+}
+</script>
+</body>
+</html>

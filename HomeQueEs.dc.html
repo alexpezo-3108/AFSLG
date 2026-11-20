@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>a{color:#32502A} a:hover{color:#17331F}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="que-es-titulo" style="position:relative; width:100%; overflow:hidden; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0;" hint-size="100%,100%"></dc-import>
+  <div aria-hidden="true" style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse 420px 300px at 4% 26%, rgba(170,204,74,0.12) 0%, rgba(170,204,74,0) 100%), radial-gradient(ellipse 460px 300px at 74% 56%, rgba(170,204,74,0.10) 0%, rgba(170,204,74,0) 100%);"></div>
+  <sc-if value="{{ showLeaves }}" hint-placeholder-val="{{ true }}">
+    <img ref="{{ leafA }}" src="assets/hojas-superior.png" alt="" aria-hidden="true" style="opacity:0; will-change:transform,opacity; position:absolute; top:{{ leafTop }}px; right:0; width:{{ leafW }}px; height:auto; display:block; pointer-events:none;">
+    <img ref="{{ leafB }}" src="assets/hojas-inferior.png" alt="" aria-hidden="true" style="opacity:0; will-change:transform,opacity; position:absolute; left:0; bottom:{{ leafBottom }}px; width:{{ leafW2 }}px; height:auto; display:block; pointer-events:none;">
+  </sc-if>
+  <div style="position:relative; box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+    <img src="assets/isotipo-orquidea.png" alt="" aria-hidden="true" style="width:{{ iconW }}px; height:auto; display:block;">
+    <h2 id="que-es-titulo" style="margin:{{ h2Top }}px 0 0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}; line-height:1.15; letter-spacing:-0.02em; color:#17331F; max-width:{{ h2Max }}; text-wrap:{{ h2Wrap }};">{{ titleStart }} <span style="color:#758434;">{{ titleHighlight }}</span>{{ titleEnd }}</h2>
+    <p style="margin:{{ pTop }}px 0 0; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.65; color:#4D4D4A; max-width:680px; text-wrap:pretty;">{{ body }}</p>
+    <div style="margin-top:{{ btnTop }}px; display:flex;">
+      <dc-import name="Button" variant="primario" label="{{ ctaLabel }}" href="{{ ctaHref }}" size="md" hint-size="158px,44px"></dc-import>
+    </div>
+    <ul ref="{{ statsRef }}" aria-label="Cifras del Fondo" style="list-style:none; margin:{{ statsTop }}px 0 0; padding:0; width:100%; max-width:1190px; display:grid; grid-template-columns:{{ cols }};">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+        <li style="display:flex; flex-direction:column; align-items:center; gap:{{ statGap }}px; padding:{{ statPad }}; border-left:{{ s.bl }}; border-top:{{ s.bt }};">
+          <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:{{ num }}px; line-height:1.1; letter-spacing:-0.02em; color:#32502A; white-space:nowrap; font-variant-numeric:tabular-nums;" data-count="{{ s.value }}">{{ s.value }}</span>
+          <span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.4; color:#4D4D4A;">{{ s.label }}</span>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'mobile'|'laptop'|'desktop'&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;showLeaves&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;titleStart&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;¿Qué es el&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleHighlight&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Fondo Social La Granja&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleEnd&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;?&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;body&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Somos una asociación civil sin fines de lucro que transforma los recursos generados por la actividad minera en proyectos sociales sostenibles para las familias del distrito de Querocoto, provincia de Chota, Cajamarca.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;ctaLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ver proyectos&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botón&quot;},&quot;ctaHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botón&quot;},&quot;stats&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{value:string,label:string}[]&quot;,&quot;section&quot;:&quot;Cifras&quot;}}">
+class Component extends DCLogic {
+  leafA = React.createRef(); leafB = React.createRef();
+  startLeaves() {
+    if (this._lraf) return;
+    const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let tx = 0, ty = 0, cx = 0, cy = 0, t0 = null;
+    this._lmove = e => { tx = (e.clientX / innerWidth - 0.5) * 2; ty = (e.clientY / innerHeight - 0.5) * 2; };
+    addEventListener('pointermove', this._lmove, { passive: true });
+    const ease = t => 1 - Math.pow(1 - t, 4);
+    const loop = now => {
+      this._lraf = requestAnimationFrame(loop);
+      const A = this.leafA.current, B = this.leafB.current; if (!A || !B) return;
+      const sec = this.rootRef && this.rootRef.current ? this.rootRef.current : A.parentElement;
+      const r = sec.getBoundingClientRect();
+      if (t0 === null) { if (r.top < innerHeight * 0.8 && r.bottom > 0) t0 = now; else return; }
+      const e = RM ? 1 : ease(Math.min(1, (now - t0) / 1600));
+      cx += (tx - cx) * 0.045; cy += (ty - cy) * 0.045;
+      const sp = RM ? 0 : (r.top + r.height / 2 - innerHeight / 2) / innerHeight;
+      const k = RM ? 0 : 1;
+      A.style.opacity = e; B.style.opacity = e;
+      const w = RM ? 0 : now / 1000; A.style.transformOrigin = '100% 0%'; B.style.transformOrigin = '0% 100%';
+      A.style.transform = 'translate3d(' + ((1 - e) * 120 + cx * -7 * k + Math.sin(w * 0.7) * 3) + 'px,' + ((1 - e) * -60 + cy * -5 * k + sp * -14 + Math.sin(w * 0.9 + 1) * 2.5) + 'px,0) rotate(' + ((1 - e) * 18 + cx * -1.2 * k + Math.sin(w * 0.8) * 2.2 + Math.sin(w * 1.9) * 0.8) + 'deg)';
+      B.style.transform = 'translate3d(' + ((1 - e) * -120 + cx * 8 * k + Math.sin(w * 0.6 + 2) * 3) + 'px,' + ((1 - e) * 60 + cy * 6 * k + sp * 16 + Math.sin(w * 0.85 + 0.5) * 2.5) + 'px,0) rotate(' + ((1 - e) * -16 + cx * 1.4 * k + Math.sin(w * 0.75 + 1.3) * -2.4 + Math.sin(w * 2.1) * 0.7) + 'deg)';
+    };
+    this._lraf = requestAnimationFrame(loop);
+  }
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  statsRef = React.createRef();
+  startCount() {
+    if (this._cio) return;
+    const ul = this.statsRef.current; if (!ul) { this._ct = setTimeout(() => this.startCount(), 150); return; }
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const spans = [...ul.querySelectorAll('[data-count]')];
+    const parts = spans.map(el => { const v = el.getAttribute('data-count') || ''; const m = v.match(/^(\D*?)(\d+(?:[.,]\d+)?)(.*)$/); if (!m) return null; const dec = (m[2].split(/[.,]/)[1] || '').length; return { el, pre: m[1], n: parseFloat(m[2].replace(',', '.')), suf: m[3], dec, sep: m[2].includes(',') ? ',' : '.' }; });
+    const fmt = (p, x) => p.pre + x.toFixed(p.dec).replace('.', p.sep) + p.suf;
+    if (reduce) return;
+    parts.forEach(p => p && (p.el.textContent = fmt(p, 0)));
+    this._cio = new IntersectionObserver(es => {
+      if (!es.some(e => e.isIntersecting)) return;
+      this._cio.disconnect();
+      parts.forEach((p, i) => { if (!p) return; const dur = 1600, t0 = performance.now() + i * 150;
+        const step = t => { const k = Math.max(0, Math.min(1, (t - t0) / dur)), e = 1 - Math.pow(1 - k, 4); p.el.textContent = fmt(p, p.n * e); if (k < 1) requestAnimationFrame(step); else p.el.textContent = p.el.getAttribute('data-count'); };
+        requestAnimationFrame(step); });
+    }, { threshold: 0.4 });
+    this._cio.observe(ul);
+  }
+  componentDidMount() {
+    this.startCount();
+    this.startLeaves();
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { this._cio && this._cio.disconnect(); clearTimeout(this._ct); cancelAnimationFrame(this._lraf); this._lmove && removeEventListener('pointermove', this._lmove); clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile';
+    const L = {
+      mobile:  { mx: 20, pt: 80, pb: 88, h2: '28px', h2Max: '340px', icon: 32, num: 36, st: 64 },
+      laptop:  { mx: 56, pt: 132, pb: 128, h2: '44px', h2Max: '900px', icon: 32, num: 56, st: 112 },
+      desktop: { mx: 160, pt: 132, pb: 136, h2: '56px', h2Max: '680px', icon: 34, num: 64, st: 112 }
+    }[dev];
+    const stats = (p.stats ?? [
+      { value: 'S/ 5.5 M', label: 'Invertidos en la comunidad' },
+      { value: '+10.5 mil', label: 'Personas beneficiadas' },
+      { value: '+200', label: 'Proyectos sociales' }
+    ]).map((s, i) => ({ ...s, bl: (!m && i > 0) ? '1px solid #E2E2E2' : 'none', bt: (m && i > 0) ? '1px solid #E2E2E2' : 'none' }));
+    return {
+      leafA: this.leafA, leafB: this.leafB, rootRef: this.rootRef,
+      h2Wrap: dev === 'desktop' ? 'wrap' : 'balance',
+      mx: L.mx, padT: L.pt, padB: L.pb, h2: L.h2, h2Max: L.h2Max, iconW: L.icon, num: L.num,
+      h2Top: m ? 16 : 20, pTop: m ? 16 : 20, btnTop: m ? 24 : 32, statsTop: L.st,
+      cols: m ? '1fr' : 'repeat(' + stats.length + ', minmax(0, 1fr))',
+      statGap: m ? 8 : 12, statPad: m ? '24px 0' : '0 24px',
+      showLeaves: p.showLeaves ?? true,
+      leafW: m ? 84 : (dev === 'desktop' ? 178 : 170), leafW2: m ? 72 : 140, leafTop: m ? 16 : 32, leafBottom: m ? 24 : (dev === 'desktop' ? 104 : 28),
+      titleStart: p.titleStart ?? '¿Qué es el',
+      titleHighlight: p.titleHighlight ?? 'Fondo Social La Granja',
+      titleEnd: p.titleEnd ?? '?',
+      body: p.body ?? 'Somos una asociación civil sin fines de lucro que transforma los recursos generados por la actividad minera en proyectos sociales sostenibles para las familias del distrito de Querocoto, provincia de Chota, Cajamarca.',
+      ctaLabel: p.ctaLabel ?? 'Ver proyectos', ctaHref: p.ctaHref ?? 'Proyectos.dc.html',
+      stats, statsRef: this.statsRef
+    };
+  }
+}
+</script>
+</body>
+</html>

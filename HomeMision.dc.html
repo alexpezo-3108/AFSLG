@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<style>a{color:#32502A} a:hover{color:#17331F}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="mision-titulo" style="position:relative; width:100%; overflow:hidden; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0;" hint-size="100%,100%"></dc-import>
+  <div aria-hidden="true" style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse 620px 320px at 30% 30%, rgba(170,204,74,0.10) 0%, rgba(170,204,74,0) 100%), radial-gradient(ellipse 520px 300px at 72% 42%, rgba(170,204,74,0.08) 0%, rgba(170,204,74,0) 100%);"></div>
+  <div style="position:relative; box-sizing:border-box; padding:{{ padT }}px {{ mx }}px 0; display:flex; flex-direction:column; align-items:center; text-align:center;">
+    <sc-if value="{{ hasIcon }}" hint-placeholder-val="{{ false }}"><img src="{{ icon }}" alt="" aria-hidden="true" style="width:{{ iconW }}px; height:auto; display:block;"></sc-if>
+    <sc-if value="{{ noIcon }}" hint-placeholder-val="{{ true }}"><i class="ph-duotone ph-hand-heart" aria-hidden="true" style="font-size:{{ iconW }}px; color:#AACC4A;"></i></sc-if>
+    <h2 id="mision-titulo" style="margin:{{ h2Top }}px 0 0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F; max-width:{{ h2Max }}; text-wrap:balance;">{{ titleStart }} <span style="color:#758434;">{{ titleHighlight }}</span>{{ titleEnd }}</h2>
+    <p style="margin:{{ pTop }}px 0 0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ pSize }}px; line-height:1.6; color:#4D4D4A; max-width:{{ pMax }}; text-wrap:pretty;">{{ body }}</p>
+    <div style="margin-top:{{ btnTop }}px; display:flex; width:{{ btnW }}; justify-content:center;">
+      <dc-import name="Button" variant="primario" label="{{ ctaLabel }}" href="{{ ctaHref }}" size="{{ btnSize }}" full-width="{{ isMobile }}" hint-size="272px,44px"></dc-import>
+    </div>
+  </div>
+  <div style="position:relative; margin-top:{{ galTop }}px; padding-bottom:{{ padB }}px; overflow:hidden;">
+  <div role="list" aria-label="Galería de proyectos" ref="{{ trackRef }}" style="display:{{ galDisplay }}; grid-template-columns:{{ galCols }}; gap:{{ galGap }}px; width:{{ trackW }}; will-change:transform;">
+    <sc-for list="{{ photos }}" as="ph" hint-placeholder-count="4">
+      <div role="listitem" style="position:relative; flex:none; width:{{ ph.w }}; height:{{ galH }}px; border-radius:{{ photoR }}px; overflow:hidden; background:#ECECEA; scroll-snap-align:start; display:flex; align-items:center; justify-content:center;">
+        <sc-if value="{{ ph.hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ ph.src }}" alt="{{ ph.alt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if>
+        <sc-if value="{{ ph.noImage }}" hint-placeholder-val="{{ true }}"><i class="ph ph-image" aria-hidden="true" style="font-size:36px; color:#A9A9A6;"></i></sc-if>
+      </div>
+    </sc-for>
+  </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;icon&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleStart&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nuestra&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleHighlight&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;misión&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleEnd&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;, nuestra razón de ser&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;body&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Invertimos de manera eficiente, equitativa y transparente los recursos provenientes de la extracción minera, para mejorar la calidad de vida y el desarrollo de capacidades de la población, en armonía con el medio ambiente.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;ctaLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Conoce más sobre nosotros&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botón&quot;},&quot;ctaHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botón&quot;},&quot;photos&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{src,alt}[]&quot;,&quot;section&quot;:&quot;Galería&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+    this.syncAuto();
+  }
+  trackRef = React.createRef();
+  componentDidUpdate() { this.syncAuto(); }
+  syncAuto() {
+    const on = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (on && !this.raf) {
+      let x = 0, last = performance.now();
+      const loop = now => {
+        const t = this.trackRef.current, dt = Math.min(64, now - last); last = now;
+        if (t) { const half = (t.scrollWidth + this.gap) / 3; x -= dt * this.speed; if (-x >= half) x += half; t.style.transform = 'translate3d(' + x + 'px,0,0)'; }
+        this.raf = requestAnimationFrame(loop);
+      };
+      this.raf = requestAnimationFrame(loop);
+    }
+    if (!on && this.raf) { cancelAnimationFrame(this.raf); this.raf = null; const t = this.trackRef.current; if (t) t.style.transform = ''; }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); cancelAnimationFrame(this.raf); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    this.isMob = m; this.gap = 12; this.speed = m ? 0.035 : (d ? 0.05 : 0.045);
+    const AR = [1.3333, 1.7753, 1.3333, 0.6661, 1.4991, 1.4991, 1.3333, 1.4991, 1.4991, 1.3333], GH = m ? 170 : 260;
+    const photos = (p.photos ?? AR.map((a, i) => ({ src: 'assets/fotos/home-marquee-' + String(i + 1).padStart(2, '0') + '.webp', alt: 'Actividades del Fondo Social La Granja con la comunidad de Querocoto', ar: a }))).map((x, i) => ({ src: '', alt: '', ...x, w: Math.round(GH * (x.ar || AR[i % AR.length])) + 'px', hasImage: !!x.src, noImage: !x.src }));
+    return {
+      rootRef: this.rootRef, trackRef: this.trackRef, photos: photos.concat(photos, photos), isMobile: m, trackW: 'max-content',
+      hasIcon: true, noIcon: false, icon: p.icon || 'assets/icono-mision.png',
+      mx: { mobile: 24, laptop: 56, desktop: 160 }[dev],
+      padT: m ? 80 : 140, padB: m ? 80 : 56, iconW: m ? 44 : 48,
+      h2: m ? 28 : (d ? 56 : 44), h2Max: m ? '340px' : (d ? '640px' : '540px'), h2Top: m ? 14 : 20,
+      pTop: m ? 18 : 36, pSize: m ? 16 : 18, pMax: m ? 'none' : (d ? '600px' : '560px'),
+      btnTop: m ? 28 : 40, btnSize: m ? 'lg' : 'md', btnW: m ? '100%' : 'auto',
+      galTop: m ? 40 : 112, galGap: 12, galH: m ? 170 : 260, photoR: 4,
+      galDisplay: 'flex',
+      galCols: photos.length === 4 ? 'minmax(0,355fr) minmax(0,473fr) minmax(0,177fr) minmax(0,399fr)' : 'repeat(' + photos.length + ', minmax(0,1fr))',
+      photoW: m ? '255px' : 'auto',
+      ctaLabel: p.ctaLabel ?? 'Conoce más sobre nosotros', ctaHref: p.ctaHref ?? 'Nosotros.dc.html',
+      titleStart: p.titleStart ?? 'Nuestra', titleHighlight: p.titleHighlight ?? 'misión', titleEnd: p.titleEnd ?? ', nuestra razón de ser',
+      body: p.body ?? 'Invertimos de manera eficiente, equitativa y transparente los recursos provenientes de la extracción minera, para mejorar la calidad de vida y el desarrollo de capacidades de la población, en armonía con el medio ambiente.'
+    };
+  }
+}
+</script>
+</body>
+</html>

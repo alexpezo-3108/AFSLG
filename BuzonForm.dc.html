@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important} .ct-in::placeholder{color:#8A8A87}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-label="Formulario del buzón" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; justify-content:center;">
+    <form onSubmit="{{ submit }}" noValidate="true" aria-labelledby="form-titulo" style="width:100%; max-width:760px; box-sizing:border-box; padding:{{ formPad }}; border-radius:24px; background:#FFFFFF; box-shadow:0 2px 14px rgba(17,38,23,0.06); display:flex; flex-direction:column;">
+      <h2 id="form-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ h2Form }}px; line-height:1.2; color:#17331F;">Escríbenos</h2>
+      <p style="margin:{{ formSubTop }}px 0 0; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.55; color:#1C1C1B;">Los campos con * son obligatorios. Si prefieres, también puedes acercarte a nuestra oficina.</p>
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="margin-top:40px; display:flex; flex-direction:column; align-items:flex-start; gap:12px; padding:28px; border-radius:16px; background:#EEF0DC;">
+          <i class="ph-fill ph-check-circle" aria-hidden="true" style="font-size:36px; color:#32502A;"></i>
+          <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:20px; color:#17331F;">¡Gracias, recibimos tu {{ kindLower }}!</span>
+          <span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; line-height:1.55; color:#4D4D4A;">Te responderemos en un plazo de 10 días hábiles.</span>
+          <button type="button" onClick="{{ reset }}" style="margin-top:8px; height:44px; padding:0 18px; border-radius:8px; border:1px solid #32502A; background:transparent; color:#17331F; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; text-transform:uppercase; cursor:pointer;">Enviar otro mensaje</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <div role="radiogroup" aria-label="¿Qué deseas enviarnos?" style="margin-top:{{ fieldsTop }}px; display:flex; flex-direction:column; gap:12px;"><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">¿Qué deseas enviarnos? *</span><div style="display:flex; flex-wrap:wrap; gap:8px;"><sc-for list="{{ kinds }}" as="k" hint-placeholder-count="4"><button type="button" role="radio" aria-checked="{{ k.active }}" onClick="{{ k.pick }}" style="height:44px; padding:0 20px; border-radius:999px; border:1px solid {{ k.border }}; background:{{ k.bg }}; color:{{ k.fg }}; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; cursor:pointer;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">{{ k.label }}</button></sc-for></div></div>
+        <div style="margin-top:20px; display:grid; grid-template-columns:{{ nameCols }}; gap:16px;">
+          <label style="display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Nombres y apellidos *<input class="ct-in" name="nombre" required="true" autoComplete="name" placeholder="Ej. María Pérez" aria-invalid="{{ errNombre }}" style="box-sizing:border-box; width:100%; height:52px; padding:0 18px; border-radius:10px; border:1px solid {{ bNombre }}; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"></label>
+          <label style="display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Celular *<input class="ct-in" name="celular" type="tel" required="true" autoComplete="tel" inputMode="tel" placeholder="Ej. 987 654 321" aria-invalid="{{ errCelular }}" style="box-sizing:border-box; width:100%; height:52px; padding:0 18px; border-radius:10px; border:1px solid {{ bCelular }}; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"></label>
+        </div>
+        <label style="margin-top:24px; display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Correo electrónico<input class="ct-in" name="correo" type="email" autoComplete="email" placeholder="Ej. nombre@correo.com" style="box-sizing:border-box; width:100%; height:52px; padding:0 18px; border-radius:10px; border:1px solid #E2E2E2; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"><span style="font-size:13px; color:#707070;">Opcional. Si no tienes correo, te responderemos por WhatsApp.</span></label>
+        <label style="margin-top:24px; display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Comunidad o centro poblado<input class="ct-in" name="comunidad" placeholder="Ej. Pacopampa" style="box-sizing:border-box; width:100%; height:52px; padding:0 18px; border-radius:10px; border:1px solid #E2E2E2; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"><span style="font-size:13px; color:#707070;">Opcional. Nos ayuda a ubicar tu caso.</span></label>
+        <label style="margin-top:24px; display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Mensaje *<textarea class="ct-in" name="mensaje" required="true" rows="5" placeholder="Escribe tu mensaje" aria-invalid="{{ errMensaje }}" style="box-sizing:border-box; width:100%; min-height:140px; padding:16px 18px; border-radius:10px; border:1px solid {{ bMensaje }}; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.5; color:#1C1C1B; resize:vertical;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"></textarea></label>
+        <div style="margin-top:24px; display:flex; flex-direction:column; gap:10px;"><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Adjuntar foto o documento</span><label onDragOver="{{ dragOver }}" onDrop="{{ drop }}" style="display:flex; align-items:center; gap:16px; padding:20px; border-radius:10px; border:1px dashed #B9B9B6; background:#FCFBF6; cursor:pointer; min-width:0;" style-hover="border-color:#32502A;"><input type="file" name="adjunto" accept=".jpg,.jpeg,.png,.pdf" onChange="{{ pickFile }}" style="position:absolute; width:1px; height:1px; opacity:0;"><span aria-hidden="true" style="flex:none; width:48px; height:48px; border-radius:10px; background:#F3F1E8; color:#32502A; display:flex; align-items:center; justify-content:center; font-size:20px;"><i class="ph ph-upload-simple"></i></span><span style="min-width:0; display:flex; flex-direction:column; gap:4px;"><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">{{ fileLabel }}</span><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; color:{{ fileHintColor }};">{{ fileHint }}</span></span></label></div>
+        <label style="margin-top:20px; display:flex; align-items:flex-start; gap:12px; font-family:Montserrat, sans-serif; font-weight:500; font-size:14px; line-height:1.55; color:{{ privColor }}; cursor:pointer;"><input name="privacidad" type="checkbox" required="true" style="flex:none; width:20px; height:20px; margin:1px 0 0; accent-color:#32502A;"><span>Acepto la <a href="Privacidad.dc.html" style="color:#32502A;">Política de privacidad</a> y el uso de mis datos para responder mi consulta.</span></label>
+        <sc-if value="{{ hasErrors }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin:16px 0 0; font-family:Montserrat, sans-serif; font-weight:600; font-size:14px; color:#B3261E;">Completa los campos obligatorios marcados.</p></sc-if>
+        <div style="margin-top:32px; display:flex;">
+          <button type="submit" style="display:flex; align-items:center; justify-content:space-between; gap:16px; width:{{ btnW }}; height:44px; padding:0 4px 0 18px; border:0; border-radius:8px; background:linear-gradient(100deg, #E5F01F 0%, #AACC4A 100%); color:#17331F; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; cursor:pointer;" style-hover="filter:brightness(1.05);" style-focus="outline:3px solid #17331F; outline-offset:2px;">Enviar al buzón<span aria-hidden="true" style="width:36px; height:36px; border-radius:6px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:15px;"><i class="ph-bold ph-arrow-right"></i></span></button>
+        </div>
+        <span style="margin-top:20px; font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; color:#707070;">* Campos obligatorios</span>
+      </sc-if>
+      </form>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop', sent: false, errs: {}, kind: 'Queja', file: null, fileErr: '' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => { const w = e.contentRect.width; const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop'; if (d !== this.state.auto) this.setState({ auto: d }); });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  setFile(f) {
+    if (!f) return;
+    const ok = /\.(jpe?g|png|pdf)$/i.test(f.name), big = f.size > 10 * 1024 * 1024;
+    this.setState(ok && !big ? { file: f, fileErr: '' } : { file: null, fileErr: big ? 'El archivo supera los 10 MB.' : 'Formato no permitido. Usa JPG, PNG o PDF.' });
+  }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile';
+    const E = this.state.errs, red = '#B3261E', base = '#E2E2E2', f = this.state.file;
+    return {
+      rootRef: this.rootRef, isMobile: m, btnW: m ? '100%' : '320px',
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padT: 0, padB: m ? 72 : 120,
+      formPad: m ? '28px 20px' : '48px', h2Form: m ? 22 : 32, formSubTop: m ? 16 : 24, fieldsTop: m ? 28 : 40, nameCols: m ? '1fr' : 'repeat(2, minmax(0,1fr))',
+      kinds: ['Queja', 'Reclamo', 'Sugerencia', 'Felicitación'].map(k => { const a = k === this.state.kind; return { label: k, active: a ? 'true' : 'false', bg: a ? '#32502A' : '#FFFFFF', fg: a ? '#FFFFFF' : '#1C1C1B', border: a ? '#32502A' : '#E2E2E2', pick: () => this.setState({ kind: k }) }; }),
+      kindLower: this.state.kind.toLowerCase(),
+      fileLabel: f ? f.name : 'Arrastra tu archivo aquí o selecciónalo',
+      fileHint: this.state.fileErr || (f ? (f.size / 1024 / 1024).toFixed(1) + ' MB · listo para enviar' : 'JPG, PNG o PDF · máximo 10 MB · opcional'),
+      fileHintColor: this.state.fileErr ? red : '#707070',
+      pickFile: e => this.setFile(e.target.files && e.target.files[0]),
+      dragOver: e => e.preventDefault(), drop: e => { e.preventDefault(); this.setFile(e.dataTransfer.files && e.dataTransfer.files[0]); },
+      sent: this.state.sent, notSent: !this.state.sent, hasErrors: Object.keys(E).length > 0,
+      errNombre: !!E.nombre, errCelular: !!E.celular, errMensaje: !!E.mensaje,
+      bNombre: E.nombre ? red : base, bCelular: E.celular ? red : base, bMensaje: E.mensaje ? red : base,
+      privColor: E.privacidad ? red : '#1C1C1B',
+      submit: e => { e.preventDefault(); const fm = e.currentTarget, errs = {}; ['nombre', 'celular', 'mensaje'].forEach(k => { if (!fm[k].value.trim()) errs[k] = true; }); if (!fm.privacidad.checked) errs.privacidad = true; this.setState({ errs, sent: Object.keys(errs).length === 0 }); },
+      reset: () => this.setState({ sent: false, errs: {}, file: null, fileErr: '' })
+    };
+  }
+}
+</script>
+</body>
+</html>

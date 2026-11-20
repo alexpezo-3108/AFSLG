@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fondo Social La Granja · Unidos por el desarrollo de Querocoto</title>
+<meta name="description" content="Invertimos los aportes de la actividad minera en proyectos que mejoran la vida de Querocoto.">
+<meta name="theme-color" content="#17331F">
+<link rel="icon" type="image/png" href="assets/isotipo-orquidea.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/fotos/home-hero.webp" fetchpriority="high">
+<style id="afslg-critical">html{background:#FDFCF8}html:not(.afslg-done) main{opacity:0;animation:afslgFail 0s 7s forwards}@keyframes afslgFail{to{opacity:1}}</style>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./site.js?v=14"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<style>html.lenis,html.lenis body{height:auto} .lenis.lenis-smooth{scroll-behavior:auto !important} .lenis.lenis-stopped{overflow:hidden} html{scrollbar-gutter:stable} body{margin:0;background:#E2E2E2;overflow-x:clip} a{color:#32502A} a:hover{color:#17331F}</style>
+</helmet>
+<div style="display:flex; justify-content:center; width:100%;">
+  <main style="width:{{ frameW }}; flex:none; zoom:{{ scale }}; background:#FDFCF8;">
+    <dc-import name="HeroHome" device="{{ device }}" height="{{ heroH }}" nav-layout="{{ navLayout }}" nav-logo="{{ navLogo }}" hint-size="100%,100vh"></dc-import>
+    <dc-import name="HomeQueEs" device="{{ device }}" hint-size="100%,784px"></dc-import>
+    <dc-import name="HomeNoticias" device="{{ device }}" hint-size="100%,1114px"></dc-import>
+    <dc-import name="HomeExplora" device="{{ device }}" hint-size="100%,980px"></dc-import>
+    <dc-import name="HomeMision" device="{{ device }}" hint-size="100%,988px"></dc-import>
+    <dc-import name="HomePilares" device="{{ device }}" hint-size="100%,888px"></dc-import>
+    <dc-import name="HomeInstagram" device="{{ device }}" hint-size="100%,811px"></dc-import>
+    <dc-import name="Footer" device="{{ device }}" hint-size="100%,804px"></dc-import>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;navLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dividido&quot;,&quot;agrupado&quot;],&quot;default&quot;:&quot;dividido&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;smoothScroll&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;navLogo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;blanco&quot;,&quot;color&quot;],&quot;default&quot;:&quot;blanco&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { vw: window.innerWidth };
+  componentDidMount() {
+    this.onR = () => this.setState({ vw: window.innerWidth }); window.addEventListener('resize', this.onR);
+    this.initLenis();
+  }
+  componentDidUpdate() { this.initLenis(); }
+  initLenis() {
+    const want = (this.props.smoothScroll ?? true) && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!want) { if (this.lenis) { this.lenis.destroy(); this.lenis = null; window.__lenis = null; cancelAnimationFrame(this.raf); } return; }
+    if (this.lenis) return;
+    if (!window.Lenis) { clearTimeout(this.t); this.t = setTimeout(() => this.initLenis(), 200); return; }
+    this.lenis = new window.Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 1 }); window.__lenis = this.lenis;
+    const loop = t => { this.lenis && this.lenis.raf(t); this.raf = requestAnimationFrame(loop); };
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); clearTimeout(this.t); cancelAnimationFrame(this.raf); this.lenis && this.lenis.destroy(); }
+  renderVals() {
+    const p = this.props;
+    const device = p.device ?? 'auto';
+    const base = { device, navLayout: p.navLayout ?? 'dividido', navLogo: p.navLogo ?? 'blanco' };
+    const F = { mobile: [390, 844], laptop: [1440, 857], desktop: [1920, 1000] }[device];
+    if (!F) return { ...base, frameW: '100%', heroH: undefined, scale: 1 };
+    return { ...base, frameW: F[0] + 'px', heroH: F[1], scale: Math.min(1, this.state.vw / F[0]) };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Página no encontrada · Fondo Social La Granja</title>
+<meta name="description" content="La página que buscas no existe.">
+<meta name="theme-color" content="#17331F">
+<link rel="icon" type="image/png" href="assets/isotipo-orquidea.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style id="afslg-critical">html{background:#FDFCF8}html:not(.afslg-done) main{opacity:0;animation:afslgFail 0s 7s forwards}@keyframes afslgFail{to{opacity:1}}</style>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./site.js?v=14"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>html{scrollbar-gutter:stable} body{margin:0;background:#E2E2E2;overflow-x:clip} a{color:#FFFFFF} a:hover{color:#ECC725}</style>
+</helmet>
+<div style="display:flex; justify-content:center; width:100%;">
+  <main ref="{{ rootRef }}" style="position:relative; width:{{ frameW }}; flex:none; zoom:{{ scale }}; min-height:{{ minH }}; display:flex; flex-direction:column; overflow:hidden; background:linear-gradient(150deg, #0E2214 0%, #133A22 38%, #3F5A26 68%, #8E8C1E 100%); isolation:isolate;">
+    <dc-import name="Patron" tone="dark" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+    <div aria-hidden="true" style="position:absolute; inset:0; z-index:-1; pointer-events:none; background:radial-gradient(ellipse 55% 50% at 50% 55%, rgba(14,34,20,0.55) 0%, rgba(14,34,20,0) 100%);"></div>
+    <img src="assets/ondas.svg" alt="" aria-hidden="true" style="position:absolute; right:0; bottom:0; width:{{ waveW }}px; height:auto; opacity:0.35; pointer-events:none;">
+    <img src="assets/hojas-superior.png" alt="" aria-hidden="true" style="position:absolute; top:{{ leafTopY }}px; right:0; width:{{ leafTopW }}px; height:auto; pointer-events:none;">
+    <img src="assets/hojas-inferior.png" alt="" aria-hidden="true" style="position:absolute; left:0; bottom:{{ leafBotY }}px; width:{{ leafBotW }}px; height:auto; pointer-events:none;">
+    <div style="position:relative; z-index:3;">
+      <dc-import name="Navbar" device="{{ navDevice }}" surface="imagen" layout="dividido" logo="blanco" open-calls="2" hint-size="100%,120px"></dc-import>
+    </div>
+    <section aria-labelledby="t404" style="position:relative; z-index:1; flex:1; box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+      <h1 id="t404" style="margin:0; display:flex; flex-direction:column; align-items:center; gap:{{ hGap }}px; font-family:Poppins, sans-serif; font-weight:700; color:#FFFFFF; letter-spacing:-0.02em;">
+        <span style="font-size:{{ big }}px; line-height:1;">404</span>
+        <span style="font-size:{{ h1 }}px; line-height:1.1; text-wrap:balance;">Página <span style="color:#ECC725;">no encontrada</span></span>
+      </h1>
+      <p style="margin:{{ pTop }}px 0 0; max-width:640px; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ pSize }}px; line-height:1.55; color:rgba(255,255,255,0.85); text-wrap:pretty;">Es posible que la página se haya movido o que el enlace esté mal escrito.</p>
+      <div style="margin-top:{{ btnTop }}px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
+        <dc-import name="Button" variant="primario-flecha" label="Ir al inicio" href="Home.dc.html" hint-size="160px,44px"></dc-import>
+        <dc-import name="Button" variant="secundario-oscuro" label="Ver noticias" href="Noticias.dc.html" hint-size="142px,44px"></dc-import>
+      </div>
+      <span style="margin-top:{{ eyeTop }}px; font-family:Montserrat, sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A;">Quizás buscabas</span>
+      <ul style="list-style:none; margin:20px 0 0; padding:0; display:flex; flex-wrap:wrap; justify-content:center; gap:10px; max-width:{{ chipsMax }};">
+        <sc-for list="{{ links }}" as="l" hint-placeholder-count="4">
+          <li><a href="{{ l.href }}" style="display:flex; align-items:center; gap:10px; min-height:44px; box-sizing:border-box; padding:0 20px; border-radius:999px; border:1px solid rgba(255,255,255,0.16); background:rgba(255,255,255,0.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#FFFFFF; text-decoration:none; transition:background .2s;" style-hover="background:rgba(255,255,255,0.16); color:#FFFFFF;">{{ l.label }}<i class="ph ph-arrow-up-right" aria-hidden="true" style="font-size:14px; color:#AACC4A;"></i></a></li>
+        </sc-for>
+      </ul>
+    </section>
+    <p style="position:relative; z-index:1; margin:0; padding:0 {{ mx }}px 24px; text-align:center; font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; color:rgba(255,255,255,0.85);">© 2026 Asociación Fondo Social La Granja</p>
+  <dc-import name="CookieBanner" style="position:absolute; width:0; height:0;" hint-size="0px,0px"></dc-import>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { vw: window.innerWidth, vh: window.innerHeight };
+  rootRef = React.createRef();
+  componentDidMount() { this.onR = () => this.setState({ vw: window.innerWidth, vh: window.innerHeight }); window.addEventListener('resize', this.onR); }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); }
+  renderVals() {
+    const device = this.props.device ?? 'auto';
+    const F = { mobile: 390, laptop: 1440, desktop: 1920 }[device];
+    const scale = F ? Math.min(1, this.state.vw / F) : 1;
+    const w = F || this.state.vw;
+    const dev = F ? device : (w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop');
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const fixedH = { mobile: 844, laptop: 900, desktop: 1080 }[device];
+    return {
+      rootRef: this.rootRef, navDevice: dev, frameW: F ? F + 'px' : '100%', scale,
+      minH: fixedH ? fixedH + 'px' : '100vh',
+      mx: m ? 20 : d ? 160 : 56, padT: m ? 24 : 40, padB: m ? 40 : 56,
+      big: m ? 64 : d ? 120 : 96, h1: m ? 32 : d ? 64 : 56, hGap: m ? 12 : 20,
+      pTop: m ? 20 : 24, pSize: m ? 16 : 18, btnTop: m ? 28 : 48, eyeTop: m ? 56 : 72,
+      chipsMax: m ? '340px' : 'none',
+      waveW: m ? 160 : d ? 640 : 520,
+      leafTopW: m ? 64 : d ? 320 : 240, leafTopY: m ? 70 : 90,
+      leafBotW: m ? 70 : d ? 220 : 170, leafBotY: m ? 0 : d ? 30 : 70,
+      links: [{ label: 'Convocatorias', href: 'Convocatorias.dc.html' }, { label: 'Proyectos', href: 'Proyectos.dc.html' }, { label: 'Documentos', href: 'Documentos.dc.html' }, { label: 'Contacto', href: 'Contacto.dc.html' }]
+    };
+  }
+}
+</script>
+</body>
+</html>

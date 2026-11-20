@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="que-hacemos" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate; overflow:hidden;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:0 {{ mx }}px;">
+    <div ref="{{ pxWrap }}" style="position:relative; width:100%; height:{{ imgH }}px; overflow:hidden; border-radius:{{ imgR }}px; isolation:isolate;"><img ref="{{ pxImg }}" src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; left:0; top:0; display:block; width:100%; height:100%; object-fit:cover; will-change:transform; transform:translate3d(0,0,0) scale(1.35); transform-origin:50% 50%;"></div>
+  </div>
+  <div style="position:relative; padding:{{ padT }}px {{ mx }}px {{ padB }}px;">
+    <span aria-hidden="true" style="position:absolute; left:-10%; top:10%; width:50%; height:80%; background:radial-gradient(closest-side, rgba(170,204,74,0.14), rgba(170,204,74,0)); pointer-events:none; z-index:-1;"></span>
+    <span aria-hidden="true" style="position:absolute; right:-5%; bottom:0; width:45%; height:70%; background:radial-gradient(closest-side, rgba(170,204,74,0.1), rgba(170,204,74,0)); pointer-events:none; z-index:-1;"></span>
+    <img src="assets/hojas-superior.png" alt="" aria-hidden="true" style="position:absolute; right:0; top:{{ leafTop }}px; width:{{ leafR }}px; pointer-events:none;">
+    <img src="assets/hojas-inferior.png" alt="" aria-hidden="true" style="position:absolute; left:0; bottom:{{ leafBot }}px; width:{{ leafL }}px; pointer-events:none;">
+    <div style="max-width:{{ textMax }}; margin:0 auto; display:flex; flex-direction:column; align-items:center; text-align:center;">
+      <img src="assets/isotipo-orquidea.png" alt="" aria-hidden="true" style="width:{{ icon }}px; height:auto; margin-bottom:{{ iconGap }}px;">
+      <h2 id="que-hacemos" style="margin:0 0 {{ h2Gap }}px; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F;">{{ titleStart }} <span style="color:#758434;">{{ titleHighlight }}</span></h2>
+      <div style="display:flex; flex-direction:column; gap:{{ pGap }}px;">
+        <sc-for list="{{ paragraphs }}" as="t" hint-placeholder-count="2">
+          <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ pSize }}px; line-height:1.68; color:#4D4D4A; text-wrap:pretty;">{{ t }}</p>
+        </sc-for>
+      </div>
+      <span style="margin-top:{{ legalTop }}px; font-family:Montserrat, sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">{{ legalLabel }}</span>
+      <ul aria-label="{{ legalLabel }}" style="list-style:none; margin:16px 0 0; padding:0; display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+        <sc-for list="{{ legal }}" as="l" hint-placeholder-count="4">
+          <li style="padding:8px 14px; border-radius:999px; background:#EEF0DC; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ chipSize }}px; color:#32502A;">{{ l }}</li>
+        </sc-for>
+      </ul>
+    </div>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;image&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;assets/fotos/nosotros-imagen-principal.webp&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;titleStart&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Qué&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;titleHighlight&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;hacemos&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;paragraphs&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string[]&quot;},&quot;legal&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef(); pxWrap = React.createRef(); pxImg = React.createRef();
+  startPx() {
+    if (this._px || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let cur = null;
+    const tick = () => {
+      const w = this.pxWrap.current, im = this.pxImg.current;
+      if (w && im) {
+        const r = w.getBoundingClientRect(), vh = window.innerHeight;
+        if (r.bottom > -100 && r.top < vh + 100) {
+          const p = Math.max(0, Math.min(1, (vh - r.top) / (vh * 0.85)));
+          cur = cur === null ? p : cur + (p - cur) * 0.1;
+          const e = 1 - Math.pow(1 - cur, 3);
+          const y = 0, sc = 1.35 - e * 0.31;
+          im.style.transform = 'translate3d(0,' + y.toFixed(2) + 'px,0) scale(' + sc.toFixed(4) + ')';
+        }
+      }
+      this._px = requestAnimationFrame(tick);
+    };
+    this._px = requestAnimationFrame(tick);
+  }
+  componentDidMount() {
+    this.startPx();
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); cancelAnimationFrame(this._px); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    return {
+      rootRef: this.rootRef, pxWrap: this.pxWrap, pxImg: this.pxImg,
+      image: p.image || 'assets/fotos/nosotros-imagen-principal.webp', imageAlt: p.imageAlt ?? 'Equipo del Fondo Social La Granja junto a autoridades y beneficiarios de Querocoto',
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], imgH: m ? 200 : (d ? 742 : 520), imgR: m ? 16 : 20,
+      padT: m ? 56 : (d ? 112 : 72), padB: m ? 80 : (d ? 180 : 120),
+      leafTop: m ? -10 : 24, leafR: m ? 90 : 170, leafBot: m ? 0 : (d ? 84 : 0), leafL: m ? 80 : 138,
+      textMax: m ? 'none' : (d ? '960px' : '800px'), icon: 30, iconGap: m ? 16 : 24,
+      h2: m ? 28 : (d ? 52 : 44), h2Gap: m ? 20 : 24, pGap: m ? 24 : 24, pSize: m ? 17 : 18,
+      legalTop: m ? 24 : 32, chipSize: m ? 14 : 14,
+      titleStart: p.titleStart ?? 'Qué', titleHighlight: p.titleHighlight ?? 'hacemos',
+      paragraphs: p.paragraphs ?? [
+        'Somos una asociación civil sin fines de lucro creada el 29 de diciembre de 2008, amparada por el Decreto Legislativo N.° 996 y su reglamento, aprobado por el D.S. N.° 082-2008-EF y modificado por el D.S. N.° 238-2016-EF.',
+        'Financiamos y ejecutamos proyectos sociales en beneficio de la población asentada en la zona de influencia del proyecto minero La Granja, operado por First Quantum, que se encuentra en fase de exploración.'
+      ],
+      legalLabel: p.legalLabel ?? 'Marco legal',
+      legal: p.legal ?? ['D.L. N.° 996', 'D.S. N.° 082-2008-EF', 'D.S. N.° 123-2010-EF', 'D.S. N.° 238-2016-EF']
+    };
+  }
+}
+</script>
+</body>
+</html>

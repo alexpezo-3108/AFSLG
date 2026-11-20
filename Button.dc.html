@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<a href="{{ href }}" onClick="{{ onPress }}" onMouseEnter="{{ onEnter }}" onMouseLeave="{{ onLeave }}" onFocus="{{ onEnter }}" onBlur="{{ onLeave }}" aria-disabled="{{ ariaDisabled }}" aria-busy="{{ loading }}" style="box-sizing:border-box; display:inline-flex; align-items:center; justify-content:{{ justify }}; gap:{{ gap }}px; width:{{ width }}; height:{{ height }}px; padding:{{ pad }}; border-radius:8px; background:{{ bg }}; color:{{ fg }}; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; text-decoration:none; white-space:nowrap; opacity:{{ opacity }}; pointer-events:{{ pointer }}; box-shadow:{{ shadow }}; transition:filter .2s, color .2s, box-shadow .3s cubic-bezier(.22,1,.36,1);" style-hover="filter:{{ hoverFilter }}; color:{{ hoverFg }};" style-focus="outline:3px solid #ECC725; outline-offset:3px;">
+  <sc-if value="{{ spinLeft }}" hint-placeholder-val="{{ false }}"><dc-import name="Spinner" size="sm" tone="{{ spinTone }}" label="{{ shownLabel }}" hint-size="16px,16px"></dc-import></sc-if>
+  <sc-if value="{{ showIcon }}" hint-placeholder-val="{{ false }}"><i class="ph-bold ph-{{ icon }}" aria-hidden="true" style="font-size:17px;"></i></sc-if>
+  <span>{{ shownLabel }}</span>
+  <sc-if value="{{ showBox }}" hint-placeholder-val="{{ true }}">
+    <span style="position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; width:36px; height:36px; flex:none; border-radius:5px; background:#FFFFFF; color:#17331F; font-size:15px;">
+      <sc-if value="{{ loading }}" hint-placeholder-val="{{ false }}"><dc-import name="Spinner" size="sm" tone="light" label="{{ shownLabel }}" hint-size="16px,16px"></dc-import></sc-if>
+      <sc-if value="{{ notLoading }}" hint-placeholder-val="{{ true }}"><i class="ph-bold ph-arrow-right" aria-hidden="true" style="position:absolute; transform:{{ arrOut }}; opacity:{{ arrOutOp }}; transition:transform .5s cubic-bezier(.22,1,.36,1), opacity .35s ease;"></i><i class="ph-bold ph-arrow-right" aria-hidden="true" style="position:absolute; transform:{{ arrIn }}; opacity:{{ arrInOp }}; transition:transform .5s cubic-bezier(.22,1,.36,1), opacity .35s ease;"></i></sc-if>
+    </span>
+  </sc-if>
+  <sc-if value="{{ isLink }}" hint-placeholder-val="{{ false }}"><span aria-hidden="true" style="position:relative; overflow:hidden; display:inline-flex; width:14px; height:14px; font-size:13px;"><i class="ph-bold ph-arrow-up-right" style="position:absolute; inset:0; transform:{{ lnkOut }}; transition:transform .5s cubic-bezier(.22,1,.36,1);"></i><i class="ph-bold ph-arrow-up-right" style="position:absolute; inset:0; transform:{{ lnkIn }}; transition:transform .5s cubic-bezier(.22,1,.36,1);"></i></span></sc-if>
+</a>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:320,&quot;height&quot;:120},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;primario-flecha&quot;,&quot;primario&quot;,&quot;secundario-claro&quot;,&quot;secundario-oscuro&quot;,&quot;link&quot;],&quot;default&quot;:&quot;primario-flecha&quot;,&quot;tsType&quot;:&quot;'primario-flecha'|'primario'|'secundario-claro'|'secundario-oscuro'|'link'&quot;},&quot;label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Conoce al Fondo&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;href&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;icon&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;size&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;md&quot;,&quot;lg&quot;],&quot;default&quot;:&quot;md&quot;,&quot;tsType&quot;:&quot;'md'|'lg'&quot;},&quot;fullWidth&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;shadow&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;disabled&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;loading&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;loadingLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { busy: false };
+  componentDidMount() { this._ps = e => { if (e.persisted) this.setState({ busy: false }); }; addEventListener('pageshow', this._ps); }
+  componentWillUnmount() { clearTimeout(this._bt); removeEventListener('pageshow', this._ps); }
+  renderVals() {
+    const p = this.props;
+    const b = v => v === true || v === 'true';
+    let v = p.variant ?? 'primario-flecha';
+    if (v === 'primary') v = (p.arrow === false || p.arrow === 'false') ? 'primario' : 'primario-flecha';
+    if (v === 'secondary') v = 'secundario-oscuro';
+    const full = b(p.fullWidth), disabled = b(p.disabled), extLoading = b(p.loading), loading = extLoading || !!(this.state && this.state.busy);
+    const LIME = 'linear-gradient(100deg, #DDEA2C 0%, #C4DC3A 45%, #AACC4A 100%)';
+    const V = {
+      'primario-flecha':   { bg: LIME, fg: '#17331F', pad: '0 4px 0 18px', sh: '0 2px 12px rgba(17,38,23,0.18)', hf: 'brightness(1.06)' },
+      'primario':          { bg: LIME, fg: '#17331F', pad: '0 22px', sh: '0 2px 12px rgba(17,38,23,0.18)', hf: 'brightness(1.06)' },
+      'secundario-claro':  { bg: 'linear-gradient(100deg, #32502A 0%, #17331F 100%)', fg: '#FFFFFF', pad: '0 22px', sh: '0 2px 12px rgba(17,38,23,0.18)', hf: 'brightness(1.2)' },
+      'secundario-oscuro': { bg: '#FFFFFF', fg: '#17331F', pad: '0 22px', sh: '0 2px 12px rgba(10,23,14,0.25)', hf: 'brightness(0.95)' },
+      'link':              { bg: 'transparent', fg: '#32502A', pad: '0', sh: 'none', hf: 'none', hfg: '#17331F' }
+    }[v] || {};
+    const arrowBox = v === 'primario-flecha';
+    const icon = p.icon || '';
+    const __o = {
+      href: disabled ? undefined : (p.href ?? '#'),
+      bg: V.bg, fg: V.fg, pad: V.pad, shadow: (this.state && this.state.hover && !disabled) ? 'GLOW' : ((p.shadow === true || p.shadow === 'true') ? V.sh : 'none'),
+      onEnter: () => this.setState({ hover: true }), onLeave: () => this.setState({ hover: false }),
+      hoverFilter: V.hf, hoverFg: V.hfg || V.fg,
+      justify: arrowBox ? 'space-between' : (full ? 'flex-start' : 'center'),
+      gap: v === 'link' ? 8 : (arrowBox ? 14 : 10),
+      width: full ? '100%' : 'auto',
+      height: p.size === 'lg' ? 48 : 44,
+      opacity: disabled ? 0.45 : 1,
+      pointer: disabled || loading ? 'none' : 'auto', vis: extLoading,
+      ariaDisabled: disabled ? 'true' : undefined,
+      loading: extLoading, notLoading: !extLoading,
+      showBox: arrowBox,
+      spinLeft: extLoading && !arrowBox && v !== 'link',
+      spinTone: v === 'secundario-claro' ? 'dark' : 'light',
+      showIcon: !!icon && !(extLoading && !arrowBox) && v !== 'link', icon,
+      isLink: v === 'link',
+      onPress: e => { if (p.onClick) p.onClick(e); const h = p.href ?? '#'; if (e.defaultPrevented || h === '#' || /^(mailto|tel|https?):/.test(h) && !/\.dc\.html/.test(h)) return; this.setState({ busy: true }); clearTimeout(this._bt); this._bt = setTimeout(() => this.setState({ busy: false }), 4000); },
+      glow: ({ 'primario-flecha': '0 0 0 1px rgba(232,240,60,0.75), 0 0 14px rgba(221,234,44,0.40), 0 8px 28px rgba(196,220,58,0.32)', 'primario': '0 0 0 1px rgba(232,240,60,0.75), 0 0 14px rgba(221,234,44,0.40), 0 8px 28px rgba(196,220,58,0.32)', 'secundario-claro': '0 0 0 1px rgba(50,80,42,0.30), 0 0 10px rgba(50,80,42,0.16), 0 6px 16px rgba(23,51,31,0.18)', 'secundario-oscuro': '0 0 0 1px rgba(255,255,255,0.65), 0 0 14px rgba(255,255,255,0.35), 0 8px 26px rgba(255,255,255,0.22)' })[v] || 'none',
+      arrOut: (this.state && this.state.hover) ? 'translateX(26px)' : 'none', arrOutOp: (this.state && this.state.hover) ? 0 : 1,
+      arrIn: (this.state && this.state.hover) ? 'none' : 'translateX(-26px)', arrInOp: (this.state && this.state.hover) ? 1 : 0,
+      lnkOut: (this.state && this.state.hover) ? 'translate(14px,-14px)' : 'none', lnkIn: (this.state && this.state.hover) ? 'none' : 'translate(-14px,14px)',
+      shownLabel: extLoading ? (p.loadingLabel ?? (arrowBox ? 'Enviando…' : 'Cargando…')) : (p.label ?? 'Conoce al Fondo')
+    };
+    if (__o.shadow === 'GLOW') __o.shadow = __o.glow;
+    return __o;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important} .ct-in::placeholder{color:#8A8A87}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-label="Canales de contacto" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:grid; grid-template-columns:{{ cols }}; grid-template-areas:{{ areas }}; grid-template-rows:{{ rows }}; column-gap:{{ colGap }}px; row-gap:{{ rowGap }}px; align-items:start;">
+    <h2 style="grid-area:t; margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ h2 }}px; line-height:1.2; color:#17331F;">Canales de atención</h2>
+    <div style="grid-area:w; padding:{{ waPad }}; border-radius:20px; background:linear-gradient(150deg, #2C4A2B 0%, #1E3B25 55%, #17331F 100%); display:flex; flex-direction:column;">
+      <span style="font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A;">WhatsApp</span>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" style="margin-top:12px; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ waNum }}px; line-height:1.1; color:#FFFFFF; text-decoration:none;">{{ waNumber }}</a>
+      <p style="margin:12px 0 0; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.55; color:rgba(255,255,255,0.85);">La forma más rápida de comunicarte con nosotros.</p>
+      <a href="{{ waHref }}" target="_blank" rel="noopener" style="margin-top:28px; display:flex; align-items:center; gap:10px; height:44px; padding:0 20px; border-radius:8px; background:linear-gradient(100deg, #E5F01F 0%, #AACC4A 100%); color:#17331F; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; text-decoration:none;" style-hover="filter:brightness(1.05);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph ph-whatsapp-logo" aria-hidden="true" style="font-size:18px;"></i>Escribir por WhatsApp</a>
+    </div>
+    <div style="grid-area:r; display:flex; flex-direction:column;">
+      <div style="padding:{{ mpPad }}; border-radius:20px; background:#FFFFFF; box-shadow:0 2px 10px rgba(17,38,23,0.05);">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span aria-hidden="true" style="flex:none; width:48px; height:48px; border-radius:10px; background:linear-gradient(150deg, #32502A 0%, #17331F 100%); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:22px;"><i class="ph ph-envelope-simple"></i></span>
+          <div style="display:flex; flex-direction:column; gap:2px; min-width:0;"><span style="font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">Mesa de partes virtual</span><a href="mailto:mesadepartes@afslg.org" style="font-family:Poppins, sans-serif; font-weight:600; font-size:{{ mpMail }}px; color:#17331F; text-decoration:none; overflow-wrap:anywhere;">mesadepartes@afslg.org</a></div>
+        </div>
+        <p style="margin:20px 0 0; font-family:Montserrat, sans-serif; font-weight:500; font-size:17px; line-height:1.55; color:#1C1C1B;">Para presentar solicitudes, cartas, expedientes y documentos de manera formal. Adjunta tus archivos en PDF.</p>
+        <p style="margin:16px 0 0; font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; line-height:1.55; color:#707070;">Recepción: lunes a viernes, 8:00 a. m. – 5:00 p. m. Lo recibido fuera de horario se registra el siguiente día hábil.</p>
+        <a href="mailto:mesadepartes@afslg.org" style="margin-top:24px; display:flex; align-items:center; justify-content:center; gap:10px; height:44px; border-radius:8px; background:linear-gradient(100deg, #32502A 0%, #17331F 100%); color:#FFFFFF; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; text-decoration:none;" style-hover="filter:brightness(1.15);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph ph-envelope-simple" aria-hidden="true" style="font-size:16px;"></i>Enviar documentos</a>
+      </div>
+      <dl style="margin:40px 0 0;">
+        <sc-for list="{{ info }}" as="i" hint-placeholder-count="3">
+          <div style="display:flex; flex-direction:column-reverse; gap:6px; padding:16px 0; border-bottom:{{ i.border }};">
+            <dd style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ infoSize }}px; line-height:1.4; color:#17331F;">{{ i.value }}</dd>
+            <dt style="font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#4D4D4A;">{{ i.label }}</dt>
+          </div>
+        </sc-for>
+      </dl>
+      <span style="margin-top:32px; font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#4D4D4A;">Otros accesos</span>
+      <div style="margin-top:14px; display:flex; flex-direction:column; gap:12px;">
+        <sc-for list="{{ links }}" as="l" hint-placeholder-count="2">
+          <a href="{{ l.href }}" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:16px; padding:12px 16px 12px 12px; border-radius:16px; background:#FFFFFF; box-shadow:0 2px 10px rgba(17,38,23,0.05); text-decoration:none;" style-hover="box-shadow:0 6px 18px rgba(17,38,23,0.1);" style-focus="outline:3px solid #ECC725; outline-offset:2px;">
+            <img src="{{ l.logo }}" alt="" style="flex:none; width:64px; height:64px; border-radius:10px; object-fit:contain; background:#F7F7F6;">
+            <span style="flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;"><span style="font-family:Poppins, sans-serif; font-weight:600; font-size:17px; color:#17331F;">{{ l.name }}</span><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:14px; color:#707070;">{{ l.desc }}</span></span>
+            <span aria-hidden="true" style="flex:none; width:40px; height:40px; border-radius:50%; background:#17331F; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:15px;"><i class="ph-bold ph-arrow-up-right"></i></span>
+          </a>
+        </sc-for>
+      </div>
+      <span style="margin-top:32px; font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#4D4D4A;">Síguenos</span>
+      <div style="margin-top:14px; display:flex; gap:8px;">
+        <sc-for list="{{ socials }}" as="s" hint-placeholder-count="3">
+          <a href="{{ s.href }}" target="_blank" rel="noopener" aria-label="{{ s.label }}" style="width:44px; height:44px; border-radius:50%; background:{{ s.bg }}; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:20px;" style-hover="filter:brightness(1.1);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph-fill ph-{{ s.icon }}" aria-hidden="true"></i></a>
+        </sc-for>
+      </div>
+    </div>
+    <form onSubmit="{{ submit }}" noValidate="true" aria-labelledby="form-titulo" style="grid-area:f; box-sizing:border-box; padding:{{ formPad }}; border-radius:24px; background:#FFFFFF; box-shadow:0 2px 14px rgba(17,38,23,0.06); display:flex; flex-direction:column;">
+      <h2 id="form-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ h2Form }}px; line-height:1.2; color:#17331F;">Envíanos un mensaje</h2>
+      <p style="margin:{{ formSubTop }}px 0 0; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.55; color:#1C1C1B;">Te responderemos en un plazo de 2 días hábiles.</p>
+      <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="margin-top:40px; display:flex; flex-direction:column; align-items:flex-start; gap:12px; padding:28px; border-radius:16px; background:#EEF0DC;">
+          <i class="ph-fill ph-check-circle" aria-hidden="true" style="font-size:36px; color:#32502A;"></i>
+          <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:20px; color:#17331F;">¡Gracias, recibimos tu mensaje!</span>
+          <span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; line-height:1.55; color:#4D4D4A;">Te responderemos en un plazo de 2 días hábiles.</span>
+          <button type="button" onClick="{{ reset }}" style="margin-top:8px; height:44px; padding:0 18px; border-radius:8px; border:1px solid #32502A; background:transparent; color:#17331F; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; text-transform:uppercase; cursor:pointer;">Enviar otro mensaje</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-top:{{ fieldsTop }}px; display:grid; grid-template-columns:{{ nameCols }}; gap:16px;">
+          <label style="display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Nombres y apellidos *<input class="ct-in" name="nombre" required="true" autoComplete="name" placeholder="Ej. María Pérez" aria-invalid="{{ errNombre }}" style="box-sizing:border-box; width:100%; height:52px; padding:0 18px; border-radius:10px; border:1px solid {{ bNombre }}; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"></label>
+          <label style="display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Celular *<input class="ct-in" name="celular" type="tel" required="true" autoComplete="tel" inputMode="tel" placeholder="Ej. 987 654 321" aria-invalid="{{ errCelular }}" style="box-sizing:border-box; width:100%; height:52px; padding:0 18px; border-radius:10px; border:1px solid {{ bCelular }}; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"></label>
+        </div>
+        <label style="margin-top:24px; display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Correo electrónico<input class="ct-in" name="correo" type="email" autoComplete="email" placeholder="Ej. nombre@correo.com" style="box-sizing:border-box; width:100%; height:52px; padding:0 18px; border-radius:10px; border:1px solid #E2E2E2; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"><span style="font-size:13px; color:#707070;">Opcional. Si no tienes correo, te responderemos por WhatsApp.</span></label>
+        <label style="margin-top:24px; position:relative; display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Asunto *
+          <span style="position:relative; display:flex; align-items:center;">
+            <select name="asunto" required="true" defaultValue="" aria-invalid="{{ errAsunto }}" style="appearance:none; -webkit-appearance:none; box-sizing:border-box; width:100%; height:52px; padding:0 48px 0 18px; border-radius:10px; border:1px solid {{ bAsunto }}; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#1C1C1B; cursor:pointer;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">
+              <option value="" disabled="true">Selecciona un asunto</option>
+              <sc-for list="{{ subjects }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+            </select>
+            <i class="ph ph-caret-down" aria-hidden="true" style="position:absolute; right:18px; font-size:16px; pointer-events:none;"></i>
+          </span>
+        </label>
+        <label style="margin-top:24px; display:flex; flex-direction:column; gap:10px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; color:#1C1C1B;">Mensaje *<textarea class="ct-in" name="mensaje" required="true" rows="5" placeholder="Escribe tu mensaje" aria-invalid="{{ errMensaje }}" style="box-sizing:border-box; width:100%; min-height:140px; padding:16px 18px; border-radius:10px; border:1px solid {{ bMensaje }}; background:#F7F7F6; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.5; color:#1C1C1B; resize:vertical;" style-focus="outline:3px solid #ECC725; outline-offset:1px; background:#FFFFFF;"></textarea></label>
+        <label style="margin-top:20px; display:flex; align-items:flex-start; gap:12px; font-family:Montserrat, sans-serif; font-weight:500; font-size:14px; line-height:1.55; color:{{ privColor }}; cursor:pointer;"><input name="privacidad" type="checkbox" required="true" style="flex:none; width:20px; height:20px; margin:1px 0 0; accent-color:#32502A;"><span>Acepto la <a href="Privacidad.dc.html" style="color:#32502A;">Política de privacidad</a> y el uso de mis datos para responder mi consulta.</span></label>
+        <sc-if value="{{ hasErrors }}" hint-placeholder-val="{{ false }}"><p role="alert" style="margin:16px 0 0; font-family:Montserrat, sans-serif; font-weight:600; font-size:14px; color:#B3261E;">Completa los campos obligatorios marcados.</p></sc-if>
+        <div style="margin-top:32px; display:flex;">
+          <button type="submit" style="display:flex; align-items:center; justify-content:space-between; gap:16px; width:{{ btnW }}; height:44px; padding:0 4px 0 18px; border:0; border-radius:8px; background:linear-gradient(100deg, #E5F01F 0%, #AACC4A 100%); color:#17331F; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; cursor:pointer;" style-hover="filter:brightness(1.05);" style-focus="outline:3px solid #17331F; outline-offset:2px;">Enviar mensaje<span aria-hidden="true" style="width:36px; height:36px; border-radius:6px; background:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:15px;"><i class="ph-bold ph-arrow-right"></i></span></button>
+        </div>
+        <span style="margin-top:20px; font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; color:#707070;">* Campos obligatorios</span>
+      </sc-if>
+      <div style="margin-top:24px; display:flex; align-items:flex-start; gap:12px; padding:16px 20px; border-radius:12px; background:#F6F3EA; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; line-height:1.55; color:#1C1C1B;"><i class="ph-fill ph-info" aria-hidden="true" style="flex:none; font-size:18px; color:#32502A; margin-top:2px;"></i><span>¿Tienes una queja o sugerencia? <a href="Buzon.dc.html" style="color:#32502A;">Usa nuestro buzón</a></span></div>
+    </form>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop', sent: false, errs: {} };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto || w !== this.state.w) this.setState({ auto: d, w });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const stack = m || (isAuto && (this.state.w || window.innerWidth) < 1024);
+    const E = this.state.errs, red = '#B3261E', base = '#E2E2E2';
+    const info = [
+      { label: 'Correo de consultas', value: 'info@afslg.org' },
+      { label: 'Dirección', value: 'Calle Comercio N.° 365, Querocoto, Chota – Cajamarca' },
+      { label: 'Horario de atención', value: 'Lunes a viernes, 8:00 a. m. – 5:00 p. m.' }
+    ].map((x, i, a) => ({ ...x, border: i === a.length - 1 ? 'none' : '1px solid #E2E2E2' }));
+    return {
+      rootRef: this.rootRef, isMobile: m, info, formPos: stack ? 'relative' : 'sticky', btnW: m ? '100%' : '320px',
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padT: m ? 24 : 56, padB: m ? 72 : 120,
+      cols: stack ? '1fr' : (d ? 'minmax(0, 578fr) minmax(0, 966fr)' : 'minmax(0, 480fr) minmax(0, 792fr)'),
+      areas: stack ? '"w" "f" "t" "r"' : '"t f" "w f" "r f"', rows: stack ? 'auto' : 'auto auto 1fr',
+      colGap: d ? 56 : 56, rowGap: m ? 32 : 24,
+      h2: m ? 26 : 36, waPad: m ? '24px' : '36px 32px 32px', waNum: m ? 24 : 36, mpPad: m ? '24px' : '32px', mpMail: m ? 19 : 22, infoSize: m ? 16 : 18,
+      formPad: m ? '28px 20px' : '48px', h2Form: m ? 24 : 36, formSubTop: m ? 16 : 28, fieldsTop: m ? 32 : 48, nameCols: m ? '1fr' : 'repeat(2, minmax(0,1fr))',
+      waNumber: '925 469 374', waHref: 'https://wa.me/51925469374',
+      links: [
+        { name: 'MINEM', desc: 'Ministerio de Energía y Minas', logo: 'assets/contacto/minem.png', href: 'https://www.gob.pe/minem' },
+        { name: 'SUNAT', desc: 'Consulta nuestro RUC', logo: 'assets/contacto/sunat.png', href: 'https://e-consultaruc.sunat.gob.pe' }
+      ],
+      socials: [
+        { label: 'Facebook', icon: 'facebook-logo', bg: '#1877F2', href: 'https://www.facebook.com/p/Fondo-Social-La-Granja-61586837956879/' },
+        { label: 'Instagram', icon: 'instagram-logo', bg: 'linear-gradient(45deg, #F9CE34 0%, #EE2A7B 50%, #6228D7 100%)', href: 'https://www.instagram.com/fs.lagranja/' },
+        { label: 'LinkedIn', icon: 'linkedin-logo', bg: '#0A66C2', href: 'https://www.linkedin.com/company/asociaci%C3%B3n-fondo-social-la-granja' },
+        { label: 'YouTube', icon: 'youtube-logo', bg: '#FF0000', href: 'https://www.youtube.com/channel/UCDYrOUOeRuhTE19QnYAQPaA' }
+      ],
+      subjects: ['Consulta general', 'Convocatorias', 'Proyectos', 'Documentos', 'Reclamo o sugerencia', 'Otro'],
+      sent: this.state.sent, notSent: !this.state.sent, hasErrors: Object.keys(E).length > 0,
+      errNombre: !!E.nombre, errCelular: !!E.celular, errAsunto: !!E.asunto, errMensaje: !!E.mensaje,
+      bNombre: E.nombre ? red : base, bCelular: E.celular ? red : base, bAsunto: E.asunto ? red : base, bMensaje: E.mensaje ? red : base,
+      privColor: E.privacidad ? red : '#1C1C1B',
+      submit: e => {
+        e.preventDefault();
+        const f = e.currentTarget, errs = {};
+        ['nombre', 'celular', 'asunto', 'mensaje'].forEach(k => { if (!f[k].value.trim()) errs[k] = true; });
+        if (!f.privacidad.checked) errs.privacidad = true;
+        this.setState({ errs, sent: Object.keys(errs).length === 0 });
+      },
+      reset: () => this.setState({ sent: false, errs: {} })
+    };
+  }
+}
+</script>
+</body>
+</html>

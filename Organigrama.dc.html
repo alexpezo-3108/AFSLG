@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>a:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="org-titulo" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate; overflow:hidden;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <img src="assets/isotipo-orquidea.png" alt="" aria-hidden="true" style="position:absolute; left:{{ orqL }}; top:{{ orqT }}px; width:{{ orqW }}px; opacity:0.16; z-index:-1; pointer-events:none;">
+  <div style="box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; align-items:{{ align }};">
+    <h2 id="org-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F; text-align:{{ tAlign }};">{{ titleStart }} <span style="color:#758434;">{{ titleHighlight }}</span></h2>
+    <p style="margin:{{ subTop }}px 0 0; max-width:780px; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ subSize }}px; line-height:1.6; color:#4D4D4A; text-align:{{ tAlign }}; text-wrap:pretty;">{{ subtitle }}</p>
+    <sc-if value="{{ isTree }}" hint-placeholder-val="{{ true }}">
+      <div role="list" aria-label="Organigrama" style="width:100%; max-width:1328px; margin-top:72px; display:flex; flex-direction:column;">
+        <sc-for list="{{ treeRows }}" as="r" hint-placeholder-count="3">
+          <div style="display:grid; grid-template-columns:minmax(0,1fr) 320px minmax(0,1fr); align-items:center;">
+            <span></span>
+            <div role="listitem" style="display:flex; align-items:center; gap:14px; min-height:100px; box-sizing:border-box; padding:16px; border-radius:16px; background:{{ r.c.bg }}; box-shadow:0 2px 10px rgba(17,38,23,0.06);">
+              <span aria-hidden="true" style="flex:none; width:44px; height:44px; border-radius:10px; background:{{ r.c.iconBg }}; color:{{ r.c.iconFg }}; display:flex; align-items:center; justify-content:center; font-size:20px;"><i class="ph-fill ph-{{ r.c.icon }}"></i></span>
+              <div style="display:flex; flex-direction:column; gap:4px; min-width:0;"><span style="font-family:Poppins, sans-serif; font-weight:600; font-size:18px; line-height:1.3; color:{{ r.c.fg }};">{{ r.c.name }}</span><sc-if value="{{ r.c.hasPerson }}" hint-placeholder-val="{{ false }}"><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; line-height:1.5; color:{{ r.c.sub }};">{{ r.c.person }}</span></sc-if></div>
+            </div>
+            <sc-if value="{{ r.hasSide }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; align-items:center;">
+                <span aria-hidden="true" style="flex:none; width:120px; border-top:1px {{ r.lineStyle }} #9AA597;"></span>
+                <div role="listitem" style="flex:none; width:300px; display:flex; align-items:center; gap:14px; min-height:100px; box-sizing:border-box; padding:16px; border-radius:16px; background:#FFFFFF; box-shadow:0 2px 10px rgba(17,38,23,0.06);">
+                  <span aria-hidden="true" style="flex:none; width:44px; height:44px; border-radius:10px; background:#EEF0DC; color:#32502A; display:flex; align-items:center; justify-content:center; font-size:20px;"><i class="ph-fill ph-{{ r.s.icon }}"></i></span>
+                  <div style="display:flex; flex-direction:column; gap:4px; min-width:0;"><span style="font-family:Poppins, sans-serif; font-weight:600; font-size:18px; line-height:1.3; color:#17331F;">{{ r.s.name }}</span><sc-if value="{{ r.s.hasPerson }}" hint-placeholder-val="{{ false }}"><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; line-height:1.5; color:#707070;">{{ r.s.person }}</span></sc-if></div>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+          <sc-if value="{{ r.hasDown }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="align-self:center; width:1px; height:48px; background:#9AA597;"></span></sc-if>
+        </sc-for>
+        <span aria-hidden="true" style="align-self:center; width:1px; height:56px; background:#9AA597;"></span>
+        <span aria-hidden="true" style="margin:0 12.5%; height:28px; border:1px solid #9AA597; border-bottom:0;"></span>
+        <div style="display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:16px; margin-top:0;">
+          <sc-for list="{{ areas }}" as="a" hint-placeholder-count="4">
+            <div role="listitem" style="position:relative; display:flex; align-items:center; gap:14px; min-height:100px; box-sizing:border-box; padding:16px; border-radius:16px; background:#FFFFFF; box-shadow:0 2px 10px rgba(17,38,23,0.06);">
+              <span aria-hidden="true" style="flex:none; width:44px; height:44px; border-radius:10px; background:#EEF0DC; color:#32502A; display:flex; align-items:center; justify-content:center; font-size:20px;"><i class="ph-fill ph-{{ a.icon }}"></i></span>
+              <div style="display:flex; flex-direction:column; gap:4px; min-width:0;"><span style="font-family:Poppins, sans-serif; font-weight:600; font-size:18px; line-height:1.3; color:#17331F;">{{ a.name }}</span><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; line-height:1.5; color:#707070;">{{ a.person }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+      <div style="width:100%; display:flex; flex-direction:column; margin-top:24px;">
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+          <section aria-labelledby="{{ g.id }}" style="display:flex; flex-direction:column; gap:12px; padding:32px 0; border-top:{{ g.border }};">
+            <div style="display:flex; flex-direction:column; gap:4px; margin-bottom:4px;"><h3 id="{{ g.id }}" style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:20px; color:#17331F;">{{ g.title }}</h3><p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:14px; line-height:1.5; color:#4D4D4A;">{{ g.desc }}</p></div>
+            <sc-for list="{{ g.items }}" as="c" hint-placeholder-count="3">
+              <div style="display:flex; align-items:center; gap:14px; padding:16px; border-radius:16px; background:{{ c.bg }}; box-shadow:0 2px 10px rgba(17,38,23,0.06);">
+                <span aria-hidden="true" style="flex:none; width:44px; height:44px; border-radius:10px; background:{{ c.iconBg }}; color:{{ c.iconFg }}; display:flex; align-items:center; justify-content:center; font-size:20px;"><i class="ph-fill ph-{{ c.icon }}"></i></span>
+                <div style="display:flex; flex-direction:column; align-items:flex-start; gap:4px; min-width:0;">
+                  <sc-if value="{{ c.hasTag }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 8px; border-radius:6px; background:{{ c.tagBg }}; color:{{ c.tagFg }}; font-family:Montserrat, sans-serif; font-weight:700; font-size:12px;">{{ c.tag }}</span></sc-if>
+                  <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:16px; line-height:1.3; color:{{ c.fg }};">{{ c.name }}</span>
+                  <sc-if value="{{ c.hasPerson }}" hint-placeholder-val="{{ false }}"><span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; line-height:1.5; color:{{ c.sub }};">{{ c.person }}</span></sc-if>
+                </div>
+              </div>
+            </sc-for>
+          </section>
+        </sc-for>
+      </div>
+    </sc-if>
+    <a href="{{ pdfHref }}" download="" style="margin-top:{{ btnTop }}px; align-self:{{ btnAlign }}; display:flex; align-items:center; justify-content:center; gap:10px; height:44px; padding:0 22px; border-radius:8px; background:linear-gradient(100deg, #32502A 0%, #17331F 100%); color:#FFFFFF; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; text-decoration:none;" style-hover="filter:brightness(1.15);" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph-bold ph-download-simple" aria-hidden="true" style="font-size:16px;"></i>{{ pdfLabel }}</a>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;subtitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Una estructura clara y transparente, desde la Asamblea General hasta los equipos que trabajan en campo.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;pdfHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;assets/docs/comunicado-cd-26052025.pdf&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto || w !== this.state.w) this.setState({ auto: d, w });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const list = m || (isAuto && (this.state.w || window.innerWidth) < 1360);
+    const dark = { bg: 'linear-gradient(150deg, #2C4A2B 0%, #1E3B25 55%, #17331F 100%)', fg: '#FFFFFF', sub: 'rgba(255,255,255,0.75)', iconBg: 'rgba(255,255,255,0.12)', iconFg: '#AACC4A' };
+    const light = { bg: '#FFFFFF', fg: '#17331F', sub: '#707070', iconBg: '#EEF0DC', iconFg: '#32502A' };
+    const n = (name, icon, person, tone, tag, tagTone) => ({ name, icon, person: person || '', hasPerson: !!person, ...(tone === 'dark' ? dark : light), tag: tag || '', hasTag: !!tag, tagBg: tagTone === 'dark' ? 'rgba(255,255,255,0.12)' : '#EEF0DC', tagFg: tagTone === 'dark' ? '#AACC4A' : '#32502A' });
+    const AG = n('Asamblea General', 'users-three', '', 'dark', 'Máxima autoridad', 'dark');
+    const CD = n('Consejo Directivo', 'gavel', '', 'light');
+    const CV = n('Consejo de Vigilancia', 'shield-check', '', 'light', 'Control');
+    const GG = n('Gerente General', 'briefcase', 'Roberto Mario Cárdenas Bazán', 'dark');
+    const EL = n('Especialista Legal', 'scales', 'Cintya Elizabeth Sánchez Rondo', 'light', 'Apoyo a la Gerencia');
+    const areas = [
+      n('Especialista Contable Financiero', 'coins', 'José Gilmer Pérez Zamora', 'light'),
+      n('Especialista en Logística y Contrataciones', 'truck', 'Jorge Luis Castillo Lluncor', 'light'),
+      n('Recursos Humanos y SSOMA', 'hard-hat', 'Cintya Elizabeth Sánchez Rondo (e)', 'light'),
+      n('Relacionista Comunitario', 'handshake', 'Ana Lucía Flores López', 'light')
+    ];
+    return {
+      rootRef: this.rootRef, isTree: !list, isList: list, areas,
+      treeRows: [
+        { c: AG, hasSide: false, hasDown: true },
+        { c: CD, hasSide: true, s: CV, lineStyle: 'dashed', hasDown: true },
+        { c: GG, hasSide: true, s: EL, lineStyle: 'solid', hasDown: false }
+      ],
+      groups: [
+        { id: 'org-g0', title: 'Órganos de gobierno', desc: 'Toman las decisiones principales y supervisan la gestión.', items: [AG, CD, CV], border: 'none' },
+        { id: 'org-g1', title: 'Dirección', desc: 'Gestiona el día a día del Fondo.', items: [GG, EL], border: '1px solid #E2E2E2' },
+        { id: 'org-g2', title: 'Áreas', desc: 'Equipo que ejecuta los proyectos y procesos.', items: areas, border: '1px solid #E2E2E2' }
+      ],
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padT: m ? 48 : 120, padB: m ? 72 : 120,
+      align: m ? 'stretch' : 'center', tAlign: m ? 'left' : 'center',
+      h2: m ? 28 : (d ? 52 : 44), subTop: m ? 16 : 20, subSize: m ? 16 : 16,
+      orqL: m ? '62%' : (d ? '21%' : '8%'), orqT: m ? 70 : 330, orqW: m ? 110 : 220,
+      btnTop: list ? 16 : 88, btnAlign: m ? 'stretch' : 'center',
+      titleStart: p.titleStart ?? 'Cómo nos', titleHighlight: p.titleHighlight ?? 'organizamos',
+      subtitle: p.subtitle ?? 'Una estructura clara y transparente, desde la Asamblea General hasta los equipos que trabajan en campo.',
+      pdfHref: p.pdfHref ?? 'assets/docs/comunicado-cd-26052025.pdf', pdfLabel: p.pdfLabel ?? 'Descargar organigrama (PDF)'
+    };
+  }
+}
+</script>
+</body>
+</html>

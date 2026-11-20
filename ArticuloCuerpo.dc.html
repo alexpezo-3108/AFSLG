@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</helmet>
+<section ref="{{ rootRef }}" aria-label="Contenido de la noticia" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:0 {{ mx }}px {{ padB }}px;">
+    <sc-if value="{{ showHero }}" hint-placeholder-val="{{ true }}"><figure style="margin:0; position:relative; height:{{ heroH }}px; border-radius:{{ heroR }}px; overflow:hidden; background:#E2E2E2; display:flex; align-items:center; justify-content:center;">
+      <sc-if value="{{ hasHero }}" hint-placeholder-val="{{ false }}"><img src="{{ hero }}" alt="{{ heroAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if>
+      <sc-if value="{{ noHero }}" hint-placeholder-val="{{ true }}"><span style="display:flex; flex-direction:column; align-items:center; gap:8px; font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; color:#8A8A87;"><i class="ph ph-image" aria-hidden="true" style="font-size:44px; color:#A9A9A6;"></i>Imagen principal de la noticia</span></sc-if>
+    </figure></sc-if>
+    <article style="max-width:800px; margin:{{ bodyTop }}px auto 0; display:flex; flex-direction:column;">
+      <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="6">
+        <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ true }}"><p style="margin:0 0 24px; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ pSize }}px; line-height:1.72; color:#4D4D4A; text-wrap:pretty;">{{ b.text }}</p></sc-if>
+        <sc-if value="{{ b.isH }}" hint-placeholder-val="{{ false }}"><h2 style="margin:{{ hTop }}px 0 20px; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ hSize }}px; line-height:1.25; color:#32502A;">{{ b.text }}</h2></sc-if>
+        <sc-if value="{{ b.isImg }}" hint-placeholder-val="{{ false }}">
+          <figure style="margin:0 0 28px; display:flex; flex-direction:column; gap:12px;">
+            <div style="position:relative; aspect-ratio:{{ imgRatio }}; border-radius:16px; overflow:hidden; background:#E2E2E2; display:flex; align-items:center; justify-content:center;">
+              <sc-if value="{{ b.hasSrc }}" hint-placeholder-val="{{ false }}"><img src="{{ b.src }}" alt="{{ b.alt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if>
+              <sc-if value="{{ b.noSrc }}" hint-placeholder-val="{{ true }}"><i class="ph ph-image" aria-hidden="true" style="font-size:36px; color:#A9A9A6;"></i></sc-if>
+            </div>
+            <figcaption style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; line-height:1.5; color:#707070;">{{ b.caption }}</figcaption>
+          </figure>
+        </sc-if>
+        <sc-if value="{{ b.isDato }}" hint-placeholder-val="{{ false }}">
+          <aside style="margin:0 0 24px; display:flex; flex-direction:{{ datoDir }}; align-items:{{ datoAlign }}; gap:{{ datoGap }}px; padding:{{ datoPad }}; border-radius:20px; background:linear-gradient(110deg, #ECC725 0%, #F0D255 50%, #F4DE7A 100%);">
+            <span style="flex:none; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ datoNum }}px; line-height:1; letter-spacing:-0.02em; color:#32502A;">{{ b.value }}</span>
+            <span aria-hidden="true" style="flex:none; width:{{ sepW }}; height:{{ sepH }}; background:rgba(50,80,42,0.3);"></span>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <span style="font-family:Montserrat, sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#32502A;">{{ b.label }}</span>
+              <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:{{ datoText }}px; line-height:1.3; color:#32502A; text-wrap:pretty;">{{ b.text }}</span>
+            </div>
+          </aside>
+        </sc-if>
+        <sc-if value="{{ b.isGal }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:8px; margin:0 0 40px;">
+            <sc-for list="{{ b.photos }}" as="g" hint-placeholder-count="3">
+              <a href="{{ g.href }}" aria-label="{{ g.label }}" style="position:relative; aspect-ratio:{{ galRatio }}; border-radius:14px; overflow:hidden; background:#E2E2E2; display:flex; align-items:center; justify-content:center;" style-hover="filter:brightness(0.92);" style-focus="outline:3px solid #ECC725; outline-offset:2px;">
+                <sc-if value="{{ g.hasSrc }}" hint-placeholder-val="{{ false }}"><img src="{{ g.src }}" alt="{{ g.alt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if>
+                <sc-if value="{{ g.noSrc }}" hint-placeholder-val="{{ true }}"><i class="ph ph-image" aria-hidden="true" style="font-size:26px; color:#A9A9A6;"></i></sc-if>
+              </a>
+            </sc-for>
+          </div>
+        </sc-if>
+      </sc-for>
+      <div style="margin-top:24px;">
+        <dc-import name="Compartir" size="{{ shareSize }}" hint-size="100%,92px"></dc-import>
+      </div>
+    </article>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;hero&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;heroAlt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;blocks&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;({type:'p'|'h2',text}|{type:'img',src,alt,caption}|{type:'dato',value,label,text}|{type:'gallery',photos})[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const blocks = (p.blocks ?? [
+      { type: 'p', text: 'Durante la última semana de octubre, el equipo del Fondo Social La Granja recorrió las instituciones educativas de los centros poblados de nuestra zona de influencia para entregar los kits escolares a estudiantes de inicial, primaria y secundaria.' },
+      { type: 'p', text: 'La entrega se coordinó con los directores y las asociaciones de padres de familia de cada colegio, quienes acompañaron la jornada y verificaron la recepción de los materiales.' },
+      { type: 'h2', text: '¿Qué incluye cada kit?' },
+      { type: 'p', text: 'Cada kit contiene cuadernos, lápices, colores, reglas y una mochila. Los materiales se seleccionaron según el nivel educativo de cada estudiante, siguiendo las listas de útiles entregadas por las instituciones.' },
+      { type: 'img', caption: 'Estudiantes y docentes durante la jornada en la I.E. de La Granja.' },
+      { type: 'dato', value: '+600', label: 'Dato clave', text: 'estudiantes de inicial, primaria y secundaria recibieron su kit escolar este año.' },
+      { type: 'h2', text: 'Próximos pasos' },
+      { type: 'p', text: 'En las próximas semanas continuaremos con la entrega en los colegios que aún no han recibido sus materiales. Si tienes alguna consulta, puedes escribirnos por WhatsApp o acercarte a nuestra oficina en Querocoto.' },
+      { type: 'h2', text: 'Galería de fotos' },
+      { type: 'gallery', photos: [{}, {}, {}] }
+    ]).map(b => ({
+      text: '', caption: '', src: '', alt: '', value: '', label: '', ...b,
+      isP: b.type === 'p', isH: b.type === 'h2', isImg: b.type === 'img', isDato: b.type === 'dato', isGal: b.type === 'gallery',
+      hasSrc: !!b.src, noSrc: !b.src,
+      photos: (b.photos || []).map((g, i) => ({ src: '', alt: '', href: g.src || '#', ...g, hasSrc: !!g.src, noSrc: !g.src, label: 'Ver foto ' + (i + 1) }))
+    }));
+    const hero = p.hero || '';
+    return {
+      rootRef: this.rootRef, blocks,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padB: m ? 56 : 96,
+      heroH: m ? 156 : (d ? 886 : 670), heroR: m ? 12 : 20, hasHero: !!hero, noHero: !hero, hero, heroAlt: p.heroAlt ?? '',
+      showHero: !(p.showHero === false || p.showHero === 'false'), bodyTop: !(p.showHero === false || p.showHero === 'false') ? (m ? 40 : 80) : (m ? 16 : 32), pSize: m ? 17 : 17, hSize: m ? 20 : 26, hTop: m ? 28 : 40,
+      imgRatio: m ? '16 / 9' : '800 / 440', galRatio: m ? '1 / 0.85' : '260 / 218',
+      datoDir: m ? 'column' : 'row', datoAlign: m ? 'flex-start' : 'center', datoGap: m ? 14 : 28, datoPad: m ? '24px 24px 26px' : '32px 40px',
+      datoNum: m ? 36 : 64, datoText: m ? 17 : 22, sepW: m ? '48px' : '1px', sepH: m ? '1px' : '72px',
+      shareSize: m ? 'sm' : 'md'
+    };
+  }
+}
+</script>
+</body>
+</html>

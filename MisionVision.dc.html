@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</helmet>
+<section ref="{{ rootRef }}" aria-label="Misión y visión" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:0 {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; gap:{{ blockGap }}px;">
+    <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="2">
+      <article aria-labelledby="{{ b.id }}" style="display:grid; grid-template-columns:{{ cols }}; column-gap:{{ colGap }}px; row-gap:32px; align-items:center;">
+        <div style="order:{{ b.textOrder }}; display:flex; flex-direction:column; align-items:flex-start; padding:{{ b.textPad }};">
+          <span aria-hidden="true" style="width:56px; height:56px; border-radius:12px; background:linear-gradient(150deg, #32502A 0%, #17331F 100%); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:26px;"><i class="ph ph-{{ b.icon }}"></i></span>
+          <span style="margin-top:{{ eyebrowTop }}px; font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">{{ b.eyebrow }}</span>
+          <h2 id="{{ b.id }}" style="margin:{{ h2Top }}px 0 {{ h2Bot }}px; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F;">{{ b.titleStart }} <span style="color:#758434;">{{ b.titleHighlight }}</span></h2>
+          <p style="margin:0; max-width:600px; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ pSize }}px; line-height:1.65; color:#4D4D4A; text-wrap:pretty;">{{ b.text }}</p>
+        </div>
+        <div data-mv-img="" style="order:{{ b.imgOrder }}; height:{{ imgH }}; border-radius:20px; overflow:hidden; background:#E2E2E2; will-change:clip-path;">
+          <img src="{{ b.image }}" alt="{{ b.alt }}" loading="lazy" style="display:block; width:100%; height:100%; object-fit:cover; will-change:transform;">
+        </div>
+      </article>
+    </sc-for>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;mision&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Invertir de manera eficiente, equitativa y transparente los recursos provenientes de la extracción minera, para mejorar la calidad de vida y el desarrollo de capacidades de la población, en armonía con el medio ambiente.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;vision&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Lograr que la población de la zona de influencia y el distrito de Querocoto cuenten con capacidades, infraestructura básica y proyectos productivos que mejoren la calidad de vida de sus habitantes.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;misionImg&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;visionImg&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  mvScroll() {
+    if (this._mvBound) return; this._mvBound = true;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let raf = 0;
+    const upd = () => { raf = 0;
+      document.querySelectorAll('[data-mv-img]').forEach((el, k) => {
+        const r = el.getBoundingClientRect(), vh = innerHeight;
+        const p = Math.max(0, Math.min(1, (vh - r.top) / (vh * 0.5 + r.height * 0.9)));
+        const e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+        const s = (8 + e * 202).toFixed(2);
+        el.style.clipPath = k % 2 === 0 ? 'polygon(100% 0%, calc(100% - ' + s + '%) 0%, 100% ' + s + '%)' : 'polygon(0% 0%, ' + s + '% 0%, 0% ' + s + '%)';
+        el.style.borderRadius = '20px';
+        const im = el.firstElementChild; if (im) { im.style.transformOrigin = k % 2 === 0 ? '100% 0%' : '0% 0%'; im.style.transform = 'scale(' + (1 + (1 - e) * 0.22).toFixed(4) + ')'; }
+      });
+    };
+    this._mvOn = () => { if (!raf) raf = requestAnimationFrame(upd); };
+    addEventListener('scroll', this._mvOn, { passive: true }); addEventListener('resize', this._mvOn);
+    this._mvIv = setInterval(this._mvOn, 500); upd();
+  }
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    this.mvScroll();
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto || w !== this.state.w) this.setState({ auto: d, w });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this._mvOn && removeEventListener('scroll', this._mvOn); clearInterval(this._mvIv); this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const stack = m || (isAuto && (this.state.w || window.innerWidth) < 1024);
+    const src = [
+      { icon: 'target', eyebrow: 'Lo que nos mueve', titleStart: 'Nuestra', titleHighlight: 'misión', text: p.mision ?? 'Invertir de manera eficiente, equitativa y transparente los recursos provenientes de la extracción minera, para mejorar la calidad de vida y el desarrollo de capacidades de la población, en armonía con el medio ambiente.', image: p.misionImg || 'assets/fotos/nosotros-mision.webp', alt: 'Integrantes del Fondo con productos agrícolas de Querocoto', imgFirst: false },
+      { icon: 'eye', eyebrow: 'Hacia dónde vamos', titleStart: 'Nuestra', titleHighlight: 'visión', text: p.vision ?? 'Lograr que la población de la zona de influencia y el distrito de Querocoto cuenten con capacidades, infraestructura básica y proyectos productivos que mejoren la calidad de vida de sus habitantes.', image: p.visionImg || 'assets/fotos/nosotros-vision.webp', alt: 'Vista aérea de un centro poblado de Querocoto', imgFirst: true }
+    ];
+    const blocks = src.map((b, i) => ({
+      ...b, id: 'mv-' + i,
+      textOrder: stack ? 1 : (b.imgFirst ? 2 : 1), imgOrder: stack ? 2 : (b.imgFirst ? 1 : 2),
+      textPad: stack ? '0' : (b.imgFirst ? (d ? '0 0 0 22px' : '0 0 0 22px') : '0 48px 0 0')
+    }));
+    return {
+      rootRef: this.rootRef, blocks,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padB: m ? 72 : 120, blockGap: m ? 72 : 120,
+      cols: stack ? '1fr' : 'minmax(0, 1fr) minmax(0, 1fr)', colGap: d ? 94 : 56,
+      imgH: m ? '484px' : (stack ? '560px' : (d ? '1084px' : '900px')),
+      eyebrowTop: m ? 32 : 32, h2Top: m ? 16 : 20, h2Bot: m ? 20 : 32,
+      h2: m ? 28 : (d ? 52 : 44), pSize: m ? 18 : 18
+    };
+  }
+}
+</script>
+</body>
+</html>

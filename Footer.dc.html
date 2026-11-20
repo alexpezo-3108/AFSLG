@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>a:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<footer ref="{{ rootRef }}" style="position:relative; width:100%; overflow:hidden; background:linear-gradient(180deg, #2C4D2D 0%, #1F3B23 55%, #17331F 100%); isolation:isolate; font-family:Montserrat, sans-serif; color:#FFFFFF;">
+<dc-import name="CookieBanner" style="position:absolute; width:0; height:0;" hint-size="0px,0px"></dc-import>
+<div ref="{{ glowRef }}" aria-hidden="true" style="position:absolute; inset:0; z-index:0; pointer-events:none; opacity:0; transition:opacity .6s ease; background:radial-gradient(520px circle at var(--gx, 50%) var(--gy, 50%), rgba(170,204,74,0.10) 0%, rgba(170,204,74,0.04) 40%, rgba(170,204,74,0) 70%);"></div>
+  <dc-import name="Patron" tone="dark" style="position:absolute; inset:0;" hint-size="100%,100%"></dc-import>
+  <div aria-hidden="true" style="position:absolute; inset:0; opacity:0.08; mix-blend-mode:screen; pointer-events:none; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);"></div>
+  <div style="position:relative; box-sizing:border-box; padding:{{ padT }}px {{ mx }}px 0;">
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; flex-direction:column; gap:16px; padding-bottom:32px;">
+        <a href="{{ homeHref }}" aria-label="Fondo Social La Granja · Inicio" style="align-self:flex-start; display:flex;" style-focus="outline:3px solid #ECC725; outline-offset:4px;"><img src="assets/logo-fslg-blanco.png" alt="Asociación Fondo Social La Granja" style="height:50px; width:auto; display:block;"></a>
+        <p style="margin:0; font-weight:500; font-size:15px; line-height:1.6; color:rgba(255,255,255,0.85);">{{ description }}</p>
+        <p style="margin:8px 0 0; font-family:Poppins, sans-serif; font-weight:600; font-size:22px; line-height:1.3; letter-spacing:-0.01em;">{{ quoteStart }} <span style="color:#AACC4A;">{{ quoteHighlight }}</span> {{ quoteEnd }}</p>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:40px; padding-bottom:56px;">
+        <p style="margin:0; max-width:{{ quoteMax }}; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ quoteSize }}px; line-height:1.35; letter-spacing:-0.01em; text-wrap:pretty;">{{ quoteStart }} <span style="color:#AACC4A;">{{ quoteHighlight }}</span> {{ quoteEnd }}</p>
+        <div style="display:flex; flex-direction:column; gap:14px; flex:none;">
+          <span style="font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A;">Síguenos</span>
+          <div style="display:flex; gap:12px;">
+            <sc-for list="{{ socials }}" as="s" hint-placeholder-count="4">
+              <a href="{{ s.href }}" target="_blank" rel="noopener" aria-label="{{ s.label }}" style="width:52px; height:52px; box-sizing:border-box; border-radius:50%; border:1px solid rgba(255,255,255,0.5); display:flex; align-items:center; justify-content:center; transition:background .15s;" style-hover="background:rgba(255,255,255,0.12);" style-focus="outline:3px solid #ECC725; outline-offset:3px;"><img src="{{ s.icon }}" alt="" aria-hidden="true" style="width:24px; height:24px; display:block; filter:brightness(0) invert(1);"></a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+    <div style="border-top:1px solid rgba(255,255,255,0.14); display:grid; grid-template-columns:{{ mainCols }};">
+      <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:{{ brandPad }}; border-right:{{ brandBorder }}; display:flex; flex-direction:column; gap:20px;">
+          <a href="{{ homeHref }}" aria-label="Fondo Social La Granja · Inicio" style="align-self:flex-start; display:flex;" style-focus="outline:3px solid #ECC725; outline-offset:4px;"><img src="assets/logo-fslg-blanco.png" alt="Asociación Fondo Social La Granja" style="height:52px; width:auto; display:block;"></a>
+          <p style="margin:0; max-width:360px; font-weight:500; font-size:16px; line-height:1.65; color:rgba(255,255,255,0.85);">{{ description }}</p>
+        </div>
+      </sc-if>
+      <div style="padding:{{ colsPad }}; display:grid; grid-template-columns:{{ linkCols }}; column-gap:{{ colGap }}px; row-gap:40px; justify-content:{{ colsJustify }};">
+        <nav aria-label="Menú del pie" style="display:flex; flex-direction:column; gap:14px;">
+          <span style="font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A; margin-bottom:6px;">Menú</span>
+          <sc-for list="{{ menu }}" as="l" hint-placeholder-count="7">
+            <a href="{{ l.href }}" style="font-weight:500; font-size:15px; line-height:1.4; color:rgba(255,255,255,0.9); text-decoration:none; min-height:21px;" style-hover="color:#FFFFFF; text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">{{ l.label }}</a>
+          </sc-for>
+        </nav>
+        <div style="display:flex; flex-direction:column; gap:16px;">
+          <span style="font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A; margin-bottom:4px;">Contacto</span>
+          <sc-for list="{{ contact }}" as="c" hint-placeholder-count="5">
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <span style="font-weight:500; font-size:13px; color:rgba(255,255,255,0.6);">{{ c.label }}</span>
+              <a href="{{ c.href }}" style="font-weight:500; font-size:15px; line-height:1.45; color:#FFFFFF; text-decoration:none; white-space:pre-line;" style-hover="text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">{{ c.value }}</a>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:14px; grid-column:{{ attnCol }}; border-top:{{ attnBorder }}; padding-top:{{ attnPadT }}px;">
+          <span style="font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A; margin-bottom:6px;">Atención</span>
+          <a href="Buzon.dc.html" style="font-weight:500; font-size:15px; color:rgba(255,255,255,0.9); text-decoration:none;" style-hover="color:#FFFFFF; text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">Quejas y sugerencias</a>
+          <a href="#" style="font-weight:500; font-size:15px; color:rgba(255,255,255,0.9); text-decoration:none;" style-hover="color:#FFFFFF; text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">Libro de reclamaciones</a>
+          <div style="display:flex; flex-direction:column; gap:4px; margin-top:12px;">
+            <span style="font-weight:500; font-size:15px; color:rgba(255,255,255,0.9);">¿Eres proveedor?</span>
+            <a href="#" style="display:flex; align-items:center; gap:6px; font-weight:500; font-size:15px; color:#FFFFFF; text-decoration:underline; text-underline-offset:3px;" style-hover="color:#AACC4A;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">Actualiza tus datos aquí<i class="ph ph-arrow-up-right" aria-hidden="true" style="font-size:13px;"></i></a>
+          </div>
+          <span style="font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A; margin:20px 0 6px;">Enlaces de interés</span>
+          <sc-for list="{{ external }}" as="e" hint-placeholder-count="2">
+            <a href="{{ e.href }}" target="_blank" rel="noopener" style="display:flex; align-items:center; gap:6px; font-weight:500; font-size:15px; color:rgba(255,255,255,0.9); text-decoration:none;" style-hover="color:#FFFFFF; text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">{{ e.label }}<i class="ph ph-arrow-up-right" aria-hidden="true" style="font-size:13px;"></i></a>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <div style="border-top:1px solid rgba(255,255,255,0.14); padding:32px 0 40px; display:flex; flex-direction:column; gap:16px;">
+        <span style="font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A;">Síguenos</span>
+        <div style="display:flex; gap:12px;">
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="3">
+            <a href="{{ s.href }}" aria-label="{{ s.label }}" style="width:52px; height:52px; box-sizing:border-box; border-radius:50%; border:1px solid rgba(255,255,255,0.5); display:flex; align-items:center; justify-content:center;" style-hover="background:rgba(255,255,255,0.12);" style-focus="outline:3px solid #ECC725; outline-offset:3px;"><img src="{{ s.icon }}" alt="" aria-hidden="true" style="width:24px; height:24px; display:block; filter:brightness(0) invert(1);"></a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+  <div role="contentinfo" aria-label="Barra legal" style="position:relative; z-index:2; box-sizing:border-box; background:#17331F; border-top:1px solid rgba(255,255,255,0.12); padding:{{ barPad }}; display:flex; flex-direction:{{ barDir }}; align-items:{{ barAlign }}; justify-content:space-between; gap:{{ barGap }}px;">
+    <span style="font-weight:500; font-size:13px; color:rgba(255,255,255,0.72); order:{{ copyOrder }};">{{ copyright }}</span>
+    <nav aria-label="Legal" style="display:flex; flex-direction:{{ legalDir }}; gap:{{ legalGap }}px;">
+      <sc-for list="{{ legal }}" as="l" hint-placeholder-count="3">
+        <a href="{{ l.href }}" style="font-weight:500; font-size:13px; color:rgba(255,255,255,0.75); text-decoration:none;" style-hover="color:#FFFFFF; text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">{{ l.label }}</a>
+      </sc-for>
+    </nav>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;description&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Asociación civil sin fines de lucro que impulsa el desarrollo de Querocoto, Chota – Cajamarca.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;quoteStart&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Creemos en una gestión participativa, donde la comunidad no solo es beneficiaria, sino&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;quoteHighlight&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;protagonista&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;quoteEnd&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;del cambio.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;copyright&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;© 2026 Asociación Fondo Social La Granja&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+const __R = s => { const t = String(s || ''); const M = [['Mesa de partes','Contacto.dc.html'],['Proveedores','Convocatorias.dc.html'],['Buz','Buzon.dc.html'],['rivacidad','Privacidad.dc.html'],['érminos','Terminos.dc.html'],['oticia','Noticias.dc.html'],['omunicado','Noticias.dc.html'],['onvocatoria','Convocatorias.dc.html'],['royecto','Proyectos.dc.html'],['eglament','Documentos.dc.html#reglamentos'],['arco normativo','Documentos.dc.html#marco'],['ctas','Documentos.dc.html#actas'],['uditor','Documentos.dc.html#auditorias'],['ocumento','Documentos.dc.html'],['osotros','Nosotros.dc.html'],['Qui','Nosotros.dc.html'],['Misi','Nosotros.dc.html'],['rganigrama','Nosotros.dc.html'],['ontacto','Contacto.dc.html'],['Inicio','Home.dc.html']]; const f = M.find(([k]) => t.includes(k)); return f ? f[1] : '#'; };
+class Component extends DCLogic {
+  glowRef = React.createRef();
+  startGlow() {
+    if (this._graf || matchMedia('(pointer: coarse)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let tx = 0, ty = 0, x = 0, y = 0, inside = false, init = false;
+    this._gmove = e => { const g = this.glowRef.current; if (!g) return; const r = g.getBoundingClientRect(); const on = e.clientY >= r.top && e.clientY <= r.bottom && e.clientX >= r.left && e.clientX <= r.right; if (on !== inside) { inside = on; g.style.opacity = on ? '1' : '0'; } if (on) { tx = e.clientX - r.left; ty = e.clientY - r.top; if (!init) { x = tx; y = ty; init = true; } } };
+    addEventListener('pointermove', this._gmove, { passive: true });
+    const loop = () => { this._graf = requestAnimationFrame(loop); if (!inside) return; const g = this.glowRef.current; if (!g) return; x += (tx - x) * 0.08; y += (ty - y) * 0.08; g.style.setProperty('--gx', x.toFixed(1) + 'px'); g.style.setProperty('--gy', y.toFixed(1) + 'px'); };
+    this._graf = requestAnimationFrame(loop);
+  }
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    this.startGlow();
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 900 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const mid = w >= 900 && w < 1200;
+      if (d !== this.state.auto || mid !== this.state.mid) this.setState({ auto: d, mid });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const mx = { mobile: 20, laptop: 56, desktop: 160 }[dev];
+    const mid = !m && (!p.device || p.device === 'auto') && this.state.mid;
+    const L = s => ({ label: s, href: __R(s) });
+    return {
+      glowRef: this.glowRef, rootRef: this.rootRef, isMobile: m, isWide: !m, mx,
+      padT: m ? 56 : 96, quoteSize: d ? 32 : 28, quoteMax: d ? '760px' : '620px',
+      brandPad: mid ? '48px 0 0' : '56px 40px 56px 0', brandBorder: mid ? 'none' : '1px solid rgba(255,255,255,0.14)',
+      mainCols: (m || mid) ? '1fr' : (d ? 'minmax(0, 637px) minmax(0, 1fr)' : 'minmax(0, 500px) minmax(0, 1fr)'),
+      colsPad: m ? '32px 0' : mid ? '40px 0 56px' : '56px 0 64px 40px',
+      linkCols: m ? 'minmax(0,0.8fr) minmax(0,1.2fr)' : mid ? 'repeat(3, minmax(0,1fr))' : 'auto auto auto',
+      colGap: m ? 20 : mid ? 32 : (d ? 84 : 66), colsJustify: (m || mid) ? 'stretch' : 'end',
+      attnCol: m ? '1 / -1' : 'auto', attnBorder: m ? '1px solid rgba(255,255,255,0.14)' : 'none', attnPadT: m ? 32 : 0,
+      barPad: m ? '28px ' + mx + 'px 36px' : '24px ' + mx + 'px 28px',
+      barDir: m ? 'column' : 'row', barAlign: m ? 'flex-start' : 'center', barGap: m ? 20 : 24,
+      copyOrder: m ? 2 : 0, legalDir: m ? 'column' : 'row', legalGap: m ? 14 : 24,
+      description: p.description ?? 'Asociación civil sin fines de lucro que impulsa el desarrollo de Querocoto, Chota – Cajamarca.',
+      quoteStart: p.quoteStart ?? 'Creemos en una gestión participativa, donde la comunidad no solo es beneficiaria, sino',
+      quoteHighlight: p.quoteHighlight ?? 'protagonista', quoteEnd: p.quoteEnd ?? 'del cambio.',
+      homeHref: 'Home.dc.html',
+      socials: [
+        { label: 'Facebook', href: 'https://www.facebook.com/p/Fondo-Social-La-Granja-61586837956879/', icon: 'assets/icono-facebook.svg' },
+        { label: 'Instagram', href: 'https://www.instagram.com/fs.lagranja/', icon: 'assets/icono-instagram.svg' },
+        { label: 'LinkedIn', href: 'https://www.linkedin.com/company/asociaci%C3%B3n-fondo-social-la-granja', icon: 'assets/icono-linkedin.svg' },
+        { label: 'YouTube', href: 'https://www.youtube.com/channel/UCDYrOUOeRuhTE19QnYAQPaA', icon: 'assets/icono-youtube.svg' }
+      ],
+      menu: ['Inicio', 'Noticias', 'Convocatorias', 'Proyectos', 'Documentos', 'Nosotros', 'Contacto'].map(L),
+      contact: [
+        { label: 'Dirección', value: 'Calle Comercio N° 365,\nQuerocoto, Chota – Cajamarca', href: '#' },
+        { label: 'WhatsApp', value: '925 469 374', href: 'https://wa.me/51925469374' },
+        { label: 'Correo', value: 'info@afslg.org', href: 'mailto:info@afslg.org' },
+        { label: 'Mesa de partes virtual', value: 'mesadepartes@afslg.org', href: 'mailto:mesadepartes@afslg.org' },
+        { label: 'Horario', value: 'Lunes a viernes\n8:00 a. m. – 5:00 p. m.', href: undefined }
+      ],
+      external: [{ label: 'MINEM', href: 'https://www.gob.pe/minem' }, { label: 'SUNAT', href: 'https://www.sunat.gob.pe' }],
+      legal: ['Política de privacidad', 'Términos y condiciones', 'Política antisoborno'].map(L),
+      copyright: p.copyright ?? '© 2026 Asociación Fondo Social La Granja'
+    };
+  }
+}
+</script>
+</body>
+</html>

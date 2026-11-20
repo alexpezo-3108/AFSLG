@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>a{color:#32502A} a:hover{color:#17331F}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="noticias-titulo" style="position:relative; width:100%; overflow:hidden; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0;" hint-size="100%,100%"></dc-import>
+  <div style="position:relative; box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; gap:{{ headGap }}px;">
+    <header style="display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+      <div style="display:flex; flex-direction:column; gap:{{ subGap }}px;">
+        <h2 id="noticias-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F;">{{ titleStart }} <span style="color:#758434;">{{ titleHighlight }}</span></h2>
+        <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.6; color:#4D4D4A;">{{ subtitle }}</p>
+      </div>
+      <sc-if value="{{ linkTop }}" hint-placeholder-val="{{ true }}">
+        <dc-import name="Button" variant="link" label="{{ linkLabel }}" href="{{ linkHref }}" hint-size="210px,44px"></dc-import>
+      </sc-if>
+    </header>
+    <div style="display:grid; grid-template-columns:{{ cols }}; gap:16px; align-items:stretch;">
+      <dc-import name="TarjetaNoticia" format="destacada" size="{{ cardSize }}" type="{{ featured.type }}" title="{{ featured.title }}" excerpt="{{ featured.excerpt }}" date="{{ featured.date }}" image="{{ featured.image }}" image-alt="{{ featured.imageAlt }}" href="{{ featured.href }}" hint-size="100%,700px"></dc-import>
+      <div style="display:grid; grid-template-rows:{{ rows }}; gap:16px;">
+        <sc-for list="{{ rest }}" as="n" hint-placeholder-count="4">
+          <dc-import name="TarjetaNoticia" format="compacta" size="{{ cardSize }}" type="{{ n.type }}" title="{{ n.title }}" date="{{ n.date }}" image="{{ n.image }}" image-alt="{{ n.imageAlt }}" href="{{ n.href }}" hint-size="100%,164px"></dc-import>
+        </sc-for>
+      </div>
+    </div>
+    <sc-if value="{{ linkBottom }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;"><dc-import name="Button" variant="link" label="{{ linkLabel }}" href="{{ linkHref }}" hint-size="210px,44px"></dc-import></div>
+    </sc-if>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;titleStart&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Lo último del&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleHighlight&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Fondo Social&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;subtitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Noticias y comunicados oficiales de la AFSLG en nuestra zona de influencia.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;linkLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ver todas las noticias&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;linkHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;news&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{type,title,excerpt?,date,image?,imageAlt?,href}[]&quot;,&quot;section&quot;:&quot;Noticias&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const st = w < 1100;
+      if (d !== this.state.auto || st !== this.state.stack) this.setState({ auto: d, stack: st });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile';
+    const stack = m || ((!p.device || p.device === 'auto') && this.state.stack);
+    const news = p.news ?? [
+      { image: 'assets/fotos/home-noticia-destacada.webp', imageAlt: 'Entrega de mochilas y útiles escolares a estudiantes de la I.E. Ciro Guevara Pérez', type: 'Noticia', title: 'Entregamos kits escolares a estudiantes de nuestra zona de influencia', excerpt: 'Más de 600 estudiantes de los centros poblados recibieron útiles para iniciar el año escolar con todo lo necesario.', date: '24 oct 2026', href: 'Noticia%20Detalle.dc.html' },
+      { type: 'Noticia', title: 'Capacitamos a productores de Checos en manejo de pastos y sanidad animal', date: '20 oct 2026', href: 'Noticia%20Detalle.dc.html' },
+      { type: 'Comunicado', title: 'Resultados de la licitación pública N° 009-2026 – Salón multiuso de Checos', date: '17 oct 2026', href: 'Comunicado%20Detalle.dc.html' },
+      { type: 'Noticia', title: 'Avanza la instalación de aulas prefabricadas en la I.E. de La Pampa', date: '12 oct 2026', href: 'Noticia%20Detalle.dc.html' },
+      { type: 'Comunicado', title: 'Cambio de fecha de la asamblea informativa de octubre', date: '08 oct 2026', href: 'Comunicado%20Detalle.dc.html' }
+    ];
+    const norm = n => ({ image: '', imageAlt: '', excerpt: '', ...n, href: (!n.href || n.href === '#') ? (n.type === 'Comunicado' ? 'Comunicado%20Detalle.dc.html' : 'Noticia%20Detalle.dc.html') : n.href });
+    const rest = news.slice(1).map(norm);
+    return {
+      rootRef: this.rootRef,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev],
+      padT: m ? 88 : 128, padB: m ? 96 : 136, headGap: m ? 32 : 56, subGap: m ? 12 : 14,
+      h2: m ? 28 : (dev === 'desktop' ? 52 : 44),
+      cols: stack ? '1fr' : 'minmax(0, 1.07fr) minmax(0, 1fr)',
+      rows: stack ? 'auto' : 'repeat(' + rest.length + ', minmax(0, 1fr))',
+      cardSize: m ? 'sm' : 'md',
+      linkTop: !m, linkBottom: m,
+      featured: norm(news[0] || {}), rest,
+      titleStart: p.titleStart ?? 'Lo último del', titleHighlight: p.titleHighlight ?? 'Fondo Social',
+      subtitle: p.subtitle ?? 'Noticias y comunicados oficiales de la AFSLG en nuestra zona de influencia.',
+      linkLabel: p.linkLabel ?? 'Ver todas las noticias', linkHref: p.linkHref ?? 'Noticias.dc.html'
+    };
+  }
+}
+</script>
+</body>
+</html>

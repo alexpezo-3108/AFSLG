@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>a{color:inherit} a:hover{color:inherit} @keyframes afslgNavDrop{from{transform:translateY(-120%);opacity:0}to{transform:none;opacity:1}}</style>
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<div ref="{{ rootRef }}" style="width:100%;">
+<sc-if value="{{ searchOpen }}" hint-placeholder-val="{{ false }}"><dc-import name="Buscador" on-close="{{ closeSearch }}" style="position:absolute; top:0; left:0; width:0; height:0;" hint-size="0px,0px"></dc-import></sc-if>
+<sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+  <div style="height:{{ mPh }};">
+  <header style="position:{{ mPos }}; top:0; left:0; right:0; z-index:900; animation:{{ rowAnim }}; box-sizing:border-box; width:100%; padding:{{ mPadT }}px 16px 0 16px; display:flex; align-items:center; justify-content:space-between; gap:12px; font-family:Montserrat, sans-serif;">
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <dc-import name="MenuMovil" open-calls="{{ openCalls }}" on-close="{{ closeMenu }}" style="position:absolute; top:0; left:0; width:0; height:0;" hint-size="0px,0px"></dc-import>
+    </sc-if>
+    <a href="{{ homeHref }}" aria-label="Fondo Social La Granja · Inicio" style="position:relative; z-index:1001; display:flex; align-items:center; min-height:44px; border-radius:6px;" style-focus="outline:3px solid #ECC725; outline-offset:4px;">
+      <sc-if value="{{ onImage }}" hint-placeholder-val="{{ true }}">
+      <span style="position:relative; display:flex; align-items:center; height:56px; padding:0 {{ mLogoPadX }}px; box-sizing:border-box; transition:padding .6s cubic-bezier(.22,1,.36,1);"><span aria-hidden="true" style="position:absolute; inset:0; border-radius:14px; border:2px solid #FFFFFF; background:linear-gradient(90deg, #17331F 0%, #32502A 45%, #758434 75%, #AACC4A 100%); box-shadow:0 4px 14px rgba(17,38,23,0.12); opacity:{{ boxOp }}; transform:scale({{ boxScale }}); transition:opacity .45s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1);"></span><span style="position:relative; display:block;"><img src="{{ logoSrc }}" alt="Asociación Fondo Social La Granja" style="height:{{ mLogoH }}px; width:auto; display:block; filter:{{ logoFilter }}; opacity:{{ baseOp }}; transition:height .6s cubic-bezier(.22,1,.36,1), opacity .4s ease, filter .4s ease;"><img src="assets/logo-fslg-blanco.png" alt="" aria-hidden="true" style="position:absolute; inset:0; height:100%; width:auto; display:block; opacity:{{ whiteOp }}; transition:opacity .4s ease;"></span></span>
+      </sc-if>
+      <sc-if value="{{ isSolid }}" hint-placeholder-val="{{ false }}"><span style="display:flex; align-items:center; height:56px; padding:0 18px; box-sizing:border-box; border-radius:14px; border:2px solid #FFFFFF; background:linear-gradient(90deg, #17331F 0%, #32502A 45%, #758434 75%, #AACC4A 100%); box-shadow:0 4px 14px rgba(17,38,23,0.12);"><img src="assets/logo-fslg-blanco.png" alt="Asociación Fondo Social La Granja" style="height:30px; width:auto; display:block;"></span></sc-if>
+    </a>
+    <div style="position:relative; z-index:1001; display:flex; align-items:center; gap:6px; padding:6px; border-radius:16px; background:{{ mGrpBg }}; box-shadow:{{ mGrpSh }};">
+      <sc-if value="{{ menuClosed }}" hint-placeholder-val="{{ true }}">
+      <button type="button" aria-label="Buscar" onClick="{{ onSearch }}" style="width:44px; height:44px; border:none; border-radius:11px; background:#F2F2EF; color:#17331F; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .2s;" style-hover="background:#E6E6E1;" style-focus="outline:3px solid #ECC725; outline-offset:3px;"><i class="ph ph-magnifying-glass" aria-hidden="true"></i></button>
+      </sc-if>
+      <button type="button" aria-label="{{ menuAria }}" aria-haspopup="dialog" aria-expanded="{{ menuOpen }}" onClick="{{ onMenu }}" style="position:relative; height:44px; padding:0 16px 0 18px; border:none; border-radius:11px; background:{{ mBtnBg }}; color:{{ mBtnFg }}; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; display:flex; align-items:center; gap:10px; cursor:pointer;" style-hover="background:{{ mBtnHov }};" style-focus="outline:3px solid #ECC725; outline-offset:3px;">
+        <span>{{ menuLabel }}</span><i class="ph ph-{{ menuIcon }}" aria-hidden="true" style="font-size:20px;"></i>
+        <sc-if value="{{ menuClosed }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="position:absolute; top:9px; right:11px; width:8px; height:8px; border-radius:50%; background:#AACC4A; border:1.5px solid #17331F;"></span></sc-if>
+      </button>
+    </div>
+
+  </header>
+  </div>
+</sc-if>
+<sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+  <header style="box-sizing:border-box; width:100%; font-family:Montserrat, sans-serif;">
+    <div style="height:40px; background:{{ topBg }}; padding:0 {{ mx }}px; display:flex; align-items:center; justify-content:flex-end; gap:16px;">
+      <a href="{{ mesaHref }}" style="display:flex; align-items:center; gap:8px; color:#FFFFFF; font-size:12px; font-weight:500; text-decoration:none; min-height:32px; padding:0 10px; border-radius:999px; transition:background .15s;" style-hover="background:rgba(255,255,255,0.12);" style-focus="outline:2px solid #ECC725; outline-offset:2px;"><i class="ph ph-envelope-simple" aria-hidden="true" style="font-size:17px;"></i>Mesa de partes virtual</a>
+      <a href="{{ proveedoresHref }}" style="display:flex; align-items:center; gap:8px; color:#FFFFFF; font-size:12px; font-weight:500; text-decoration:none; min-height:32px; padding:0 10px; border-radius:999px; transition:background .15s;" style-hover="background:rgba(255,255,255,0.12);" style-focus="outline:2px solid #ECC725; outline-offset:2px;"><i class="ph ph-handshake" aria-hidden="true" style="font-size:18px;"></i>Proveedores<i class="ph ph-arrow-up-right" aria-hidden="true" style="font-size:12px;"></i></a>
+      <div style="display:flex; gap:8px;">
+        <a href="https://www.facebook.com/p/Fondo-Social-La-Granja-61586837956879/" target="_blank" rel="noopener" aria-label="Facebook" style="width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.12); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:15px;" style-hover="background:rgba(255,255,255,0.24);" style-focus="outline:2px solid #ECC725; outline-offset:2px;"><img src="assets/icono-facebook.svg" alt="" aria-hidden="true" style="width:12px; height:12px; display:block;"></a>
+        <a href="https://www.instagram.com/fs.lagranja/" target="_blank" rel="noopener" aria-label="Instagram" style="width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.12); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:15px;" style-hover="background:rgba(255,255,255,0.24);" style-focus="outline:2px solid #ECC725; outline-offset:2px;"><img src="assets/icono-instagram.svg" alt="" aria-hidden="true" style="width:12px; height:12px; display:block;"></a>
+        <a href="https://www.linkedin.com/company/asociaci%C3%B3n-fondo-social-la-granja" target="_blank" rel="noopener" aria-label="LinkedIn" style="width:28px; height:28px; border-radius:50%; background:rgba(255,255,255,0.12); color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:15px;" style-hover="background:rgba(255,255,255,0.24);" style-focus="outline:2px solid #ECC725; outline-offset:2px;"><img src="assets/icono-linkedin.svg" alt="" aria-hidden="true" style="width:12px; height:12px; display:block;"></a>
+      </div>
+    </div>
+    <sc-if value="{{ isGrouped }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:16px; height:{{ rowPh }};"><div ref="{{ rowRef }}" style="position:{{ rowPos }}; top:{{ rowTop }}; left:0; right:0; z-index:900; animation:{{ rowAnim }}; padding:0 {{ mx }}px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+      <nav ref="{{ navRef }}" aria-label="Principal" style="position:relative; display:flex; align-items:center; gap:0px; height:56px; padding:0 5px 0 5px; border-radius:999px; background:#FFFFFF; box-shadow:0 2px 10px rgba(17,38,23,0.05);">
+<span ref="{{ indRef }}" aria-hidden="true" style="position:absolute; top:6px; left:0; height:44px; width:0; border-radius:999px; background:#F1F1EE; opacity:0; pointer-events:none; z-index:0; transition:transform .45s cubic-bezier(.22,1,.36,1), width .45s cubic-bezier(.22,1,.36,1), opacity .25s ease;"></span>
+        <a href="{{ homeHref }}" aria-label="Fondo Social La Granja · Inicio" style="display:flex; align-items:center; height:46px; padding:0 20px; margin-right:4px; border-radius:999px; background:linear-gradient(90deg, #17331F 0%, #32502A 45%, #758434 75%, #AACC4A 100%);" style-focus="outline:3px solid #ECC725; outline-offset:3px;">
+          <img src="assets/logo-fslg-blanco.png" alt="Asociación Fondo Social La Granja" style="height:28px; width:auto; display:block;">
+        </a>
+        <a href="Noticias.dc.html" data-ni="" aria-current="{{ cur.Noticias }}" style="position:relative; z-index:1; display:flex; align-items:center; height:44px; padding:0 15px; border-radius:999px; background:{{ act.Noticias }}; color:{{ actFg.Noticias }}; font-size:14px; font-weight:500; text-decoration:none;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Noticias</a>
+        <a href="Convocatorias.dc.html" data-ni="" aria-current="{{ cur.Convocatorias }}" style="position:relative; z-index:1; display:flex; align-items:center; gap:6px; height:44px; padding:0 15px; border-radius:999px; background:{{ act.Convocatorias }}; color:{{ actFg.Convocatorias }}; font-size:14px; font-weight:500; text-decoration:none;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Convocatorias<span data-nav-badge="" aria-label="{{ openLabel }}" style="display:flex; align-items:center; justify-content:center; min-width:20px; height:20px; padding:0 5px; box-sizing:border-box; border-radius:999px; background:#AACC4A; color:#FFFFFF; font-size:11px; font-weight:700;">{{ openCalls }}</span></a>
+        <a href="Proyectos.dc.html" data-ni="" aria-current="{{ cur.Proyectos }}" style="position:relative; z-index:1; display:flex; align-items:center; height:44px; padding:0 15px; border-radius:999px; background:{{ act.Proyectos }}; color:{{ actFg.Proyectos }}; font-size:14px; font-weight:500; text-decoration:none;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Proyectos</a>
+        <div onMouseEnter="{{ openDocs }}" onMouseLeave="{{ closeDocs }}" style="position:relative;"><button type="button" data-ni="" onClick="{{ goDocs }}" aria-haspopup="true" aria-expanded="{{ docsExpanded }}" onFocus="{{ openDocs }}" style="position:relative; z-index:1; display:flex; align-items:center; gap:6px; height:44px; padding:0 15px; border:none; border-radius:999px; background:{{ act.Documentos }}; color:{{ actFg.Documentos }}; font-family:Montserrat, sans-serif; font-size:14px; font-weight:500; cursor:pointer;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Documentos<i class="ph ph-caret-down" aria-hidden="true" style="font-size:13px; transition:transform .2s; transform:rotate({{ caretRot }}deg);"></i></button><div aria-hidden="{{ ddHidden }}" style="position:absolute; top:100%; left:0; z-index:60; padding-top:10px; opacity:{{ ddOp }}; visibility:{{ ddVis }}; pointer-events:{{ ddPe }}; transform:translateY({{ ddY }}px) scale({{ ddSc }}); transform-origin:24px 0; transition:{{ ddTr }};"><div role="menu" aria-label="Documentos" style="width:330px; box-sizing:border-box; padding:8px; border-radius:14px; background:#FFFFFF; box-shadow:0 16px 40px rgba(17,38,23,0.18); display:flex; flex-direction:column; gap:2px;"><sc-for list="{{ docsMenu }}" as="dm" hint-placeholder-count="4"><a href="{{ dm.href }}" onClick="{{ dm.pick }}" role="menuitem" style="display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:8px; text-decoration:none; color:#17331F;" style-hover="background:#F7F7F7;"><span aria-hidden="true" style="flex:none; width:36px; height:36px; border-radius:8px; background:#F1F5E4; color:#32502A; font-size:17px; display:flex; align-items:center; justify-content:center;"><i class="ph ph-{{ dm.icon }}"></i></span><span style="display:flex; flex-direction:column; gap:2px; font-family:Montserrat, sans-serif;"><span style="font-weight:600; font-size:14px; color:#17331F;">{{ dm.label }}</span><span style="font-weight:500; font-size:12.5px; color:#6B6B66;">{{ dm.desc }}</span></span></a></sc-for></div></div></div>
+        <a href="Nosotros.dc.html" data-ni="" aria-current="{{ cur.Nosotros }}" style="position:relative; z-index:1; display:flex; align-items:center; height:44px; padding:0 15px; border-radius:999px; background:{{ act.Nosotros }}; color:{{ actFg.Nosotros }}; font-size:14px; font-weight:500; text-decoration:none;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Nosotros</a>
+      </nav>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button type="button" aria-label="Buscar" onClick="{{ onSearch }}" style="width:44px; height:44px; border:none; border-radius:10px; background:#FFFFFF; color:#17331F; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;" style-hover="background:#F6F3EA;" style-focus="outline:3px solid #ECC725; outline-offset:3px;"><i class="ph ph-magnifying-glass" aria-hidden="true"></i></button>
+        <a href="{{ contactHref }}" style="display:flex; align-items:center; height:44px; padding:0 18px; border-radius:8px; background:linear-gradient(100deg, #DDEA2C 0%, #C4DC3A 45%, #AACC4A 100%); color:#17331F; font-size:12.5px; font-weight:700; letter-spacing:0.02em; text-transform:uppercase; text-decoration:none; transition:filter .2s, box-shadow .3s cubic-bezier(.22,1,.36,1);" style-hover="filter:brightness(1.06); box-shadow:0 0 0 1px rgba(232,240,60,0.75), 0 0 14px rgba(221,234,44,0.40), 0 8px 28px rgba(196,220,58,0.32);" style-focus="outline:3px solid #ECC725; outline-offset:3px;">Contacto</a>
+      </div>
+    </div></div>
+    </sc-if>
+    <sc-if value="{{ isSplit }}" hint-placeholder-val="{{ true }}">
+    <div style="margin-top:16px; height:{{ rowPh }};"><div ref="{{ rowRef }}" style="position:{{ rowPos }}; top:{{ rowTop }}; left:0; right:0; z-index:900; animation:{{ rowAnim }}; padding:0 {{ mx }}px; display:flex; align-items:center; justify-content:space-between; gap:24px;">
+      <a href="{{ homeHref }}" aria-label="Fondo Social La Granja · Inicio" style="display:flex; align-items:center; min-height:44px; border-radius:6px;" style-focus="outline:3px solid #ECC725; outline-offset:4px;">
+        <span style="position:relative; display:flex; align-items:center; height:56px; padding:0 {{ logoPadX }}px; box-sizing:border-box; transition:padding .6s cubic-bezier(.22,1,.36,1);"><span aria-hidden="true" style="position:absolute; inset:0; border-radius:12px; border:2px solid #FFFFFF; background:linear-gradient(90deg, #17331F 0%, #32502A 45%, #758434 75%, #AACC4A 100%); box-shadow:0 2px 10px rgba(17,38,23,0.07); opacity:{{ boxOp }}; transform:scale({{ boxScale }}); transition:opacity .45s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1);"></span><span style="position:relative; display:block;"><img src="{{ logoSrc }}" alt="Asociación Fondo Social La Granja" style="height:{{ logoH }}px; width:auto; display:block; filter:{{ logoFilter }}; opacity:{{ baseOp }}; transition:height .6s cubic-bezier(.22,1,.36,1), opacity .4s ease, filter .4s ease;"><img src="assets/logo-fslg-blanco.png" alt="" aria-hidden="true" style="position:absolute; inset:0; height:100%; width:auto; display:block; opacity:{{ whiteOp }}; transition:opacity .4s ease;"></span></span>
+      </a>
+      <nav ref="{{ navRef }}" aria-label="Principal" style="position:relative; display:flex; align-items:center; gap:2px; height:56px; padding:0 6px; box-sizing:border-box; border-radius:14px; background:#FFFFFF; box-shadow:0 2px 10px rgba(17,38,23,0.05);">
+<span ref="{{ indRef }}" aria-hidden="true" style="position:absolute; top:6px; left:0; height:44px; width:0; border-radius:8px; background:#F1F1EE; opacity:0; pointer-events:none; z-index:0; transition:transform .45s cubic-bezier(.22,1,.36,1), width .45s cubic-bezier(.22,1,.36,1), opacity .25s ease;"></span>
+          <a href="Noticias.dc.html" data-ni="" aria-current="{{ cur.Noticias }}" style="position:relative; z-index:1; display:flex; align-items:center; gap:6px; height:44px; padding:0 14px; border-radius:8px; background:{{ act.Noticias }}; color:{{ actFg.Noticias }}; font-size:14px; font-weight:500; text-decoration:none;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Noticias</a>
+          <a href="Convocatorias.dc.html" data-ni="" aria-current="{{ cur.Convocatorias }}" style="position:relative; z-index:1; display:flex; align-items:center; gap:6px; height:44px; padding:0 14px; border-radius:8px; background:{{ act.Convocatorias }}; color:{{ actFg.Convocatorias }}; font-size:14px; font-weight:500; text-decoration:none;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Convocatorias<span data-nav-badge="" aria-label="{{ openLabel }}" style="display:flex; align-items:center; justify-content:center; min-width:20px; height:20px; padding:0 5px; box-sizing:border-box; border-radius:999px; background:#AACC4A; color:#FFFFFF; font-size:11px; font-weight:700;">{{ openCalls }}</span></a>
+          <a href="Proyectos.dc.html" data-ni="" aria-current="{{ cur.Proyectos }}" style="position:relative; z-index:1; display:flex; align-items:center; gap:6px; height:44px; padding:0 14px; border-radius:8px; background:{{ act.Proyectos }}; color:{{ actFg.Proyectos }}; font-size:14px; font-weight:500; text-decoration:none;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Proyectos</a>
+          <div onMouseEnter="{{ openDocs }}" onMouseLeave="{{ closeDocs }}" style="position:relative;"><button type="button" data-ni="" onClick="{{ goDocs }}" aria-haspopup="true" aria-expanded="{{ docsExpanded }}" onFocus="{{ openDocs }}" style="position:relative; z-index:1; display:flex; align-items:center; gap:6px; height:44px; padding:0 14px; border:none; border-radius:8px; background:{{ act.Documentos }}; color:{{ actFg.Documentos }}; font-family:Montserrat, sans-serif; font-size:14px; font-weight:500; cursor:pointer;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Documentos<i class="ph ph-caret-down" aria-hidden="true" style="font-size:13px; transition:transform .2s; transform:rotate({{ caretRot }}deg);"></i></button><div aria-hidden="{{ ddHidden }}" style="position:absolute; top:100%; left:0; z-index:60; padding-top:10px; opacity:{{ ddOp }}; visibility:{{ ddVis }}; pointer-events:{{ ddPe }}; transform:translateY({{ ddY }}px) scale({{ ddSc }}); transform-origin:24px 0; transition:{{ ddTr }};"><div role="menu" aria-label="Documentos" style="width:330px; box-sizing:border-box; padding:8px; border-radius:14px; background:#FFFFFF; box-shadow:0 16px 40px rgba(17,38,23,0.18); display:flex; flex-direction:column; gap:2px;"><sc-for list="{{ docsMenu }}" as="dm" hint-placeholder-count="4"><a href="{{ dm.href }}" onClick="{{ dm.pick }}" role="menuitem" style="display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:8px; text-decoration:none; color:#17331F;" style-hover="background:#F7F7F7;"><span aria-hidden="true" style="flex:none; width:36px; height:36px; border-radius:8px; background:#F1F5E4; color:#32502A; font-size:17px; display:flex; align-items:center; justify-content:center;"><i class="ph ph-{{ dm.icon }}"></i></span><span style="display:flex; flex-direction:column; gap:2px; font-family:Montserrat, sans-serif;"><span style="font-weight:600; font-size:14px; color:#17331F;">{{ dm.label }}</span><span style="font-weight:500; font-size:12.5px; color:#6B6B66;">{{ dm.desc }}</span></span></a></sc-for></div></div></div>
+          <a href="Nosotros.dc.html" data-ni="" aria-current="{{ cur.Nosotros }}" style="position:relative; z-index:1; display:flex; align-items:center; gap:6px; height:44px; padding:0 14px; border-radius:8px; background:{{ act.Nosotros }}; color:{{ actFg.Nosotros }}; font-size:14px; font-weight:500; text-decoration:none;" style-hover="color:#1C1C1B;" style-focus="outline:3px solid #ECC725; outline-offset:1px;">Nosotros</a>
+          <span aria-hidden="true" style="width:1px; height:24px; background:#E2E2E2; margin:0 6px;"></span>
+          <button type="button" aria-label="Buscar" onClick="{{ onSearch }}" style="width:44px; height:44px; border:none; border-radius:8px; background:#F7F7F7; color:#17331F; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer;" style-hover="background:#E2E2E2;" style-focus="outline:3px solid #ECC725; outline-offset:1px;"><i class="ph-bold ph-magnifying-glass" aria-hidden="true"></i></button>
+          <a href="{{ contactHref }}" style="display:flex; align-items:center; height:44px; padding:0 18px; margin-left:4px; border-radius:8px; background:linear-gradient(100deg, #DDEA2C 0%, #C4DC3A 45%, #AACC4A 100%); color:#17331F; font-size:12.5px; font-weight:700; letter-spacing:0.02em; text-transform:uppercase; text-decoration:none; transition:filter .2s, box-shadow .3s cubic-bezier(.22,1,.36,1);" style-hover="filter:brightness(1.06); box-shadow:0 0 0 1px rgba(232,240,60,0.75), 0 0 14px rgba(221,234,44,0.40), 0 8px 28px rgba(196,220,58,0.32);" style-focus="outline:3px solid #ECC725; outline-offset:2px;">Contacto</a>
+      </nav>
+    </div></div>
+    </sc-if>
+  </header>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:140},&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;laptop&quot;,&quot;tsType&quot;:&quot;'mobile'|'laptop'|'desktop'&quot;},&quot;surface&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;imagen&quot;,&quot;solido&quot;],&quot;default&quot;:&quot;imagen&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;&quot;,&quot;Noticias&quot;,&quot;Convocatorias&quot;,&quot;Proyectos&quot;,&quot;Documentos&quot;,&quot;Nosotros&quot;],&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dividido&quot;,&quot;agrupado&quot;],&quot;default&quot;:&quot;dividido&quot;,&quot;tsType&quot;:&quot;'dividido'|'agrupado'&quot;},&quot;logo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;blanco&quot;,&quot;color&quot;],&quot;default&quot;:&quot;blanco&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;openCalls&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2,&quot;min&quot;:0,&quot;tsType&quot;:&quot;number&quot;},&quot;homeHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;contactHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;mesaHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;proveedoresHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;onSearch&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;},&quot;onMenu&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  state = { menu: false, narrow: false };
+  rootRef = React.createRef();
+  rowRef = React.createRef(); navRef = React.createRef(); indRef = React.createRef();
+  bindInd() {
+    const nav = this.navRef.current, ind = this.indRef.current;
+    if (!nav || !ind || nav === this._indNav) return; this._indNav = nav;
+    const move = el => { const a = nav.getBoundingClientRect(), b = el.getBoundingClientRect(); const first = ind.style.opacity !== '1'; const T = 'transform .45s cubic-bezier(.22,1,.36,1), width .45s cubic-bezier(.22,1,.36,1), opacity .25s ease'; ind.style.transition = first ? 'opacity .25s ease' : T; ind.style.width = b.width + 'px'; ind.style.transform = 'translateX(' + (b.left - a.left) + 'px)'; ind.style.opacity = '1'; if (first) requestAnimationFrame(() => requestAnimationFrame(() => { ind.style.transition = T; })); };
+    nav.addEventListener('pointerover', e => { const it = e.target.closest && e.target.closest('[data-ni]'); if (it && nav.contains(it)) move(it); });
+    nav.addEventListener('pointerleave', () => { ind.style.opacity = '0'; });
+  }
+  componentDidUpdate() { this.bindInd(); }
+  componentDidMount() {
+    setTimeout(() => this.bindInd(), 50);
+    if (!this._onScroll) { this._onScroll = () => { const y = window.scrollY; const r = this.rowRef.current; if (r) r.style.top = Math.max(12, 56 - y) + 'px'; const s = y > 8; if (s !== !!this.state.stuck) this.setState({ stuck: s }); }; window.addEventListener('scroll', this._onScroll, { passive: true }); this._onScroll(); }
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    this._measure = (w) => { if (!w) return; const nw = w < 1200; if (nw !== this.state.narrow) this.setState({ narrow: nw }); };
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n) this._measure(n.offsetWidth); }, 400);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+  }
+  componentWillUnmount() { this._onScroll && window.removeEventListener('scroll', this._onScroll); clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const device = (p.device ?? 'laptop') === 'mobile' || this.state.narrow ? 'mobile' : (p.device ?? 'laptop');
+    const n = p.openCalls ?? 2;
+    const stuck = this.state.stuck || this.state.menu;
+    return {
+      rootRef: this.rootRef,
+      rowRef: this.rowRef, navRef: this.navRef, indRef: this.indRef, rowPh: '56px', rowPos: 'fixed', rowTop: Math.max(12, 56 - (window.scrollY || 0)) + 'px', rowAnim: 'none',
+      mPh: '60px', mPos: 'fixed', mPadT: stuck ? 8 : 12,
+      boxOp: this.state.menu ? 0 : (stuck ? 1 : 0), boxScale: stuck ? 1 : 0.86,
+      logoPadX: stuck ? 20 : 0, logoH: stuck ? 30 : 52, mLogoPadX: stuck ? 16 : 0, mLogoH: stuck ? 26 : 36,
+      baseOp: (stuck && p.logo === 'color') ? 0 : 1, whiteOp: (stuck && p.logo === 'color') ? 1 : 0,
+      logoFilter: stuck ? 'drop-shadow(0 0 0 rgba(0,0,0,0))' : (p.surface === 'solido' ? 'drop-shadow(0 0 0 rgba(0,0,0,0))' : 'drop-shadow(0 2px 10px rgba(10,23,14,0.45))'),
+      isMobile: device === 'mobile',
+      onImage: true, isSolid: false,
+      logoShadow: p.surface === 'solido' ? 'none' : 'drop-shadow(0 2px 10px rgba(10,23,14,0.45))',
+      topBg: p.surface === 'solido' ? '#32502A' : 'transparent',
+      act: Object.fromEntries(['Noticias','Convocatorias','Proyectos','Documentos','Nosotros'].map(k => [k, p.active === k ? '#F1F5E4' : 'transparent'])),
+      actFg: Object.fromEntries(['Noticias','Convocatorias','Proyectos','Documentos','Nosotros'].map(k => [k, p.active === k ? '#17331F' : '#4D4D4A'])),
+      cur: Object.fromEntries(['Noticias','Convocatorias','Proyectos','Documentos','Nosotros'].map(k => [k, p.active === k ? 'page' : undefined])),
+      isWide: device !== 'mobile',
+      mx: device === 'desktop' ? 160 : 56,
+      isGrouped: p.layout === 'agrupado', isSplit: p.layout !== 'agrupado',
+      logoSrc: p.logo === 'color' ? 'assets/logo-fslg-color.png' : 'assets/logo-fslg-blanco.png',
+      openCalls: n,
+      openLabel: n + ' convocatorias abiertas',
+      homeHref: p.homeHref ?? 'Home.dc.html',
+      contactHref: p.contactHref ?? 'Contacto.dc.html',
+      mesaHref: p.mesaHref ?? 'Contacto.dc.html',
+      proveedoresHref: p.proveedoresHref ?? 'Convocatorias.dc.html',
+      docsOpen: !!this.state.docs, ddHidden: this.state.docs ? 'false' : 'true', ddOp: this.state.docs ? 1 : 0, ddVis: this.state.docs ? 'visible' : 'hidden', ddPe: this.state.docs ? 'auto' : 'none', ddY: this.state.docs ? 0 : -8, ddSc: this.state.docs ? 1 : 0.97, ddTr: this.state.docs ? 'opacity .22s ease, transform .28s cubic-bezier(.2,.8,.2,1), visibility 0s' : 'opacity .16s ease, transform .18s ease-in, visibility 0s linear .18s', docsExpanded: this.state.docs ? 'true' : 'false', caretRot: this.state.docs ? 180 : 0,
+      openDocs: () => { clearTimeout(this._dt); this.state.docs || this.setState({ docs: true }); },
+      closeDocs: () => { clearTimeout(this._dt); this._dt = setTimeout(() => this.setState({ docs: false }), 120); },
+      docsMenu: [['Todos los documentos', 'Reglamentos, normas, actas y auditorías', 'folders', ''], ['Reglamentos y políticas', 'Reglamento de contrataciones y políticas', 'scales', 'reglamentos'], ['Marco normativo', 'Normas que rigen al Fondo', 'bank', 'marco'], ['Actas', 'Actas del Consejo Directivo por año', 'files', 'actas'], ['Auditorías', 'Informes de auditoría', 'magnifying-glass-plus', 'auditorias']].map(([label, desc, icon, k]) => ({ label, desc, icon, href: 'Documentos.dc.html' + (k ? '?tipo=' + k : ''), pick: ev => { if (!/Documentos\.dc\.html$/.test(decodeURIComponent(location.pathname))) return; ev.preventDefault(); history.pushState(null, '', 'Documentos.dc.html' + (k ? '?tipo=' + k : '')); window.dispatchEvent(new CustomEvent('afslg:doc-tipo', { detail: k })); this.setState({ docs: false, menu: false }); } })),
+      goDocs: () => { window.location.href = 'Documentos.dc.html'; },
+      onSearch: p.onSearch || (() => this.setState({ search: true, menu: false })),
+      searchOpen: !!this.state.search, closeSearch: () => this.setState({ search: false }),
+      mGrpBg: this.state.menu ? 'transparent' : '#FFFFFF', mGrpSh: this.state.menu ? 'none' : '0 4px 14px rgba(17,38,23,0.12)', mBtnBg: this.state.menu ? '#FFFFFF' : 'linear-gradient(135deg, #32502A 0%, #17331F 100%)', mBtnFg: this.state.menu ? '#17331F' : '#FFFFFF', mBtnHov: this.state.menu ? '#EDEDEA' : 'linear-gradient(135deg, #2A4523 0%, #112617 100%)',
+      menuOpen: this.state.menu, menuClosed: !this.state.menu,
+      menuLabel: this.state.menu ? 'Cerrar' : 'Menú', menuIcon: this.state.menu ? 'x' : 'list', menuAria: this.state.menu ? 'Cerrar menú' : 'Abrir menú',
+      onMenu: () => { this.setState(s => ({ menu: !s.menu })); p.onMenu && p.onMenu(); },
+      closeMenu: () => this.setState({ menu: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

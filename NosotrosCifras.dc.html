@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>@keyframes afslgLbIn{from{opacity:0}to{opacity:1}} @keyframes afslgLbImg{from{opacity:0;transform:scale(.92) translateY(12px)}to{opacity:1;transform:none}}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-label="El Fondo en cifras" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; gap:{{ gap }}px;">
+    <div style="display:grid; grid-template-columns:{{ cols1 }}; gap:{{ gap }}px;">
+      <article style="position:relative; height:{{ h1 }}px; box-sizing:border-box; padding:{{ statPad }}; border-radius:20px; background:#FFFFFF; display:flex; flex-direction:column; justify-content:flex-end; gap:8px;">
+        <div ref="{{ polRef }}" style="position:absolute; top:{{ polTop }}px; right:{{ polRight }}px; width:{{ polW }}; aspect-ratio:472 / 374; z-index:2;">
+          <sc-for list="{{ pols }}" as="pp" hint-placeholder-count="4">
+            <button type="button" data-pol="" onClick="{{ pp.open }}" aria-label="{{ pp.aria }}" style="position:absolute; left:{{ pp.l }}; top:{{ pp.t }}; width:{{ pp.w }}; padding:5px 5px 18px; box-sizing:border-box; border:0; border-radius:3px; background:#FFFFFF; box-shadow:0 6px 16px rgba(17,38,23,0.18); transform:rotate({{ pp.r }}deg); cursor:zoom-in; transition:transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s ease;" style-hover="box-shadow:0 10px 24px rgba(17,38,23,0.24);"><img src="{{ pp.src }}" alt="" style="display:block; width:100%; aspect-ratio:{{ pp.ar }}; object-fit:cover; border-radius:1px;"></button>
+          </sc-for>
+        </div>
+        <p style="position:relative; margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ bigNum }}px; line-height:1; letter-spacing:-0.02em; color:#32502A;"><span style="color:#758434;">+</span>{{ s1.value }}</p>
+        <p style="position:relative; margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ labelSize }}px; line-height:1.5; color:#4D4D4A;">{{ s1.label }}</p>
+      </article>
+      <article style="position:relative; height:{{ h1b }}px; border-radius:20px; overflow:hidden; isolation:isolate; display:flex; flex-direction:column; justify-content:flex-end; gap:12px; padding:{{ quotePad }}; box-sizing:border-box;">
+        <img src="{{ compromisoImg }}" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; z-index:-2;">
+        <span aria-hidden="true" style="position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(23,51,31,0) 40%, rgba(23,51,31,0.6) 68%, rgba(23,51,31,0.92) 100%);"></span>
+        <span style="font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#C9E05A;">{{ eyebrow }}</span>
+        <p style="margin:0; max-width:560px; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ quoteSize }}px; line-height:1.25; color:#FFFFFF; text-wrap:pretty;">{{ quote }}</p>
+      </article>
+    </div>
+    <div style="display:grid; grid-template-columns:{{ cols2 }}; gap:{{ gap }}px;">
+      <div style="height:{{ h2photo }}px; border-radius:20px; overflow:hidden; background:#E2E2E2;">
+        <img src="{{ comunidadImg }}" alt="{{ comunidadAlt }}" style="display:block; width:100%; height:100%; object-fit:cover;">
+      </div>
+      <article style="height:{{ h2 }}px; box-sizing:border-box; padding:{{ smallPad }}; border-radius:20px; background:#FFFFFF; display:flex; flex-direction:column; justify-content:flex-end; gap:8px;">
+        <p style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ midNum }}px; line-height:1; letter-spacing:-0.02em; color:#32502A;"><span style="color:#758434;">+</span>{{ s2.value }}</p>
+        <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ labelSize }}px; line-height:1.5; color:#4D4D4A;">{{ s2.label }}</p>
+      </article>
+      <article style="position:relative; height:{{ h2 }}px; box-sizing:border-box; padding:{{ smallPad }}; border-radius:20px; background:linear-gradient(160deg, #2C4A2B 0%, #1E3B25 55%, #17331F 100%); display:flex; flex-direction:column; justify-content:flex-end; gap:8px;">
+        <img src="assets/isotipo-orquidea.png" alt="" aria-hidden="true" style="position:absolute; top:{{ orqTop }}px; left:{{ orqL }}; right:{{ orqR }}; width:{{ orqW }}px; height:auto;">
+        <p style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ midNum }}px; line-height:1; letter-spacing:-0.02em; color:#FFFFFF;"><span style="color:#ECC725;">+</span>{{ s3.value }}</p>
+        <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ labelSize }}px; line-height:1.5; color:rgba(255,255,255,0.85);">{{ s3.label }}</p>
+      </article>
+    </div>
+  </div>
+<sc-if value="{{ lbOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="Foto ampliada" onClick="{{ lbClose }}" style="position:fixed; inset:0; z-index:4000; display:flex; align-items:center; justify-content:center; padding:24px; box-sizing:border-box; background:rgba(17,38,23,0.78); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); animation:afslgLbIn .3s ease;">
+      <img src="{{ lbSrc }}" alt="{{ lbAlt }}" onClick="{{ stop }}" style="max-width:min(720px, 100%); max-height:82vh; width:auto; height:auto; border-radius:8px; background:#FFFFFF; padding:10px 10px 40px; box-sizing:border-box; box-shadow:0 20px 60px rgba(0,0,0,0.35); animation:afslgLbImg .45s cubic-bezier(.22,1,.36,1);">
+      <button type="button" aria-label="Cerrar" onClick="{{ lbClose }}" style="position:absolute; top:20px; right:20px; width:48px; height:48px; border:0; border-radius:999px; background:#FFFFFF; color:#17331F; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="ph ph-x" aria-hidden="true"></i></button>
+      <button type="button" aria-label="Foto anterior" onClick="{{ lbPrev }}" style="position:absolute; left:20px; top:50%; margin-top:-24px; width:48px; height:48px; border:0; border-radius:999px; background:rgba(255,255,255,0.16); color:#FFFFFF; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;" style-hover="background:rgba(255,255,255,0.28);"><i class="ph ph-caret-left" aria-hidden="true"></i></button>
+      <button type="button" aria-label="Foto siguiente" onClick="{{ lbNext }}" style="position:absolute; right:20px; top:50%; margin-top:-24px; width:48px; height:48px; border:0; border-radius:999px; background:rgba(255,255,255,0.16); color:#FFFFFF; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;" style-hover="background:rgba(255,255,255,0.28);"><i class="ph ph-caret-right" aria-hidden="true"></i></button>
+      <span style="position:absolute; bottom:20px; left:0; right:0; text-align:center; font-family:Montserrat, sans-serif; font-weight:500; font-size:14px; color:rgba(255,255,255,0.85);">{{ lbCount }}</span>
+    </div>
+  </sc-if>
+  </section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;stat1Value&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;200&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Cifras&quot;},&quot;stat1Label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Proyectos desarrollados con las comunidades&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Cifras&quot;},&quot;stat2Value&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;18&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Cifras&quot;},&quot;stat2Label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Años de trabajo en Querocoto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Cifras&quot;},&quot;stat3Value&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;10.5 mil&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Cifras&quot;},&quot;stat3Label&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Personas beneficiadas&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Cifras&quot;},&quot;quote&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Trabajamos junto a las comunidades de Querocoto para que cada proyecto responda a sus necesidades.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;compromisoImg&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;comunidadImg&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  polRef = React.createRef();
+  polIntro() {
+    const box = this.polRef.current; if (this._polObs) return; if (!box) { this._pt = setTimeout(() => this.polIntro(), 150); return; }
+    const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const items = box.querySelectorAll('[data-pol]'); if (!items.length) return;
+    Array.prototype.forEach.call(items, el => { el.style.opacity = RM ? '1' : '0'; });
+    if (RM) return;
+    this._polObs = new IntersectionObserver(es => { if (!es.some(e => e.isIntersecting)) return; this._polObs.disconnect();
+      Array.prototype.forEach.call(items, (el, k) => { const r = el.style.transform; const a = el.animate([{ opacity: 0, transform: 'translateY(-46px) scale(1.15) rotate(' + (k % 2 ? 14 : -14) + 'deg)' }, { opacity: 1, offset: 0.6, transform: 'translateY(4px) scale(0.98) ' + r }, { opacity: 1, transform: r }], { duration: 900, delay: 120 + k * 160, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards' }); el.style.opacity = '1'; });
+    }, { threshold: 0.3 });
+    this._polObs.observe(box);
+  }
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    setTimeout(() => this.polIntro(), 60);
+    this._lbKey = e => { if (this.state.lb == null) return; if (e.key === 'Escape') this.setState({ lb: null }); if (e.key === 'ArrowRight') this.setState(s => ({ lb: (s.lb + 1) % 4 })); if (e.key === 'ArrowLeft') this.setState(s => ({ lb: (s.lb + 3) % 4 })); };
+    addEventListener('keydown', this._lbKey);
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto || w !== this.state.w) this.setState({ auto: d, w });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { removeEventListener('keydown', this._lbKey); this._polObs && this._polObs.disconnect(); this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const mid = !m && isAuto && (this.state.w || window.innerWidth) < 1024;
+    const orqRight = m;
+    return {
+      polRef: this.polRef,
+      pols: [['4%','16%','33%',7,'96 / 112'],['35%','3%','34%',-6,'112 / 98'],['29%','43%','34%',2,'116 / 124'],['59%','31%','35%',-8,'112 / 118']].map(([l,t,w,r,ar], i) => ({ l, t, w, r, ar, src: 'assets/fotos/nosotros-cifras-polaroid-0' + (i + 1) + '.webp', aria: 'Ver foto ' + (i + 1) + ' de proyectos en las comunidades', open: () => this.setState({ lb: i }) })),
+      lbOpen: this.state.lb != null, lbSrc: 'assets/fotos/nosotros-cifras-polaroid-0' + ((this.state.lb ?? 0) + 1) + '.webp', lbAlt: 'Foto de proyecto con la comunidad', lbCount: ((this.state.lb ?? 0) + 1) + ' / 4',
+      lbClose: () => this.setState({ lb: null }), stop: e => e.stopPropagation(),
+      lbPrev: e => { e.stopPropagation(); this.setState(s => ({ lb: (s.lb + 3) % 4 })); }, lbNext: e => { e.stopPropagation(); this.setState(s => ({ lb: (s.lb + 1) % 4 })); },
+      rootRef: this.rootRef,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padT: m ? 16 : 32, padB: m ? 72 : 120, gap: m ? 12 : 16,
+      cols1: m ? '1fr' : (mid ? '1fr' : 'minmax(0, 1fr) minmax(0, 1.015fr)'),
+      cols2: m ? '1fr' : (mid ? 'repeat(2, minmax(0, 1fr))' : 'minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr)'),
+      h1: m ? 330 : (d ? 578 : 480), h1b: m ? 300 : (d ? 578 : 480),
+      h2photo: m ? 162 : (d ? 361 : 300), h2: m ? 150 : (d ? 361 : 300),
+      statPad: m ? '24px' : (d ? '48px' : '48px'), smallPad: m ? '24px 20px' : '36px',
+      quotePad: m ? '24px' : '40px',
+      polTop: m ? -6 : -30, polRight: m ? -14 : -12, polW: m ? 'min(290px, 90%)' : (d ? 'min(472px, 62%)' : 'min(465px, 74%)'),
+      bigNum: m ? 36 : (d ? 64 : 60), midNum: m ? 36 : (d ? 64 : 56), labelSize: m ? 15 : 16,
+      quoteSize: m ? 20 : (d ? 28 : 24),
+      orqTop: m ? 24 : (d ? 36 : 36), orqL: orqRight ? 'auto' : '36px', orqR: orqRight ? '28px' : 'auto', orqW: m ? 30 : 48,
+      compromisoImg: p.compromisoImg || 'assets/fotos/nosotros-cifras-compromiso.webp', comunidadImg: p.comunidadImg || 'assets/fotos/nosotros-cifras-comunidad.webp',
+      comunidadAlt: p.comunidadAlt ?? 'Entrega de cuyes a familias productoras de Querocoto',
+      eyebrow: p.eyebrow ?? 'Nuestro compromiso',
+      quote: p.quote ?? 'Trabajamos junto a las comunidades de Querocoto para que cada proyecto responda a sus necesidades.',
+      s1: { value: p.stat1Value ?? '200', label: p.stat1Label ?? 'Proyectos desarrollados con las comunidades' },
+      s2: { value: p.stat2Value ?? '18', label: p.stat2Label ?? 'Años de trabajo en Querocoto' },
+      s3: { value: p.stat3Value ?? '10.5 mil', label: p.stat3Label ?? 'Personas beneficiadas' }
+    };
+  }
+}
+</script>
+</body>
+</html>

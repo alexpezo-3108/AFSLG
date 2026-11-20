@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>a{color:#AACC4A} a:hover{color:#ECC725}</style>
+</helmet>
+<section ref="{{ rootRef }}" data-rv-skip="" aria-label="Portada" style="position:relative; z-index:50; width:100%; height:{{ hCss }}; min-height:{{ minH }}px; overflow:hidden; background:#17331F; isolation:isolate;">
+  <img ref="{{ heroImg }}" src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:{{ imgPos }}; display:block;">
+  <div aria-hidden="true" style="position:absolute; left:0; right:0; top:50%; bottom:0; backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px); mask-image:linear-gradient(to bottom, transparent 0%, #000 60%); -webkit-mask-image:linear-gradient(to bottom, transparent 0%, #000 60%);"></div>
+  <div aria-hidden="true" style="position:absolute; inset:0; opacity:0.86; background:{{ radial }};"></div>
+  <div aria-hidden="true" style="position:absolute; inset:0; opacity:0.85; background:linear-gradient(to bottom, rgba(17,38,23,0) 55%, rgba(17,38,23,0.4) 80%, rgba(17,38,23,0.7) 100%);"></div>
+  <sc-if value="{{ showSide }}" hint-placeholder-val="{{ true }}">
+    <div aria-hidden="true" style="position:absolute; left:0; top:0; bottom:0; width:{{ side }}px; opacity:0.85; background:linear-gradient(to right, rgba(17,38,23,0.5) 0%, rgba(17,38,23,0) 100%);"></div>
+  </sc-if>
+  <div aria-hidden="true" style="position:absolute; left:0; right:0; top:0; height:240px; opacity:0.85; background:linear-gradient(to top, rgba(10,22,14,0) 0%, rgba(10,22,14,0.18) 45%, rgba(10,22,14,0.35) 75%, rgba(10,22,14,0.5) 100%);"></div>
+  <div aria-hidden="true" style="position:absolute; inset:0; opacity:0.14; mix-blend-mode:screen; pointer-events:none; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;);"></div>
+  <sc-if value="{{ showWaves }}" hint-placeholder-val="{{ true }}">
+    <img src="assets/ondas.svg" alt="" aria-hidden="true" style="position:absolute; right:0; bottom:0; width:{{ waveW }}px; height:auto; display:block; pointer-events:none;">
+  </sc-if>
+  <div ref="{{ heroNav }}" style="position:absolute; left:0; right:0; top:0; z-index:2;">
+    <dc-import name="Navbar" device="{{ navDevice }}" layout="{{ navLayout }}" logo="{{ navLogo }}" open-calls="{{ openCalls }}" hint-size="100%,120px"></dc-import>
+  </div>
+  <div ref="{{ heroTxt }}" style="position:absolute; left:{{ mx }}px; right:{{ mx }}px; bottom:{{ contentBottom }}px; z-index:1; display:flex; flex-direction:column; gap:{{ gapA }}px; text-shadow:0 2px 12px rgba(10,23,14,0.35);">
+    <h1 style="margin:0; font-family:Poppins, sans-serif; font-weight:700; line-height:1.02; letter-spacing:-0.025em; color:#FFFFFF; max-width:{{ h1Max }};">
+      <span style="display:block; font-size:{{ h1a }}; text-wrap:balance;">{{ titleLine1 }}</span>
+      <span style="display:block; font-size:{{ h1b }};">{{ titleDe }} <span style="color:#ECC725;">{{ titleHighlight }}</span></span>
+    </h1>
+    <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.5; color:rgba(255,255,255,0.8); max-width:{{ subMax }}; white-space:{{ subWrap }}; text-wrap:pretty;">{{ subtitle }}</p>
+    <div style="display:flex; flex-direction:{{ btnDir }}; gap:12px; margin-top:{{ btnTop }}px; text-shadow:none;">
+      <dc-import name="Button" variant="primario-flecha" label="{{ primaryLabel }}" href="{{ primaryHref }}" size="{{ btnSize }}" full-width="{{ isMobile }}" hint-size="210px,44px"></dc-import>
+      <dc-import name="Button" variant="secundario-oscuro" label="{{ secondaryLabel }}" href="{{ secondaryHref }}" size="{{ btnSize }}" full-width="{{ isMobile }}" hint-size="142px,44px"></dc-import>
+    </div>
+  </div>
+  <p ref="{{ heroLoc }}" style="position:absolute; left:{{ mx }}px; bottom:{{ locBottom }}px; margin:0; z-index:1; font-family:Montserrat, sans-serif; font-weight:500; font-size:14px; color:#FFFFFF; text-shadow:0 2px 12px rgba(10,23,14,0.35);">{{ location }}</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'mobile'|'laptop'|'desktop'&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;height&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:null,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;showSideShade&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;showWaves&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;image&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;assets/fotos/home-hero.webp&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Imagen&quot;},&quot;imageAlt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Vista aérea del valle y el pueblo de Querocoto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Imagen&quot;},&quot;imagePosition&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Imagen&quot;},&quot;titleLine1&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Unidos por el desarrollo&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleDe&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;de&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleHighlight&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Querocoto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;subtitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Invertimos los aportes de la actividad minera en proyectos que mejoran la vida de Querocoto.&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;primaryLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Conoce al Fondo&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botones&quot;},&quot;primaryHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botones&quot;},&quot;secondaryLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ver noticias&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botones&quot;},&quot;secondaryHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Botones&quot;},&quot;location&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Querocoto · Chota · Cajamarca&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;navLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dividido&quot;,&quot;agrupado&quot;],&quot;default&quot;:&quot;dividido&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Navbar&quot;},&quot;navLogo&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;blanco&quot;,&quot;color&quot;],&quot;default&quot;:&quot;blanco&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Navbar&quot;},&quot;openCalls&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2,&quot;min&quot;:0,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Navbar&quot;}}">
+class Component extends DCLogic {
+  heroLoc = React.createRef(); heroImg = React.createRef(); heroNav = React.createRef(); heroTxt = React.createRef();
+  playIntro() {
+    if (this._played) return; this._played = true;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const E = 'cubic-bezier(.22,1,.36,1)';
+    const img = this.heroImg.current, nav = this.heroNav.current, txt = this.heroTxt.current;
+    img && img.animate && img.animate([{ transform: 'scale(1.14)' }, { transform: 'scale(1)' }], { duration: 1800, easing: E, fill: 'backwards' });
+    const sec = this.rootRef && this.rootRef.current;
+    if (sec) Array.prototype.forEach.call(sec.querySelectorAll(':scope > div[aria-hidden="true"]'), (o, k) => o.animate && o.animate([{ opacity: 0 }, { opacity: parseFloat(getComputedStyle(o).opacity) || 1 }], { duration: 2200, delay: 150 + k * 60, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'backwards' }));
+    const wav = sec && sec.querySelector('img[src*="ondas.svg"]');
+    if (wav) fetch(wav.src).then(r => r.text()).then(txt => {
+      const box = document.createElement('div'); box.innerHTML = txt; const svg = box.querySelector('svg'); if (!svg) return;
+      svg.setAttribute('aria-hidden', 'true'); svg.removeAttribute('width'); svg.removeAttribute('height');
+      svg.style.cssText = 'position:absolute; right:0; bottom:0; width:' + wav.offsetWidth + 'px; height:auto; display:block; pointer-events:none; overflow:visible;';
+      wav.style.visibility = 'hidden'; wav.after(svg);
+      Array.prototype.forEach.call(svg.querySelectorAll('path'), (pth, k) => { const L = pth.getTotalLength ? pth.getTotalLength() : 1400; pth.setAttribute('stroke-width', '1.6'); pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L; pth.animate([{ strokeDashoffset: L }, { strokeDashoffset: 0 }], { duration: 2200, delay: 700 + k * 55, easing: E, fill: 'forwards' }); });
+    }).catch(() => {});
+    if (txt && txt.animate) Array.prototype.forEach.call(txt.children, (c, k) => c.animate([{ opacity: 0, transform: 'translateY(34px)' }, { opacity: 1, transform: 'none' }], { duration: 1000, delay: 650 + k * 130, easing: E, fill: 'backwards' }));
+    const loc = this.heroLoc.current; loc && loc.animate && loc.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: 1250, easing: E, fill: 'backwards' });
+    nav && nav.animate && nav.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 900, easing: 'ease', fill: 'backwards' });
+  }
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    if (!this._introBound) { this._introBound = true; if (window.__afslgReady) this.playIntro(); else addEventListener('afslg:ready', () => this.playIntro(), { once: true }); }
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const nc = w < 1200;
+      if (d !== this.state.auto || nc !== this.state.navCompact) this.setState({ auto: d, navCompact: nc });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  waves(n) {
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      const t = i / (n - 1);
+      const x0 = 20 + t * 220, y1 = 150 - t * 30;
+      out.push({
+        d: `M ${x0} 150 C ${260 + t * 60} ${60 + t * 20}, ${460 + t * 40} ${20 + t * 40}, 760 ${8 + t * 70}`,
+        o: (0.18 + 0.3 * (1 - Math.abs(t - 0.5) * 2)).toFixed(2)
+      });
+    }
+    return out;
+  }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const L = {
+      mobile:  { h: 844, mx: 20, a: 28, b: 48, cb: 88, lb: 20, side: 0, ww: 390, wh: 48, gap: 16, bt: 8, radial: 'radial-gradient(ellipse 340px 380px at 40% 74%, rgba(17,38,23,0.62) 0%, rgba(17,38,23,0.35) 50%, rgba(17,38,23,0) 100%)', pos: '42% center', h1Max: 'none' },
+      laptop:  { h: 857, mx: 56, a: 46, b: 64, cb: 109, lb: 24, side: 670, ww: 760, wh: 150, gap: 24, bt: 14, radial: 'radial-gradient(ellipse 820px 460px at 26% 74%, rgba(17,38,23,0.62) 0%, rgba(17,38,23,0.35) 50%, rgba(17,38,23,0) 100%)', pos: 'center center', h1Max: 'none' },
+      desktop: { h: 1000, mx: 160, a: 65, b: 90, cb: 109, lb: 24, side: 890, ww: 1030, wh: 190, gap: 24, bt: 14, radial: 'radial-gradient(ellipse 1080px 560px at 28% 74%, rgba(17,38,23,0.62) 0%, rgba(17,38,23,0.35) 50%, rgba(17,38,23,0) 100%)', pos: 'center center', h1Max: 'none' }
+    }[dev] || {};
+    const isMobile = dev === 'mobile';
+    const isAuto = !p.device || p.device === 'auto';
+    return {
+      heroLoc: this.heroLoc, heroImg: this.heroImg, heroNav: this.heroNav, heroTxt: this.heroTxt, rootRef: this.rootRef,
+      device: dev, isMobile, navLayout: p.navLayout ?? 'dividido', navLogo: p.navLogo ?? 'blanco',
+      subMax: isMobile ? 'none' : '100%', subWrap: isMobile ? 'normal' : 'nowrap',
+      navDevice: ((!p.device || p.device === 'auto') && this.state.navCompact) ? 'mobile' : dev,
+      hCss: p.height ? p.height + 'px' : '100svh', minH: isMobile ? 560 : 0, mx: L.mx,
+      h1a: (isMobile || !isAuto) ? L.a + 'px' : 'clamp(36px, min(calc(-11px + 3.958vw), 7.2vh), 65px)',
+      h1b: (isMobile || !isAuto) ? L.b + 'px' : 'clamp(48px, min(calc(-14px + 5.4167vw), 10vh), 90px)', h1Max: L.h1Max,
+      contentBottom: L.cb, locBottom: L.lb, gapA: L.gap, btnTop: L.bt,
+      radial: L.radial, imgPos: p.imagePosition || L.pos,
+      showSide: (p.showSideShade ?? true) && !isMobile, side: L.side,
+      waveW: Math.round(L.ww * 1.25), showWaves: p.showWaves ?? true,
+      btnDir: isMobile ? 'column' : 'row', btnSize: isMobile ? 'lg' : 'md',
+      image: p.image || 'assets/fotos/home-hero.webp',
+      imageAlt: p.imageAlt ?? 'Vista aérea del valle y el pueblo de Querocoto',
+      titleLine1: p.titleLine1 ?? 'Unidos por el desarrollo',
+      titleDe: p.titleDe ?? 'de',
+      titleHighlight: p.titleHighlight ?? 'Querocoto',
+      subtitle: p.subtitle ?? 'Invertimos los aportes de la actividad minera en proyectos que mejoran la vida de Querocoto.',
+      primaryLabel: p.primaryLabel ?? 'Conoce al Fondo', primaryHref: p.primaryHref ?? 'Nosotros.dc.html',
+      secondaryLabel: p.secondaryLabel ?? 'Ver noticias', secondaryHref: p.secondaryHref ?? 'Noticias.dc.html',
+      location: p.location ?? 'Querocoto · Chota · Cajamarca',
+      openCalls: p.openCalls ?? 2
+    };
+  }
+}
+</script>
+</body>
+</html>

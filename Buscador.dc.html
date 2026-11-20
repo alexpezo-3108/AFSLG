@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>#buscador-input::placeholder{color:#6B6B66} #buscador-input:focus{outline:none}</style>
+</helmet>
+<div ref="{{ ovRef }}" role="dialog" aria-modal="true" aria-label="Buscar en el sitio" onClick="{{ onBackdrop }}" style="position:fixed; inset:0; z-index:3000; box-sizing:border-box; padding:{{ padT }}px {{ padX }}px 24px; overflow-y:auto; background:rgba(17,38,23,0.62); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); font-family:Montserrat, sans-serif;">
+  <div onClick="{{ stop }}" style="width:100%; max-width:800px; margin:0 auto; display:flex; flex-direction:column; gap:12px;">
+    <div ref="{{ barRef }}" style="display:flex; align-items:center; gap:12px; height:{{ inputH }}px; box-sizing:border-box; padding:0 10px 0 22px; border:2px solid #AACC4A; border-radius:16px; background:#FFFFFF; box-shadow:0 12px 40px rgba(10,23,14,0.25);">
+      <i class="ph ph-magnifying-glass" aria-hidden="true" style="font-size:22px; color:#17331F;"></i>
+      <input id="buscador-input" type="search" autocomplete="off" value="{{ q }}" onChange="{{ onInput }}" onKeyDown="{{ onKey }}" placeholder="{{ placeholder }}" aria-label="Buscar" style="flex:1; min-width:0; height:100%; border:0; background:transparent; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ inputSize }}px; color:#17331F; caret-color:#17331F;">
+      <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+        <kbd style="padding:5px 8px; border:1px solid #DADAD5; border-radius:6px; font-family:Montserrat, sans-serif; font-size:12px; font-weight:500; color:#4D4D4A;">Esc</kbd>
+      </sc-if>
+      <button type="button" aria-label="Cerrar búsqueda" onClick="{{ close }}" style="flex:none; width:44px; height:44px; border:0; border-radius:999px; background:#F3F3F1; color:#17331F; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer;" style-hover="background:#E7E7E3;"><i class="ph ph-x" aria-hidden="true"></i></button>
+    </div>
+    <div ref="{{ panRef }}" style="border-radius:16px; background:#FFFFFF; box-shadow:0 12px 40px rgba(10,23,14,0.25); padding:28px 16px 0;">
+      <sc-if value="{{ isIdle }}" hint-placeholder-val="{{ true }}">
+        <span style="display:block; padding:0 12px; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">Búsquedas frecuentes</span>
+        <div style="display:flex; flex-wrap:wrap; gap:8px; padding:14px 12px 0;">
+          <sc-for list="{{ frequent }}" as="f" hint-placeholder-count="6">
+            <button type="button" onClick="{{ f.pick }}" style="display:flex; align-items:center; gap:8px; height:38px; padding:0 16px 0 14px; border:0; border-radius:999px; background:#F3F3F1; font-family:Montserrat, sans-serif; font-weight:500; font-size:14px; color:#17331F; cursor:pointer;" style-hover="background:#E7E7E3;"><i class="ph ph-clock-counter-clockwise" aria-hidden="true" style="font-size:14px; color:#6B6B66;"></i>{{ f.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="1">
+        <div style="padding-top:{{ g.top }}px;">
+          <span style="display:block; padding:0 12px 8px; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">{{ g.label }}</span>
+          <ul role="listbox" style="list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:4px;">
+            <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="5">
+              <li><a href="{{ r.href }}" role="option" aria-selected="{{ r.sel }}" onMouseEnter="{{ r.hover }}" style="display:flex; align-items:center; gap:14px; padding:12px; border-radius:10px; background:{{ r.bg }}; text-decoration:none; color:#17331F;">
+                <span aria-hidden="true" style="flex:none; width:40px; height:40px; border-radius:8px; background:{{ r.iconBg }}; color:{{ r.iconFg }}; font-size:18px; display:flex; align-items:center; justify-content:center;"><i class="ph ph-{{ r.icon }}"></i></span>
+                <span style="flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;">
+                  <span style="font-weight:600; font-size:16px; line-height:1.35; color:#17331F;"><sc-for list="{{ r.parts }}" as="p" hint-placeholder-count="1"><span style="text-decoration:{{ p.dec }}; text-underline-offset:3px; text-decoration-thickness:2px;">{{ p.t }}</span></sc-for></span>
+                  <span style="font-weight:500; font-size:13px; line-height:1.4; color:#6B6B66;">{{ r.meta }}</span>
+                </span>
+                <sc-if value="{{ r.hasBadge }}" hint-placeholder-val="{{ false }}"><span style="font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#758434;">{{ r.badge }}</span></sc-if>
+                <i class="ph ph-arrow-right" aria-hidden="true" style="flex:none; font-size:16px; color:{{ r.arrow }};"></i>
+              </a></li>
+            </sc-for>
+          </ul>
+        </div>
+      </sc-for>
+      <sc-if value="{{ hasMore }}" hint-placeholder-val="{{ false }}">
+        <a href="{{ moreHref }}" style="display:inline-flex; align-items:center; gap:8px; margin:20px 12px 0; font-weight:700; font-size:13px; letter-spacing:0.04em; text-transform:uppercase; color:#17331F; text-decoration:none;" style-hover="text-decoration:underline;">{{ moreLabel }}<i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+      </sc-if>
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:8px 12px 12px; display:flex; flex-direction:column; gap:6px;">
+          <span style="font-weight:600; font-size:16px; color:#17331F;">{{ emptyLabel }}</span>
+          <span style="font-weight:500; font-size:14px; color:#6B6B66;">Prueba con otra palabra o revisa las búsquedas frecuentes.</span>
+        </div>
+      </sc-if>
+      <div style="margin-top:20px; padding:16px 12px; border-top:1px solid #ECECE8; display:flex; flex-wrap:wrap; gap:18px; font-weight:500; font-size:13px; color:#6B6B66;">
+        <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}"><span>↑ ↓ para moverte</span><span>Enter para abrir</span></sc-if>
+        <span>Esc para cerrar</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const DATA = [
+  { g: 'Documentos', t: 'Reglamento de Contrataciones 2023', meta: 'Reglamentos y políticas · PDF · 2,4 MB', pdf: true, badge: 'Vigente', href: 'Documentos.dc.html' },
+  { g: 'Documentos', t: 'Marco normativo del Fondo (D.L. N.° 996 y reglamentos)', meta: 'Marco normativo · PDF · 3,1 MB', pdf: true, href: 'Documentos.dc.html' },
+  { g: 'Documentos', t: 'Política de privacidad y protección de datos', meta: 'Reglamentos y políticas · PDF · 0,8 MB', pdf: true, href: 'Documentos.dc.html' },
+  { g: 'Documentos', t: 'Acta de sesión ordinaria · marzo 2026', meta: 'Actas del Consejo Directivo · PDF · 1,2 MB', pdf: true, href: 'Documentos.dc.html' },
+  { g: 'Documentos', t: 'Auditoría 2024', meta: 'Auditorías · PDF · 4,6 MB', pdf: true, href: 'Documentos.dc.html' },
+  { g: 'Convocatorias', t: 'Comparativo de precios – 3.ª convocatoria: Cobertura metálica, I.E. El Sauce', meta: 'Finalizada · Incluye el Reglamento de Contrataciones vigente', kw: 'reglamento', icon: 'megaphone-simple', href: 'Convocatorias.dc.html' },
+  { g: 'Convocatorias', t: 'Convocatoria abierta: Mejoramiento de canal de riego en Paraguay', meta: 'Abierta · Cierra el 30 nov 2026', icon: 'megaphone-simple', href: 'Convocatorias.dc.html' },
+  { g: 'Noticias', t: 'Aprobamos el nuevo Reglamento de Contrataciones del Fondo', meta: 'Comunicado · 30 oct 2026', icon: 'newspaper', href: 'Noticias.dc.html' },
+  { g: 'Noticias', t: 'Entregamos módulos educativos en Querocoto', meta: 'Noticia · 12 oct 2026', icon: 'newspaper', href: 'Noticias.dc.html' },
+  { g: 'Páginas', t: 'Documentos › Reglamentos y políticas', meta: 'Ir a la sección de documentos', icon: 'folder-simple', href: 'Documentos.dc.html' },
+  { g: 'Páginas', t: 'Contacto › Horario de atención', meta: 'Lunes a viernes, dirección y teléfonos', icon: 'phone', href: 'Contacto.dc.html' },
+  { g: 'Páginas', t: 'Mesa de partes virtual', meta: 'Envía documentos al Fondo', icon: 'envelope-simple', href: 'Contacto.dc.html' },
+  { g: 'Páginas', t: 'Proveedores', meta: 'Registro y requisitos para proveedores', icon: 'handshake', href: 'Convocatorias.dc.html' },
+  { g: 'Páginas', t: 'Buzón de quejas y sugerencias', meta: 'Envíanos tu queja, reclamo o sugerencia', icon: 'clipboard-text', href: 'Buzon.dc.html' }
+];
+const QUICK = [
+  { t: 'Convocatorias', meta: 'Procesos abiertos, en evaluación y finalizados', icon: 'megaphone-simple', href: 'Convocatorias.dc.html' },
+  { t: 'Documentos', meta: 'Reglamentos, políticas, actas y auditorías', icon: 'folder-simple', href: 'Documentos.dc.html' },
+  { t: 'Noticias', meta: 'Lo último del Fondo en las comunidades', icon: 'newspaper', href: 'Noticias.dc.html' },
+  { t: 'Contacto', meta: 'WhatsApp, mesa de partes, dirección y horario', icon: 'phone', href: 'Contacto.dc.html' },
+  { t: 'Buzón de quejas y sugerencias', meta: 'Envíanos tu queja, reclamo o sugerencia', icon: 'clipboard-text', href: 'Buzon.dc.html' }
+];
+const FREQ = ['Convocatorias abiertas', 'Reglamento de contrataciones', 'Mesa de partes', 'Horario de atención', 'Actas 2026', 'Proveedores'];
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+class Component extends DCLogic {
+  ovRef = React.createRef(); barRef = React.createRef(); panRef = React.createRef();
+  intro() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const E = 'cubic-bezier(.22,1,.36,1)', ov = this.ovRef.current, bar = this.barRef.current, pan = this.panRef.current;
+    ov && ov.animate([{ backgroundColor: 'rgba(17,38,23,0)', backdropFilter: 'blur(0px)', WebkitBackdropFilter: 'blur(0px)' }, { backgroundColor: 'rgba(17,38,23,0.62)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }], { duration: 380, easing: 'ease-out', fill: 'backwards' });
+    bar && bar.animate([{ opacity: 0, transform: 'translateY(-18px) scale(.98)' }, { opacity: 1, transform: 'none' }], { duration: 520, delay: 180, easing: E, fill: 'backwards' });
+    pan && pan.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 560, delay: 300, easing: E, fill: 'backwards' });
+  }
+  state = { q: '', active: 0, vw: window.innerWidth };
+  componentDidMount() {
+    this.intro();
+    this.prevO = document.body.style.overflow; document.body.style.overflow = 'hidden';
+    window.__lenis && window.__lenis.stop();
+    this.onEsc = e => { if (e.key === 'Escape') this.close(); };
+    this.onR = () => this.setState({ vw: window.innerWidth });
+    document.addEventListener('keydown', this.onEsc); window.addEventListener('resize', this.onR);
+    setTimeout(() => { const i = document.getElementById('buscador-input'); i && i.focus({ preventScroll: true }); }, 30);
+  }
+  componentWillUnmount() { document.body.style.overflow = this.prevO || ''; window.__lenis && window.__lenis.start(); document.removeEventListener('keydown', this.onEsc); window.removeEventListener('resize', this.onR); }
+  close() {
+    if (this._closing) return; this._closing = true;
+    const done = () => this.props.onClose && this.props.onClose();
+    const ov = this.ovRef.current, bar = this.barRef.current, pan = this.panRef.current;
+    if (!ov || !ov.animate || matchMedia('(prefers-reduced-motion: reduce)').matches) return done();
+    const o = { duration: 220, easing: 'ease-in', fill: 'forwards' };
+    pan && pan.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(10px)' }], o);
+    bar && bar.animate([{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(-10px)' }], o);
+    ov.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 280, delay: 60, easing: 'ease-in', fill: 'forwards' }).onfinish = done;
+  }
+  results() {
+    const q = norm(this.state.q.trim());
+    if (!q) return null;
+    const words = q.split(/\s+/);
+    return DATA.filter(d => { const h = norm(d.t + ' ' + d.meta + ' ' + d.g + ' ' + (d.kw || '')); return words.every(w => h.includes(w)); });
+  }
+  parts(t) {
+    const q = norm(this.state.q.trim()); if (!q) return [{ t, dec: 'none' }];
+    const n = norm(t), out = []; let i = 0;
+    while (i < t.length) { const j = n.indexOf(q, i); if (j < 0) { out.push({ t: t.slice(i), dec: 'none' }); break; } if (j > i) out.push({ t: t.slice(i, j), dec: 'none' }); out.push({ t: t.slice(j, j + q.length), dec: 'underline' }); i = j + q.length; }
+    return out;
+  }
+  renderVals() {
+    const res = this.results();
+    const flat = res ? ['Documentos', 'Convocatorias', 'Noticias', 'Páginas'].flatMap(g => res.filter(r => r.g === g)) : QUICK;
+    const act = Math.min(this.state.active, Math.max(0, flat.length - 1));
+    const row = (d, i) => ({
+      href: d.href, parts: this.parts(d.t), meta: d.meta, sel: i === act ? 'true' : 'false',
+      bg: i === act ? '#F5F5F3' : 'transparent', arrow: i === act ? '#17331F' : '#B4B4AE',
+      icon: d.pdf ? 'file-text' : d.icon, iconBg: d.pdf ? 'linear-gradient(160deg, #F0605A 0%, #D63A33 100%)' : '#F1F5E4', iconFg: d.pdf ? '#FFFFFF' : '#32502A',
+      hasBadge: !!d.badge && this.state.vw >= 640, badge: d.badge, hover: () => this.state.active !== i && this.setState({ active: i })
+    });
+    let groups;
+    if (!res) groups = [{ label: 'Accesos rápidos', top: 24, rows: QUICK.map(row) }];
+    else { let k = 0, first = true; groups = ['Documentos', 'Convocatorias', 'Noticias', 'Páginas'].map(g => { const items = res.filter(r => r.g === g); if (!items.length) return null; const o = { label: g + ' · ' + items.length, top: first ? 0 : 20, rows: items.map(d => row(d, k++)) }; first = false; return o; }).filter(Boolean); }
+    const m = this.state.vw < 768, d = this.state.vw >= 1680;
+    return {
+      ovRef: this.ovRef, barRef: this.barRef, panRef: this.panRef, q: this.state.q, isIdle: !res, groups, isWide: !m,
+      hasMore: !!res && res.length > 0, moreHref: res && res[0] ? res[0].href : '#', moreLabel: res ? 'Ver los ' + res.length + ' resultados para “' + this.state.q.trim() + '”' : '',
+      isEmpty: !!res && res.length === 0, emptyLabel: 'No encontramos resultados para “' + this.state.q.trim() + '”',
+      placeholder: m ? 'Buscar en el sitio' : 'Busca documentos, convocatorias, noticias o páginas',
+      padT: m ? 16 : d ? 96 : 72, padX: m ? 12 : 24, inputH: m ? 56 : 66, inputSize: m ? 16 : 18,
+      frequent: FREQ.map(l => ({ label: l, pick: () => this.setState({ q: l, active: 0 }) })),
+      onInput: e => this.setState({ q: e.target.value, active: 0 }),
+      onKey: e => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); this.setState({ active: (act + 1) % flat.length }); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); this.setState({ active: (act - 1 + flat.length) % flat.length }); }
+        else if (e.key === 'Enter' && flat[act]) { e.preventDefault(); window.location.href = flat[act].href; }
+      },
+      close: () => this.close(), onBackdrop: () => this.close(), stop: e => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>

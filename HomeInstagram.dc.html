@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>a{color:#32502A} a:hover{color:#17331F} a:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="ig-titulo" style="position:relative; width:100%; overflow:hidden; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0;" hint-size="100%,100%"></dc-import>
+  <div style="position:relative; box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; gap:{{ headGap }}px;">
+    <header style="display:flex; flex-direction:{{ headDir }}; align-items:{{ headAlign }}; justify-content:space-between; gap:{{ headInner }}px;">
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <h2 id="ig-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F;">{{ titleStart }} <span style="color:#758434;">{{ titleHighlight }}</span></h2>
+        <a href="{{ profileHref }}" style="align-self:flex-start; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; color:#4D4D4A; text-decoration:none;" style-hover="color:#17331F; text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">{{ handle }}</a>
+      </div>
+      <dc-import name="Button" variant="primario" icon="instagram-logo" label="{{ ctaLabel }}" href="{{ profileHref }}" size="{{ btnSize }}" hint-size="208px,44px"></dc-import>
+    </header>
+    <ul aria-label="Publicaciones recientes de Instagram" style="list-style:none; margin:0; padding:0; display:grid; grid-template-columns:{{ cols }}; gap:{{ gap }}px;">
+      <sc-for list="{{ posts }}" as="po" hint-placeholder-count="4">
+        <li>
+          <a href="{{ po.href }}" aria-label="{{ po.label }}" style="position:relative; display:flex; align-items:center; justify-content:center; aspect-ratio:3 / 4; border-radius:8px; overflow:hidden; background:#ECECEA; transition:filter .15s;" style-hover="filter:brightness(0.92);" style-focus="outline:3px solid #ECC725; outline-offset:3px;">
+            <sc-if value="{{ po.hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ po.src }}" alt="{{ po.alt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if>
+            <sc-if value="{{ po.noImage }}" hint-placeholder-val="{{ true }}"><i class="ph ph-image" aria-hidden="true" style="font-size:36px; color:#A9A9A6;"></i></sc-if>
+            <sc-if value="{{ po.hasType }}" hint-placeholder-val="{{ false }}"><i class="ph-fill ph-{{ po.typeIcon }}" aria-hidden="true" style="position:absolute; top:10px; right:10px; font-size:{{ typeSize }}px; color:#FFFFFF; filter:drop-shadow(0 1px 3px rgba(10,23,14,0.5));"></i></sc-if>
+          </a>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;titleStart&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Síguenos en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleHighlight&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Instagram&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;handle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;@fs.lagranja&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;profileHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://www.instagram.com/fs.lagranja/&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;ctaLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Ver en Instagram&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;posts&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{src,alt,href,type:'carrusel'|'video'|'imagen'}[]&quot;,&quot;section&quot;:&quot;Publicaciones&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const ICON = { carrusel: 'copy-simple', video: 'play-circle' };
+    const posts = (p.posts ?? [{ type: 'carrusel' }, { type: 'video' }, { type: 'carrusel' }, { type: 'imagen' }])
+      .map((x, i) => ({ src: '', alt: '', href: p.profileHref ?? '#', ...x, hasImage: !!x.src, noImage: !x.src, hasType: !!ICON[x.type], typeIcon: ICON[x.type] || '', label: 'Publicación ' + (i + 1) + ' en Instagram' }));
+    return {
+      rootRef: this.rootRef, posts,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev],
+      padT: m ? 72 : 128, padB: m ? 80 : 128, headGap: m ? 32 : 48,
+      headDir: m ? 'column' : 'row', headAlign: m ? 'flex-start' : 'flex-end', headInner: m ? 24 : 24,
+      h2: m ? 28 : (d ? 52 : 44), btnSize: m ? 'lg' : 'md',
+      cols: m ? 'repeat(2, minmax(0,1fr))' : 'repeat(' + posts.length + ', minmax(0,1fr))',
+      gap: m ? 8 : 16, typeSize: m ? 14 : 20,
+      titleStart: p.titleStart ?? 'Síguenos en', titleHighlight: p.titleHighlight ?? 'Instagram',
+      handle: p.handle ?? '@fs.lagranja', profileHref: p.profileHref ?? 'https://www.instagram.com/fs.lagranja/',
+      ctaLabel: p.ctaLabel ?? 'Ver en Instagram'
+    };
+  }
+}
+</script>
+</body>
+</html>

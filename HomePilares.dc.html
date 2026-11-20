@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>a{color:#32502A} a:hover{color:#17331F}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="pilares-titulo" style="position:relative; width:100%; overflow:clip; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0;" hint-size="100%,100%"></dc-import>
+  <sc-if value="{{ isSplit }}" hint-placeholder-val="{{ true }}">
+  <div style="position:relative; box-sizing:border-box; padding:{{ padY }}px {{ mx }}px; display:grid; grid-template-columns:{{ splitCols }}; gap:{{ gap }}px; align-items:start;">
+    <div style="position:sticky; top:{{ stickTop }}px; height:{{ stickH }}; min-height:520px; border-radius:20px; overflow:hidden; background:#ECECEA; display:flex; align-items:flex-end; isolation:isolate;">
+      <sc-if value="{{ hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:-2;"></sc-if>
+      <sc-if value="{{ noImage }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="position:absolute; inset:0; z-index:-2; display:flex; align-items:center; justify-content:center; color:#A9A9A6; font-size:44px;"><i class="ph ph-image"></i></span></sc-if>
+      <span aria-hidden="true" style="position:absolute; inset:0; z-index:-1; background:linear-gradient(to bottom, rgba(10,23,14,0) 50%, rgba(10,23,14,0.55) 100%);"></span>
+      <h2 id="pilares-titulo" style="margin:0; padding:{{ h2Pad }}; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.1; letter-spacing:-0.02em; color:#FFFFFF; text-shadow:0 2px 12px rgba(10,23,14,0.35);">{{ titleStart }} <span style="color:#AACC4A;">{{ titleHighlight }}</span></h2>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:{{ gap }}px;">
+      <sc-for list="{{ pillars }}" as="c" hint-placeholder-count="4">
+        <article style="box-sizing:border-box; min-height:{{ splitCardH }}; display:flex; flex-direction:column; justify-content:space-between; gap:24px; padding:{{ cardPad }}; border-radius:20px; background:{{ c.bg }}; color:{{ c.fg }};">
+          <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:{{ num }}px; line-height:1; letter-spacing:-0.02em; color:{{ c.numFg }};">{{ c.n }}</span>
+          <div style="display:flex; flex-direction:column; gap:{{ innerGap }}px;">
+            <h3 style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ cardTitle }}px; line-height:1.25; color:{{ c.numFg }}; text-wrap:pretty;">{{ c.title }}</h3>
+            <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; line-height:1.7; color:{{ c.fg }}; text-wrap:pretty;">{{ c.text }}</p>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+  <sc-if value="{{ isStacked }}" hint-placeholder-val="{{ false }}">
+  <div style="position:relative; box-sizing:border-box; padding:{{ padY }}px {{ mx }}px; display:grid; grid-template-columns:{{ cols }}; grid-template-rows:{{ rows }}; gap:{{ gap }}px;">
+    <div style="position:relative; grid-row:{{ photoRow }}; grid-column:{{ photoCol }}; min-height:{{ photoH }}px; border-radius:20px; overflow:hidden; background:#ECECEA; display:flex; align-items:flex-end; isolation:isolate;">
+      <sc-if value="{{ hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:-2;"></sc-if>
+      <sc-if value="{{ noImage }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="position:absolute; inset:0; z-index:-2; display:flex; align-items:center; justify-content:center; color:#A9A9A6; font-size:44px;"><i class="ph ph-image"></i></span></sc-if>
+      <span aria-hidden="true" style="position:absolute; inset:0; z-index:-1; background:linear-gradient(to bottom, rgba(10,23,14,0) 50%, rgba(10,23,14,0.55) 100%);"></span>
+      <h2 id="pilares-titulo" style="margin:0; padding:{{ h2Pad }}; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.1; letter-spacing:-0.02em; color:#FFFFFF; text-shadow:0 2px 12px rgba(10,23,14,0.35);">{{ titleStart }} <span style="color:#AACC4A;">{{ titleHighlight }}</span></h2>
+    </div>
+    <sc-for list="{{ pillars }}" as="c" hint-placeholder-count="4">
+      <article style="box-sizing:border-box; min-height:{{ cardMin }}px; display:flex; flex-direction:column; justify-content:space-between; gap:24px; padding:{{ cardPad }}; border-radius:20px; background:{{ c.bg }}; color:{{ c.fg }};">
+        <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:{{ num }}px; line-height:1; letter-spacing:-0.02em; color:{{ c.numFg }};">{{ c.n }}</span>
+        <div style="display:flex; flex-direction:column; gap:{{ innerGap }}px;">
+          <h3 style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ cardTitle }}px; line-height:1.25; color:{{ c.numFg }}; text-wrap:pretty;">{{ c.title }}</h3>
+          <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; line-height:1.7; color:{{ c.fg }}; text-wrap:pretty;">{{ c.text }}</p>
+        </div>
+      </article>
+    </sc-for>
+  </div>
+  </sc-if>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Variante&quot;},&quot;titleStart&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nuestros&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;titleHighlight&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;pilares&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contenido&quot;},&quot;image&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Imagen&quot;},&quot;imageAlt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Imagen&quot;},&quot;pillars&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{title,text}[]&quot;,&quot;section&quot;:&quot;Pilares&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const st = w < 1100;
+      if (d !== this.state.auto || st !== this.state.mid) this.setState({ auto: d, mid: st });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const mid = !m && (!p.device || p.device === 'auto') && this.state.mid;
+    const T = [
+      { bg: 'linear-gradient(150deg, #AACC4A 0%, #C9DE36 50%, #E8F01C 100%)', fg: '#2B3A22', numFg: '#17331F' },
+      { bg: 'linear-gradient(150deg, #ECC725 0%, #F0D255 50%, #F4DE7A 100%)', fg: '#3A3418', numFg: '#17331F' },
+      { bg: 'linear-gradient(150deg, #5E6D26 0%, #758434 50%, #8A9A3E 100%)', fg: 'rgba(255,255,255,0.88)', numFg: '#FFFFFF' },
+      { bg: 'linear-gradient(150deg, #17331F 0%, #22402A 50%, #2F5530 100%)', fg: 'rgba(255,255,255,0.85)', numFg: '#FFFFFF' }
+    ];
+    const pillars = (p.pillars ?? [
+      { title: 'Desarrollo humano sostenible', text: 'Mejoramos el acceso a servicios básicos, educación, salud y formación.' },
+      { title: 'Gestión transparente y participativa', text: 'Procesos abiertos, legales y con la participación de la comunidad.' },
+      { title: 'Sostenibilidad ambiental y territorial', text: 'Proyectos que respetan y protegen el entorno natural de Querocoto.' },
+      { title: 'Equidad y justicia social', text: 'Beneficios que llegan a todos, especialmente a quienes más lo necesitan.' }
+    ]).map((c, i) => ({ ...T[i % 4], ...c, n: String(i + 1).padStart(2, '0') }));
+    const image = (dev === 'mobile' ? p.imageMobile : p.image) || (dev === 'mobile' ? 'assets/fotos/home-pilares-imagen-fija-mobile.webp' : 'assets/fotos/home-pilares-imagen-fija.webp');
+    return {
+      rootRef: this.rootRef, pillars, hasImage: !!image, noImage: !image, image, imageAlt: p.imageAlt ?? 'Comunidad de Querocoto junto al Fondo Social La Granja',
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padY: m ? 20 : 56, gap: m ? 12 : 16,
+      cols: m ? '1fr' : (mid ? 'repeat(2, minmax(0,1fr))' : 'minmax(0, 2.05fr) minmax(0,1fr) minmax(0,1fr)'),
+      rows: (m || mid) ? 'auto' : 'repeat(2, minmax(' + (d ? 462 : 380) + 'px, auto))',
+      photoRow: (m || mid) ? 'auto' : '1 / span 2', photoCol: mid ? '1 / -1' : 'auto', photoH: m ? 306 : (mid ? 360 : 0),
+      cardMin: m ? 316 : (mid ? 320 : 0), cardPad: m ? '32px 32px 36px' : (d ? '36px 32px 34px' : '32px 32px 34px'),
+      num: m ? 52 : (d ? 64 : 56), cardTitle: m ? 22 : (d ? 26 : 24), innerGap: m ? 14 : 20,
+      h2: m ? 26 : (d ? 52 : 40), h2Pad: m ? '0 24px 22px' : (d ? '0 48px 48px' : '0 40px 40px'),
+      isSplit: !m && !mid, isStacked: m || mid, splitCols: d ? 'minmax(0,1.78fr) minmax(0,1fr)' : 'minmax(0,2.23fr) minmax(0,1fr)',
+      stickTop: 96, stickH: 'calc(100vh - 152px)', splitCardH: 'max(420px, calc((100vh - 152px) * 0.72))',
+      titleStart: p.titleStart ?? 'Nuestros', titleHighlight: p.titleHighlight ?? 'pilares'
+    };
+  }
+}
+</script>
+</body>
+</html>

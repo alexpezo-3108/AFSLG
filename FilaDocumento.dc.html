@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<div style="display:flex; align-items:center; gap:{{ gap }}px; padding:{{ pad }}; border-bottom:{{ border }};">
+  <span aria-hidden="true" style="flex:none; width:{{ tile }}px; height:{{ tile }}px; border-radius:10px; background:{{ tileBg }}; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; color:#FFFFFF; box-shadow:0 2px 6px rgba(17,38,23,0.12);">
+    <i class="ph-fill ph-file" style="font-size:{{ tileIcon }}px; opacity:0.95;"></i>
+    <span style="font-family:Montserrat, sans-serif; font-weight:700; font-size:8px; letter-spacing:0.04em;">{{ ext }}</span>
+  </span>
+  <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;">
+    <span style="display:flex; flex-direction:{{ titleDir }}; align-items:{{ titleAlign }}; flex-wrap:wrap; column-gap:10px; row-gap:6px;"><span style="font-family:Poppins, sans-serif; font-weight:600; font-size:{{ titleSize }}px; line-height:1.3; color:#17331F; text-wrap:pretty;">{{ title }}</span><sc-if value="{{ hasBadge }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 8px; border-radius:5px; background:linear-gradient(100deg, #5E8A2E 0%, #32502A 100%); color:#FFFFFF; font-family:Montserrat, sans-serif; font-weight:700; font-size:12px;">{{ badge }}</span></sc-if></span>
+    <span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; color:#707070;">{{ meta }}</span>
+  </div>
+  <sc-if value="{{ isWide }}" hint-placeholder-val="{{ true }}">
+    <a href="{{ href }}" target="{{ target }}" rel="noopener" download="{{ download }}" onClick="{{ onAct }}" style="flex:none; display:flex; align-items:center; gap:8px; min-height:44px; padding:0 {{ actPadX }}px; border-radius:8px; background:{{ actBg }}; font-family:Montserrat, sans-serif; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; color:#17331F; text-decoration:none;" style-hover="color:#32502A; text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph ph-{{ actIcon }}" aria-hidden="true" style="font-size:18px;"></i>{{ actLabel }}</a>
+  </sc-if>
+  <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <a href="{{ href }}" target="{{ target }}" rel="noopener" download="{{ download }}" onClick="{{ onAct }}" aria-label="{{ actAria }}" style="flex:none; width:44px; height:44px; box-sizing:border-box; border-radius:50%; border:1px solid #E2E2E2; background:#FFFFFF; display:flex; align-items:center; justify-content:center; color:#17331F; font-size:18px;" style-hover="background:#F7F7F7;" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph ph-{{ actIcon }}" aria-hidden="true"></i></a>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:720,&quot;height&quot;:90},&quot;format&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;pdf&quot;,&quot;xls&quot;,&quot;doc&quot;],&quot;default&quot;:&quot;pdf&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Términos de referencia&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;fileSize&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;1,2 MB&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;href&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;size&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;md&quot;,&quot;sm&quot;],&quot;default&quot;:&quot;md&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;badge&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;tinted&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;last&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onView&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(doc) =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const p = this.props;
+    const fmt = (p.format ?? 'pdf').toLowerCase();
+    const F = {
+      pdf: ['PDF', 'linear-gradient(160deg, #EE6A5F 0%, #D63A32 100%)', 'PDF'],
+      xls: ['XLS', 'linear-gradient(160deg, #3BB06B 0%, #1E7A44 100%)', 'Excel'],
+      doc: ['DOC', 'linear-gradient(160deg, #5A93E6 0%, #2557B0 100%)', 'Word']
+    }[fmt] || ['FILE', '#707070', 'Archivo'];
+    const view = fmt === 'pdf';
+    const sm = p.size === 'sm';
+    const title = p.title ?? 'Términos de referencia';
+    return {
+      isWide: !sm, isMobile: sm, hasBadge: !!p.badge, badge: p.badge ?? '', titleDir: sm ? 'column' : 'row', titleAlign: sm ? 'flex-start' : 'center', actBg: p.tinted ? '#FFFFFF' : 'transparent', actPadX: p.tinted ? 16 : 4,
+      gap: sm ? 14 : 16, pad: sm ? '16px 0' : '20px 0', border: (p.last === true || p.last === 'true') ? 'none' : (p.tinted ? '1px solid rgba(17,38,23,0.10)' : '1px solid #E2E2E2'),
+      tile: sm ? 40 : 48, tileIcon: sm ? 15 : 18, tileBg: F[1], ext: F[0],
+      title, titleSize: sm ? 15 : 18, meta: F[2] + (p.fileSize ? ' · ' + p.fileSize : ''),
+      href: p.href ?? '#', target: view ? '_blank' : undefined, download: view ? undefined : '',
+      actIcon: view ? 'eye' : 'download-simple', actLabel: view ? 'Ver documento' : 'Descargar',
+      actAria: (view ? 'Ver ' : 'Descargar ') + title,
+      onAct: p.onView && view ? (e => { e.preventDefault(); p.onView({ title, href: p.href }); }) : undefined
+    };
+  }
+}
+</script>
+</body>
+</html>

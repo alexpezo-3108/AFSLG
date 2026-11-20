@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="zona-titulo" style="position:relative; width:100%; overflow:hidden; isolation:isolate; background:linear-gradient(150deg, #122818 0%, #2A4A2F 45%, #6E7F30 100%);">
+  <dc-import name="Patron" tone="dark" style="position:absolute; inset:0;" hint-size="100%,100%"></dc-import>
+  <img src="assets/ondas.svg" alt="" aria-hidden="true" style="position:absolute; left:0; top:0; width:{{ waveW }}px; height:auto; transform:rotate(180deg); opacity:0.35; pointer-events:none;">
+  <img src="assets/ondas.svg" alt="" aria-hidden="true" style="position:absolute; right:0; bottom:0; width:{{ waveW }}px; height:auto; opacity:0.35; pointer-events:none;">
+  <div style="position:relative; box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:grid; grid-template-columns:{{ cols }}; column-gap:{{ colGap }}px; row-gap:40px; align-items:start;">
+    <div style="display:flex; flex-direction:column; min-width:0;">
+      <h2 id="zona-titulo" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#FFFFFF;">{{ titleStart }} <span style="color:#AACC4A;">{{ titleHighlight }}</span></h2>
+      <p style="margin:{{ introTop }}px 0 0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ introSize }}px; line-height:1.62; color:rgba(255,255,255,0.88); text-wrap:pretty;">{{ intro }}</p>
+      <dl style="margin:{{ statsTop }}px 0 0; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px;">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <div style="display:flex; flex-direction:column-reverse; justify-content:flex-end; gap:6px; padding:{{ statPad }}; border-radius:16px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.14);">
+            <dt style="font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ statLabel }}px; line-height:1.45; color:rgba(255,255,255,0.8);">{{ s.label }}</dt>
+            <dd style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ statNum }}px; line-height:1.1; color:#ECC725;">{{ s.value }}</dd>
+          </div>
+        </sc-for>
+      </dl>
+      <span style="margin-top:{{ secTop }}px; font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A;">{{ limitsLabel }}</span>
+      <dl style="margin:12px 0 0; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); column-gap:24px;">
+        <sc-for list="{{ limits }}" as="l" hint-placeholder-count="4">
+          <div style="display:flex; flex-direction:column-reverse; justify-content:flex-end; gap:4px; padding:12px 0 14px; border-bottom:1px solid rgba(255,255,255,0.18);">
+            <dd style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ limitSize }}px; line-height:1.35; color:#FFFFFF;">{{ l.value }}</dd>
+            <dt style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; color:rgba(255,255,255,0.75);">{{ l.label }}</dt>
+          </div>
+        </sc-for>
+      </dl>
+      <span style="margin-top:{{ secTop }}px; font-family:Montserrat, sans-serif; font-weight:600; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A;">{{ commLabel }}</span>
+      <ul aria-label="{{ commLabel }}" style="list-style:none; margin:20px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:8px;">
+        <sc-for list="{{ communities }}" as="c" hint-placeholder-count="8">
+          <li style="display:flex; align-items:center; gap:8px; height:36px; padding:0 14px; border-radius:999px; background:rgba(255,255,255,0.1); font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ chipSize }}px; color:#FFFFFF;"><i class="ph ph-map-pin" aria-hidden="true" style="font-size:14px; color:#AACC4A;"></i>{{ c }}</li>
+        </sc-for>
+      </ul>
+    </div>
+    <div style="position:relative;">
+      <img src="{{ image }}" alt="{{ imageAlt }}" style="display:block; width:100%; height:{{ imgH }}; object-fit:cover; border-radius:20px;">
+    </div>
+  </div>
+  <sc-if value="{{ showLeaf }}" hint-placeholder-val="{{ true }}">
+    <img src="assets/hojas-superior.png" alt="" aria-hidden="true" style="position:absolute; right:0; bottom:{{ leafBot }}px; width:170px; transform:scaleY(-1); pointer-events:none;">
+  </sc-if>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;intro&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;En el distrito de Querocoto, al suroeste de la provincia de Chota, en Cajamarca. Un territorio de sierra, entre la Yunga y la Jalca, donde la agricultura y la ganadería sostienen a la mayoría de familias.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;image&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;stats&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{value,label}[]&quot;},&quot;limits&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{label,value}[]&quot;},&quot;communities&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto || w !== this.state.w) this.setState({ auto: d, w });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const stack = m || (isAuto && (this.state.w || window.innerWidth) < 1024);
+    return {
+      rootRef: this.rootRef, showLeaf: !stack,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padT: m ? 72 : 120, padB: m ? 72 : 120,
+      cols: stack ? '1fr' : (d ? 'minmax(0, 773fr) minmax(0, 747fr)' : 'minmax(0, 628fr) minmax(0, 620fr)'), colGap: d ? 80 : 80,
+      waveW: m ? 220 : (d ? 900 : 640), leafBot: d ? 40 : 40,
+      h2: m ? 28 : (d ? 52 : 44), introTop: m ? 20 : 28, introSize: m ? 18 : 18,
+      statsTop: m ? 28 : 28, statPad: m ? '18px 16px' : '20px', statNum: m ? 20 : 24, statLabel: m ? 14 : 14,
+      secTop: m ? 32 : 36, limitSize: m ? 15 : 17, chipSize: m ? 15 : 15,
+      imgH: m ? '402px' : (stack ? '480px' : (d ? '731px' : '714px')),
+      titleStart: p.titleStart ?? 'Zona de', titleHighlight: p.titleHighlight ?? 'influencia',
+      intro: p.intro ?? 'En el distrito de Querocoto, al suroeste de la provincia de Chota, en Cajamarca. Un territorio de sierra, entre la Yunga y la Jalca, donde la agricultura y la ganadería sostienen a la mayoría de familias.',
+      stats: p.stats ?? [{ value: '301 km²', label: 'de extensión' }, { value: '2,455', label: 'm s. n. m.' }, { value: '14 °C', label: 'temperatura promedio' }, { value: '1876', label: 'año de creación del distrito' }],
+      limitsLabel: 'Límites del distrito',
+      limits: p.limits ?? [{ label: 'Norte', value: 'Querocotillo (Cutervo)' }, { label: 'Este', value: 'Cutervo' }, { label: 'Sur', value: 'Huambos y Llama' }, { label: 'Oeste', value: 'San Juan de Licupis y Miracosta' }],
+      commLabel: 'Comunidades donde trabajamos',
+      communities: p.communities ?? ['La Granja', 'Paraguay', 'La Pampa', 'Pacopampa', 'El Rejo', 'Las Flores', 'Checos', 'El Sauce'],
+      image: p.image || 'assets/fotos/nosotros-zona-de-influencia.webp', imageAlt: p.imageAlt ?? 'Reunión del equipo del Fondo con pobladores en un caserío de Querocoto'
+    };
+  }
+}
+</script>
+</body>
+</html>

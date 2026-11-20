@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+</helmet>
+<section ref="{{ rootRef }}" aria-label="Noticia destacada" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:{{ padT }}px {{ mx }}px {{ padB }}px;">
+    <article style="display:grid; grid-template-columns:{{ cols }}; align-items:center; gap:{{ gap }}px; padding:{{ cardPad }}; border-radius:20px; background:#FFFFFF; box-shadow:0 1px 2px rgba(17,38,23,0.04);">
+      <div data-shine="" style="position:relative; height:{{ imgH }}px; border-radius:14px; overflow:hidden; background:#ECECEA; display:flex; align-items:center; justify-content:center;">
+        <sc-if value="{{ hasImage }}" hint-placeholder-val="{{ false }}"><img src="{{ image }}" alt="{{ imageAlt }}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block;"></sc-if>
+        <sc-if value="{{ noImage }}" hint-placeholder-val="{{ true }}"><i class="ph ph-image" aria-hidden="true" style="font-size:40px; color:#A9A9A6;"></i></sc-if>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:flex-start; gap:{{ innerGap }}px; padding:{{ textPad }}; max-width:600px;">
+        <div style="display:flex; align-items:center; flex-wrap:wrap; gap:14px; font-family:Montserrat, sans-serif;">
+          <span style="padding:5px 10px; border-radius:6px; background:linear-gradient(135deg, #F4DC6A 0%, #ECC725 55%, #DDB71A 100%); color:#17331F; font-weight:600; font-size:12px; letter-spacing:0.04em; text-transform:uppercase;">{{ type }}</span>
+          <span style="display:flex; align-items:center; gap:6px; font-weight:500; font-size:14px; color:#4D4D4A;"><i class="ph ph-calendar-blank" aria-hidden="true" style="font-size:15px;"></i><time datetime="{{ datetime }}">{{ date }}</time></span>
+        </div>
+        <h2 style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ h2 }}px; line-height:1.18; letter-spacing:-0.015em; color:#17331F; text-wrap:pretty;"><a href="{{ href }}" style="color:inherit; text-decoration:none;" style-hover="text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">{{ title }}</a></h2>
+        <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px; line-height:1.65; color:#4D4D4A; text-wrap:pretty;">{{ excerpt }}</p>
+        <div style="margin-top:6px; display:flex;">
+          <dc-import name="Button" variant="primario-flecha" label="{{ ctaLabel }}" href="{{ href }}" size="{{ btnSize }}" surface="light" hint-size="170px,44px"></dc-import>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;type&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Noticia&quot;,&quot;Comunicado&quot;],&quot;default&quot;:&quot;Noticia&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;date&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;24 oct 2026&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Entregamos kits escolares a estudiantes de nuestra zona de influencia&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;excerpt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Los kits llegaron a las instituciones educativas de los centros poblados para el inicio del año escolar.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;image&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;imageAlt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;href&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;ctaLabel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Leer noticia&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop' };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const st = w < 1024;
+      if (d !== this.state.auto || st !== this.state.stack) this.setState({ auto: d, stack: st });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const stack = m || (isAuto && this.state.stack);
+    const image = p.image || '';
+    return {
+      rootRef: this.rootRef,
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padT: m ? 32 : 40, padB: m ? 32 : 48,
+      cols: stack ? '1fr' : (d ? 'minmax(0, 1fr) minmax(0, 1.02fr)' : 'minmax(0, 1fr) minmax(0, 1fr)'),
+      gap: stack ? 20 : 48, cardPad: m ? '12px' : '16px',
+      imgH: m ? 160 : (stack ? 320 : (d ? 506 : 420)),
+      textPad: m ? '0 8px 16px' : (stack ? '0 16px 24px' : '24px 32px 24px 0'), innerGap: m ? 16 : 20,
+      h2: m ? 24 : (d ? 40 : 32), btnSize: m ? 'lg' : 'md',
+      hasImage: !!image, noImage: !image, image, imageAlt: p.imageAlt ?? '',
+      type: p.type ?? 'Noticia', date: p.date ?? '24 oct 2026', datetime: p.datetime ?? '',
+      title: p.title ?? 'Entregamos kits escolares a estudiantes de nuestra zona de influencia',
+      excerpt: p.excerpt ?? 'Los kits llegaron a las instituciones educativas de los centros poblados para el inicio del año escolar.',
+      href: p.href ?? 'Noticia%20Detalle.dc.html', ctaLabel: p.ctaLabel ?? 'Leer noticia'
+    };
+  }
+}
+</script>
+</body>
+</html>

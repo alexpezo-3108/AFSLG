@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible),input:focus:not(:focus-visible){outline:none !important} .afslg-search::placeholder{color:rgba(255,255,255,0.7)}</style>
+</helmet>
+<div role="dialog" aria-modal="true" aria-label="Menú principal" data-lenis-prevent="true" style="position:fixed; inset:0; z-index:1000; overflow-y:auto; overscroll-behavior:contain; background:linear-gradient(180deg, #2C4D2D 0%, #1F3B23 55%, #17331F 100%); font-family:Montserrat, sans-serif; color:#FFFFFF; isolation:isolate;">
+  <dc-import name="Patron" tone="dark" style="position:fixed; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div aria-hidden="true" style="height:76px; border-bottom:1px solid rgba(255,255,255,0.14);"></div>
+  <div style="padding:24px 20px 40px; display:flex; flex-direction:column;">
+    <form role="search" onSubmit="{{ onSearch }}" style="position:relative; margin:0 0 20px;">
+      <label for="menu-buscar" style="position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0);">Buscar en la web</label>
+      <i class="ph ph-magnifying-glass" aria-hidden="true" style="position:absolute; left:20px; top:50%; transform:translateY(-50%); font-size:18px; color:rgba(255,255,255,0.85);"></i>
+      <input id="menu-buscar" class="afslg-search" type="search" placeholder="Buscar en la web" style="box-sizing:border-box; width:100%; height:56px; padding:0 20px 0 48px; border:1px solid rgba(255,255,255,0.22); border-radius:999px; background:rgba(255,255,255,0.10); color:#FFFFFF; font-family:Montserrat, sans-serif; font-weight:500; font-size:16px;" style-focus="outline:3px solid #ECC725; outline-offset:2px; background:rgba(255,255,255,0.14);">
+    </form>
+    <nav aria-label="Principal">
+      <a href="Home.dc.html" style="display:flex; align-items:center; min-height:56px; border-bottom:1px solid rgba(255,255,255,0.14); font-family:Poppins, sans-serif; font-weight:600; font-size:18px; color:#FFFFFF; text-decoration:none;" style-hover="color:#AACC4A;" style-focus="outline:3px solid #ECC725; outline-offset:-3px;">Inicio</a>
+      <a href="Noticias.dc.html" style="display:flex; align-items:center; min-height:56px; border-bottom:1px solid rgba(255,255,255,0.14); font-family:Poppins, sans-serif; font-weight:600; font-size:18px; color:#FFFFFF; text-decoration:none;" style-hover="color:#AACC4A;" style-focus="outline:3px solid #ECC725; outline-offset:-3px;">Noticias</a>
+      <a href="Convocatorias.dc.html" style="display:flex; align-items:center; gap:10px; min-height:58px; border-bottom:1px solid rgba(255,255,255,0.14); font-family:Poppins, sans-serif; font-weight:600; font-size:18px; color:#FFFFFF; text-decoration:none;" style-hover="color:#AACC4A;" style-focus="outline:3px solid #ECC725; outline-offset:-3px;">Convocatorias<sc-if value="{{ hasOpen }}" hint-placeholder-val="{{ true }}"><span style="padding:4px 10px; border-radius:999px; background:#ECC725; color:#17331F; font-family:Montserrat, sans-serif; font-weight:700; font-size:12px;">{{ openLabel }}</span></sc-if></a>
+      <a href="Proyectos.dc.html" style="display:flex; align-items:center; min-height:56px; border-bottom:1px solid rgba(255,255,255,0.14); font-family:Poppins, sans-serif; font-weight:600; font-size:18px; color:#FFFFFF; text-decoration:none;" style-hover="color:#AACC4A;" style-focus="outline:3px solid #ECC725; outline-offset:-3px;">Proyectos</a>
+      <div style="border-bottom:1px solid rgba(255,255,255,0.14);">
+        <button type="button" aria-expanded="{{ docsOpen }}" aria-controls="menu-docs" onClick="{{ toggleDocs }}" style="display:flex; align-items:center; justify-content:space-between; width:100%; min-height:56px; padding:0; border:none; background:transparent; font-family:Poppins, sans-serif; font-weight:600; font-size:18px; color:{{ docsColor }}; cursor:pointer; text-align:left;" style-hover="color:#AACC4A;" style-focus="outline:3px solid #ECC725; outline-offset:-3px;">Documentos<i class="ph ph-caret-{{ caret }}" aria-hidden="true" style="font-size:16px; margin-right:6px;"></i></button>
+        <sc-if value="{{ docsOpen }}" hint-placeholder-val="{{ false }}">
+          <div id="menu-docs" style="display:flex; flex-direction:column; padding:0 0 16px 16px;">
+            <sc-for list="{{ docs }}" as="d" hint-placeholder-count="4">
+              <a href="{{ d.href }}" style="display:flex; align-items:center; min-height:41px; font-weight:500; font-size:15px; color:rgba(255,255,255,0.85); text-decoration:none;" style-hover="color:#FFFFFF; text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">{{ d.label }}</a>
+            </sc-for>
+            <a href="Documentos.dc.html" style="display:flex; align-items:center; gap:8px; min-height:41px; font-weight:700; font-size:13px; letter-spacing:0.02em; text-transform:uppercase; color:#AACC4A; text-decoration:none;" style-hover="color:#ECC725;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">Ver todos los documentos<i class="ph ph-arrow-up-right" aria-hidden="true" style="font-size:13px;"></i></a>
+          </div>
+        </sc-if>
+      </div>
+      <a href="Nosotros.dc.html" style="display:flex; align-items:center; min-height:56px; border-bottom:1px solid rgba(255,255,255,0.14); font-family:Poppins, sans-serif; font-weight:600; font-size:18px; color:#FFFFFF; text-decoration:none;" style-hover="color:#AACC4A;" style-focus="outline:3px solid #ECC725; outline-offset:-3px;">Nosotros</a>
+    </nav>
+    <div style="margin-top:24px; display:flex; flex-direction:column; align-items:stretch;">
+      <dc-import name="Button" variant="primario" label="Contacto" href="Contacto.dc.html" size="lg" full-width="true" style="width:100%;" hint-size="100%,48px"></dc-import>
+    </div>
+    <div style="margin-top:20px; display:flex; justify-content:space-evenly; gap:16px; flex-wrap:wrap;">
+      <a href="Contacto.dc.html" style="display:flex; align-items:center; gap:8px; min-height:44px; font-weight:500; font-size:15px; color:#FFFFFF; text-decoration:none;" style-hover="text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph ph-envelope-simple" aria-hidden="true" style="font-size:18px;"></i>Mesa de partes virtual</a>
+      <a href="Convocatorias.dc.html" style="display:flex; align-items:center; gap:8px; min-height:44px; font-weight:500; font-size:15px; color:#FFFFFF; text-decoration:none;" style-hover="text-decoration:underline;" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph ph-handshake" aria-hidden="true" style="font-size:19px;"></i>Proveedores</a>
+    </div>
+    <a href="Buzon.dc.html" style="align-self:center; display:flex; align-items:center; min-height:44px; font-weight:500; font-size:15px; color:#FFFFFF; text-decoration:underline; text-underline-offset:3px;" style-hover="color:#AACC4A;" style-focus="outline:3px solid #ECC725; outline-offset:2px;">Buzón de quejas y sugerencias</a>
+    <div style="margin-top:12px; display:flex; justify-content:center; gap:12px;">
+      <sc-for list="{{ socials }}" as="s" hint-placeholder-count="3">
+        <a href="{{ s.href }}" aria-label="{{ s.label }}" style="width:44px; height:44px; box-sizing:border-box; border-radius:50%; border:1px solid rgba(255,255,255,0.5); display:flex; align-items:center; justify-content:center;" style-hover="background:rgba(255,255,255,0.12);" style-focus="outline:3px solid #ECC725; outline-offset:3px;"><img src="{{ s.icon }}" alt="" aria-hidden="true" style="width:18px; height:18px; display:block; filter:brightness(0) invert(1);"></a>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:1006},&quot;openCalls&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:2,&quot;min&quot;:0,&quot;tsType&quot;:&quot;number&quot;},&quot;onClose&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+const __R = s => { const t = String(s || ''); const M = [['Mesa de partes','Contacto.dc.html'],['Proveedores','Convocatorias.dc.html'],['Buz','Buzon.dc.html'],['rivacidad','Privacidad.dc.html'],['érminos','Terminos.dc.html'],['oticia','Noticias.dc.html'],['omunicado','Noticias.dc.html'],['onvocatoria','Convocatorias.dc.html'],['royecto','Proyectos.dc.html'],['eglament','Documentos.dc.html#reglamentos'],['arco normativo','Documentos.dc.html#marco'],['ctas','Documentos.dc.html#actas'],['uditor','Documentos.dc.html#auditorias'],['ocumento','Documentos.dc.html'],['osotros','Nosotros.dc.html'],['Qui','Nosotros.dc.html'],['Misi','Nosotros.dc.html'],['rganigrama','Nosotros.dc.html'],['ontacto','Contacto.dc.html'],['Inicio','Home.dc.html']]; const f = M.find(([k]) => t.includes(k)); return f ? f[1] : '#'; };
+class Component extends DCLogic {
+  state = { docs: false };
+  componentDidMount() {
+    const sw = window.innerWidth - document.documentElement.clientWidth;
+    this.prev = { o: document.body.style.overflow, pr: document.body.style.paddingRight };
+    document.body.style.overflow = 'hidden';
+    if (sw > 0 && !CSS.supports('scrollbar-gutter', 'stable')) document.body.style.paddingRight = sw + 'px';
+    window.__lenis && window.__lenis.stop();
+    this.onKey = e => { if (e.key === 'Escape') this.close(); };
+    document.addEventListener('keydown', this.onKey);
+    const inp = document.getElementById('menu-buscar'); inp && inp.focus({ preventScroll: true });
+  }
+  componentWillUnmount() {
+    document.body.style.overflow = this.prev.o || '';
+    document.body.style.paddingRight = this.prev.pr || '';
+    window.__lenis && window.__lenis.start();
+    document.removeEventListener('keydown', this.onKey);
+  }
+  close() { this.props.onClose && this.props.onClose(); }
+  renderVals() {
+    const n = this.props.openCalls ?? 2;
+    return {
+      onClose: () => this.close(),
+      onSearch: e => e.preventDefault(),
+      hasOpen: n > 0, openLabel: n + (n == 1 ? ' abierta' : ' abiertas'),
+      docsOpen: this.state.docs, caret: this.state.docs ? 'up' : 'down', docsColor: this.state.docs ? '#AACC4A' : '#FFFFFF',
+      toggleDocs: () => this.setState(s => ({ docs: !s.docs })),
+      docs: [['Reglamentos y políticas', 'reglamentos'], ['Marco normativo', 'marco'], ['Actas', 'actas'], ['Auditorías', 'auditorias']].map(([l, k]) => ({ label: l, href: 'Documentos.dc.html' + (k ? '?tipo=' + k : '') })),
+      socials: [
+        { label: 'Facebook', href: 'https://www.facebook.com/p/Fondo-Social-La-Granja-61586837956879/', icon: 'assets/icono-facebook.svg' },
+        { label: 'Instagram', href: 'https://www.instagram.com/fs.lagranja/', icon: 'assets/icono-instagram.svg' },
+        { label: 'LinkedIn', href: 'https://www.linkedin.com/company/asociaci%C3%B3n-fondo-social-la-granja', icon: 'assets/icono-linkedin.svg' },
+        { label: 'YouTube', href: 'https://www.youtube.com/channel/UCDYrOUOeRuhTE19QnYAQPaA', icon: 'assets/icono-youtube.svg' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

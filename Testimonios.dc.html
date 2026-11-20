@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="testimonios-titulo" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate; overflow:hidden;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; padding:0 0 {{ padB }}px; display:flex; flex-direction:column; gap:{{ headGap }}px;">
+    <header style="box-sizing:border-box; padding:0 {{ mx }}px; display:flex; align-items:center; justify-content:{{ headJustify }}; gap:{{ headInner }}px;">
+      <h2 id="testimonios-titulo" style="margin:0; max-width:{{ h2Max }}; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#17331F;">{{ title }}</h2>
+      <div style="flex:none; display:flex; gap:8px;">
+        <button type="button" onClick="{{ prev }}" disabled="{{ atStart }}" aria-label="Testimonio anterior" aria-controls="testimonios-lista" style="width:48px; height:48px; border-radius:50%; border:0; background:{{ prevBg }}; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:{{ prevCursor }};" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph-bold ph-caret-left" aria-hidden="true"></i></button>
+        <button type="button" onClick="{{ next }}" disabled="{{ atEnd }}" aria-label="Testimonio siguiente" aria-controls="testimonios-lista" style="width:48px; height:48px; border-radius:50%; border:0; background:{{ nextBg }}; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-size:18px; cursor:{{ nextCursor }};" style-focus="outline:3px solid #ECC725; outline-offset:2px;"><i class="ph-bold ph-caret-right" aria-hidden="true"></i></button>
+      </div>
+    </header>
+    <ul id="testimonios-lista" ref="{{ trackRef }}" onScroll="{{ onScroll }}" data-lenis-prevent="true" style="list-style:none; margin:0; padding:0 {{ mx }}px; display:flex; gap:16px; overflow-x:auto; scroll-snap-type:x mandatory; scroll-padding-left:{{ mx }}px; scroll-behavior:smooth; scrollbar-width:none;">
+      <sc-for list="{{ items }}" as="t" hint-placeholder-count="3">
+        <li style="flex:none; width:{{ cardW }}px; scroll-snap-align:start; display:flex;">
+          <figure style="position:relative; margin:0; width:100%; min-height:{{ cardH }}px; box-sizing:border-box; padding:{{ cardPad }}; border-radius:20px; overflow:hidden; isolation:isolate; background:linear-gradient(150deg, #3E6233 0%, #32502A 50%, #2A4729 100%); display:flex; flex-direction:column; justify-content:space-between; gap:{{ innerGap }}px;">
+            <i class="ph-fill ph-hand-heart" aria-hidden="true" style="position:absolute; top:{{ iconTop }}px; right:{{ iconRight }}px; font-size:{{ iconSize }}px; color:rgba(255,255,255,0.1); z-index:-1;"></i>
+            <span aria-hidden="true" style="font-family:Poppins, sans-serif; font-weight:700; font-style:italic; font-size:{{ quoteSize }}px; line-height:0.8; color:#ECC725;">“</span>
+            <blockquote style="margin:0;"><p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ textSize }}px; line-height:1.65; color:#FFFFFF; text-wrap:pretty;">{{ t.quote }}</p></blockquote>
+            <sc-if value="{{ t.hasAuthor }}" hint-placeholder-val="{{ false }}"><figcaption style="font-family:Montserrat, sans-serif; font-weight:600; font-size:13px; color:rgba(255,255,255,0.8);">{{ t.author }}</figcaption></sc-if>
+          </figure>
+        </li>
+      </sc-for>
+    </ul>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Lo que dicen los beneficiarios&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;items&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{quote,author?}[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop', atStart: true, atEnd: false };
+  rootRef = React.createRef();
+  trackRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+      this.check();
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  check() {
+    const t = this.trackRef.current; if (!t) return;
+    const atStart = t.scrollLeft < 4, atEnd = t.scrollLeft + t.clientWidth >= t.scrollWidth - 4;
+    if (atStart !== this.state.atStart || atEnd !== this.state.atEnd) this.setState({ atStart, atEnd });
+  }
+  go(dir) {
+    const t = this.trackRef.current; if (!t) return;
+    const li = t.querySelector('li'); const step = li ? li.getBoundingClientRect().width + 16 : t.clientWidth;
+    t.scrollBy({ left: dir * step, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const items = (p.items ?? [
+      { quote: 'Ahora el agua llega limpia y todos los días. Antes teníamos que acarrearla desde la quebrada, y las mujeres y los niños caminaban casi una hora para llenar los baldes.' },
+      { quote: 'Trabajamos juntos con el Fondo en la obra. Es un proyecto que hicimos entre todos.' },
+      { quote: 'Mis hijos ya no se enferman como antes. Tener agua segura en casa nos cambió la vida, y ahora también podemos regar nuestras plantas cerca de la casa.' }
+    ]).map(x => ({ author: '', ...x, hasAuthor: !!x.author }));
+    const on = '#17331F', off = '#B3BCB2';
+    return {
+      rootRef: this.rootRef, trackRef: this.trackRef, items,
+      onScroll: () => this.check(), prev: () => this.go(-1), next: () => this.go(1),
+      atStart: this.state.atStart, atEnd: this.state.atEnd,
+      prevBg: this.state.atStart ? off : on, nextBg: this.state.atEnd ? off : on,
+      prevCursor: this.state.atStart ? 'default' : 'pointer', nextCursor: this.state.atEnd ? 'default' : 'pointer',
+      mx: { mobile: 20, laptop: 56, desktop: 160 }[dev], padB: m ? 64 : 120,
+      headGap: m ? 28 : 56, headJustify: m ? 'space-between' : 'flex-start', headInner: m ? 16 : 32,
+      h2: m ? 28 : (d ? 52 : 44), h2Max: m ? '240px' : 'none',
+      cardW: m ? 312 : 600, cardH: m ? 260 : 260, cardPad: m ? '28px 28px 32px' : '40px 40px 40px',
+      innerGap: m ? 48 : 64, quoteSize: m ? 40 : 52,
+      iconTop: m ? 20 : 16, iconRight: m ? 24 : 32, iconSize: m ? 120 : 130, textSize: m ? 15 : 16,
+      title: p.title ?? 'Lo que dicen los beneficiarios'
+    };
+  }
+}
+</script>
+</body>
+</html>

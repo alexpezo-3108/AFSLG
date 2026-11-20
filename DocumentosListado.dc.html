@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-label="Documentos" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; max-width:{{ maxW }}; margin:0 auto; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:flex; flex-direction:column; gap:{{ groupGap }}px;">
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="4">
+      <section aria-labelledby="{{ g.id }}" style="display:flex; flex-direction:column; gap:{{ headGap }}px;">
+        <header style="display:flex; flex-direction:{{ g.headDir }}; align-items:{{ g.headAlign }}; flex-wrap:wrap; gap:{{ chipGap }}px;">
+          <h2 id="{{ g.id }}" style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ h2 }}px; line-height:1.2; letter-spacing:-0.015em; color:#17331F;">{{ g.title }}</h2>
+          <span style="padding:6px 14px; border-radius:999px; background:#EEF0DC; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ chipSize }}px; color:#32502A;">{{ g.count }}</span>
+        </header>
+        <sc-if value="{{ g.isList }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:{{ cardPad }}; border-radius:20px; background:#FFFFFF; box-shadow:0 1px 2px rgba(17,38,23,0.04);">
+            <sc-for list="{{ g.docs }}" as="d" hint-placeholder-count="3">
+              <dc-import name="FilaDocumento" format="pdf" title="{{ d.title }}" file-size="{{ d.fileSize }}" href="{{ d.href }}" badge="{{ d.badge }}" last="{{ d.last }}" size="{{ rowSize }}" hint-size="100%,84px"></dc-import>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ g.isYears }}" hint-placeholder-val="{{ false }}">
+          <div style="border-radius:20px; overflow:hidden; background:#FFFFFF; box-shadow:0 1px 2px rgba(17,38,23,0.04);">
+            <sc-for list="{{ g.years }}" as="y" hint-placeholder-count="5">
+              <div style="background:{{ y.bg }}; border-bottom:{{ y.border }};">
+                <h3 style="margin:0;">
+                  <button type="button" id="{{ y.btnId }}" onClick="{{ y.toggle }}" aria-expanded="{{ y.expanded }}" aria-controls="{{ y.panelId }}" style="width:100%; display:flex; align-items:center; gap:12px; min-height:{{ yearH }}px; padding:0 {{ rowX }}px; border:0; background:{{ y.headBg }}; cursor:pointer; text-align:left;" style-hover="background:{{ y.hoverBg }};" style-focus="outline:3px solid #ECC725; outline-offset:-3px;">
+                    <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:{{ yearSize }}px; color:{{ y.yearFg }};">{{ y.year }}</span>
+                    <span style="padding:3px 8px; border-radius:999px; background:{{ y.chipBg }}; font-family:Montserrat, sans-serif; font-weight:700; font-size:12px; color:#17331F;">{{ y.count }}</span>
+                    <span aria-hidden="true" style="margin-left:auto; width:{{ circle }}px; height:{{ circle }}px; border-radius:50%; background:{{ y.circleBg }}; color:{{ y.circleFg }}; display:flex; align-items:center; justify-content:center; font-size:14px;"><i class="ph-bold ph-{{ y.icon }}"></i></span>
+                  </button>
+                </h3>
+                <div aria-hidden="{{ y.hidden }}" style="display:grid; grid-template-rows:{{ y.rows }}; visibility:{{ y.vis }}; transition:{{ y.tr }};"><div style="min-height:0; overflow:hidden; opacity:{{ y.op }}; transform:translateY({{ y.dy }}px); transition:opacity .3s ease, transform .35s cubic-bezier(.2,.8,.2,1);">
+                  <div id="{{ y.panelId }}" role="region" aria-labelledby="{{ y.btnId }}" style="padding:0 {{ rowX }}px 4px; background:#E6EED6;">
+                    <sc-for list="{{ y.docs }}" as="d" hint-placeholder-count="3">
+                      <dc-import name="FilaDocumento" format="pdf" title="{{ d.title }}" file-size="{{ d.fileSize }}" href="{{ d.href }}" last="{{ d.last }}" tinted="true" size="{{ rowSize }}" hint-size="100%,84px"></dc-import>
+                    </sc-for>
+                  </div>
+                </div></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </section>
+    </sc-for>
+    <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:12px; padding:72px 24px; border-radius:20px; background:#FFFFFF; text-align:center;">
+        <h3 style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:22px; color:#17331F;">No encontramos documentos</h3>
+        <p style="margin:0; max-width:420px; font-family:Montserrat, sans-serif; font-weight:500; font-size:15px; line-height:1.6; color:#4D4D4A;">Prueba con otro tipo, otro año o una búsqueda diferente.</p>
+      </div>
+    </sc-if>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;filter&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{status,year,query}&quot;},&quot;groups&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;({title,docs:{title,fileSize,href,badge?}[]}|{title,years:true})[]&quot;},&quot;actas&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{year,docs:{title,fileSize,href}[]}[]&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop', open: { '2025': true } };
+  rootRef = React.createRef();
+  componentDidMount() {
+    this.emitSum();
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro) return;
+    this.ro = new ResizeObserver(([e]) => {
+      const w = e.contentRect.width;
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      if (d !== this.state.auto) this.setState({ auto: d });
+    });
+    this.ro.observe(el);
+  }
+  componentWillUnmount() { this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  componentDidUpdate() { this.emitSum(); }
+  emitSum() { if (this._sum && this._sum !== this._sent && this.props.onSummary) { this._sent = this._sum; this.props.onSummary(this._sumObj); } }
+  renderVals() {
+    const p = this.props;
+    const dev = (p.device && p.device !== 'auto') ? p.device : this.state.auto;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const MES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'setiembre', 'octubre', 'noviembre', 'diciembre'];
+    const counts = { 2025: 3, 2024: 4, 2023: 4, 2022: 3, 2021: 3, 2020: 2, 2019: 2, 2018: 2, 2017: 1 };
+    const actas = p.actas ?? Object.keys(counts).sort((a, b) => b - a).map(y => ({
+      year: y,
+      docs: y === '2025'
+        ? [['06', 2, '320 KB'], ['07', 1, '290 KB'], ['10', 0, '310 KB']].map(([dd, mm, s]) => ({ title: 'Acta del Consejo Directivo – ' + dd + ' de ' + MES[mm] + ' de ' + y, fileSize: s }))
+        : Array.from({ length: counts[y] }, (_, i) => { const mm = 11 - i * 3; return { title: 'Acta del Consejo Directivo – ' + String(12 + i).padStart(2, '0') + ' de ' + MES[mm] + ' de ' + y, fileSize: (280 + i * 20) + ' KB' }; })
+    }));
+    const lists = p.groups ?? [
+      { title: 'Reglamentos y políticas', docs: [
+        { title: 'Reglamento de Contrataciones 2023', fileSize: '1,8 MB', badge: 'Vigente' },
+        { title: 'Funciones y responsabilidades del comité en los procesos de selección', fileSize: '640 KB' },
+        { title: 'Logística y contrataciones', fileSize: '520 KB' },
+        { title: 'Política antisoborno', fileSize: '410 KB' },
+        { title: 'Política de sanciones a proveedores', fileSize: '380 KB' },
+        { title: 'Política de seguridad y salud en el trabajo', fileSize: '1,1 MB' }] },
+      { title: 'Marco normativo', docs: [{ title: 'Marco normativo del Fondo (D.L. N.° 996 y reglamentos)', fileSize: '2,4 MB' }] },
+      { title: 'Actas del Consejo Directivo', years: true },
+      { title: 'Auditorías', docs: [{ title: 'Auditoría 2017', fileSize: '1,6 MB' }, { title: 'Auditoría 2016', fileSize: '1,4 MB' }] }
+    ];
+    const plural = (n, s, pl) => n + ' ' + (n === 1 ? s : pl);
+    const fix = arr => arr.map((x, i, a) => ({ href: 'Comunicado Detalle.dc.html', badge: '', ...x, last: i === a.length - 1 }));
+    const f = p.filter || {};
+    const q = (f.query || '').trim().toLowerCase();
+    const yr = f.year && f.year !== 'todos' ? f.year : '';
+    const match = x => (!q || x.title.toLowerCase().includes(q)) && (!yr || x.title.includes(yr));
+    const typeOk = g => !f.status || f.status === 'Todos' || f.status === g.title;
+    const filtering = !!(q || yr);
+    const actasF = actas.filter(y => !yr || y.year === yr).map(y => ({ ...y, docs: y.docs.filter(x => !q || x.title.toLowerCase().includes(q)) })).filter(y => y.docs.length);
+    const lists2 = lists.filter(typeOk).map(g => g.years ? g : { ...g, docs: g.docs.filter(match) }).filter(g => g.years ? actasF.length : g.docs.length);
+    const totalActas = actasF.reduce((s, y) => s + y.docs.length, 0);
+    const groups = lists2.map((g, gi) => {
+      const isYears = !!g.years;
+      const base = { id: 'doc-grupo-' + gi, title: g.title, isList: !isYears, isYears, headDir: m && g.title.length > 18 ? 'column' : 'row', headAlign: m && g.title.length > 18 ? 'flex-start' : 'center' };
+      if (!isYears) return { ...base, docs: fix(g.docs), count: plural(g.docs.length, 'documento', 'documentos'), years: [] };
+      return { ...base, docs: [], count: plural(totalActas, 'acta', 'actas'), years: actasF.map((y, yi) => {
+        const open = filtering || !!this.state.open[y.year];
+        return {
+          year: y.year, open, hidden: open ? 'false' : 'true', rows: open ? '1fr' : '0fr', vis: open ? 'visible' : 'hidden', op: open ? 1 : 0, dy: open ? 0 : -6, tr: open ? 'grid-template-rows .4s cubic-bezier(.2,.8,.2,1), visibility 0s' : 'grid-template-rows .32s cubic-bezier(.4,0,.2,1), visibility 0s linear .32s', expanded: open ? 'true' : 'false', docs: fix(y.docs), count: plural(y.docs.length, 'acta', 'actas'),
+          btnId: 'acta-btn-' + y.year, panelId: 'acta-panel-' + y.year,
+          bg: '#FFFFFF', headBg: open ? 'linear-gradient(100deg, #2C4D2D 0%, #17331F 100%)' : 'transparent', yearFg: open ? '#FFFFFF' : '#17331F', hoverBg: open ? 'linear-gradient(100deg, #355A35 0%, #1E3F27 100%)' : '#F4F6EE', border: yi === actasF.length - 1 ? 'none' : '1px solid #EEEEEC',
+          chipBg: open ? '#ECC725' : '#F3F1E8', circleBg: open ? '#FFFFFF' : '#32502A', circleFg: open ? '#17331F' : '#FFFFFF', icon: open ? 'caret-up' : 'caret-down',
+          toggle: () => this.setState(s => ({ open: s.open[y.year] ? {} : { [y.year]: true } }))
+        };
+      }) };
+    });
+    const nDocs = groups.reduce((s, g) => s + (g.isYears ? g.years.reduce((a, y) => a + (y.docs.length || 0), 0) : g.docs.length), 0);
+    this._sum = groups.length + '|' + nDocs;
+    this._sumObj = { docs: nDocs + (nDocs === 1 ? ' documento' : ' documentos'), cats: groups.length + (groups.length === 1 ? ' categoría' : ' categorías') };
+    return {
+      rootRef: this.rootRef, groups, isEmpty: groups.length === 0,
+      maxW: 'none', mx: m ? 20 : (d ? 160 : 56), padT: m ? 32 : 40, padB: m ? 72 : 120,
+      groupGap: m ? 64 : 72, headGap: m ? 20 : 20, chipGap: m ? 12 : 14,
+      h2: m ? 24 : (d ? 34 : 32), chipSize: m ? 14 : 13,
+      cardPad: m ? '4px 16px' : '6px 24px', rowSize: m ? 'sm' : 'md',
+      rowX: m ? 16 : 24, yearH: m ? 68 : 76, yearSize: m ? 18 : 20, circle: m ? 36 : 32
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<style>a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none !important}</style>
+</helmet>
+<section ref="{{ rootRef }}" aria-labelledby="sobre-proyecto" style="position:relative; width:100%; background:#FDFCF8; isolation:isolate;">
+  <dc-import name="Patron" tone="light" style="position:absolute; inset:0; z-index:-1;" hint-size="100%,100%"></dc-import>
+  <div style="box-sizing:border-box; max-width:{{ maxW }}; margin:0 auto; padding:{{ padT }}px {{ mx }}px {{ padB }}px; display:grid; grid-template-columns:{{ cols }}; column-gap:72px; row-gap:40px; align-items:start;">
+    <div style="display:flex; flex-direction:column; gap:{{ gap }}px; min-width:0;">
+      <h2 id="sobre-proyecto" style="margin:0; font-family:Poppins, sans-serif; font-weight:700; font-size:{{ h2 }}px; line-height:1.15; letter-spacing:-0.02em; color:#32502A;">{{ title }}</h2>
+      <div style="position:relative; aspect-ratio:16 / 9; border-radius:{{ vidR }}px; overflow:hidden; background:#32502A;">
+        <sc-if value="{{ playing }}" hint-placeholder-val="{{ false }}">
+          <iframe src="{{ embedSrc }}" title="{{ videoTitle }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" style="position:absolute; inset:0; width:100%; height:100%; border:0;"></iframe>
+        </sc-if>
+        <sc-if value="{{ notPlaying }}" hint-placeholder-val="{{ true }}">
+          <button type="button" onClick="{{ play }}" aria-label="{{ playAria }}" style="position:absolute; inset:0; width:100%; height:100%; padding:0; border:0; cursor:pointer; background:#5E6B57; display:block;" style-focus="outline:3px solid #ECC725; outline-offset:-3px;">
+            <sc-if value="{{ hasThumb }}" hint-placeholder-val="{{ false }}"><img src="{{ thumb }}" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;"></sc-if>
+            <sc-if value="{{ noThumb }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding-bottom:22%; color:rgba(255,255,255,0.45); font-size:40px;"><i class="ph ph-video"></i></span></sc-if>
+            <span aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.3) 100%);"></span>
+            <span style="position:absolute; top:{{ capTop }}px; left:{{ capLeft }}px; right:20px; display:flex; align-items:center; gap:12px; text-align:left;">
+              <span aria-hidden="true" style="flex:none; width:{{ avatar }}px; height:{{ avatar }}px; border-radius:50%; background:#17331F; border:1px solid rgba(255,255,255,0.4);"></span>
+              <span style="min-width:0; display:flex; flex-direction:column; gap:2px;">
+                <span style="font-family:Poppins, sans-serif; font-weight:600; font-size:{{ capSize }}px; color:#FFFFFF; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ videoTitle }}</span>
+                <span style="font-family:Montserrat, sans-serif; font-weight:500; font-size:12px; color:rgba(255,255,255,0.8);">{{ channel }}</span>
+              </span>
+            </span>
+            <span aria-hidden="true" style="position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:68px; height:48px; border-radius:12px; background:#FF0000; display:flex; align-items:center; justify-content:center; color:#FFFFFF; font-size:26px;"><i class="ph-fill ph-play"></i></span>
+          </button>
+          <a href="{{ watchUrl }}" target="_blank" rel="noopener" style="position:absolute; left:{{ capLeft }}px; bottom:{{ capLeft }}px; display:flex; align-items:center; gap:8px; height:36px; padding:0 14px; border-radius:6px; background:rgba(23,23,23,0.8); color:#FFFFFF; font-family:Montserrat, sans-serif; font-weight:500; font-size:{{ ytSize }}px; text-decoration:none;" style-hover="background:rgba(23,23,23,0.95);" style-focus="outline:3px solid #ECC725; outline-offset:2px;">Ver en YouTube<i class="ph ph-arrow-up-right" aria-hidden="true" style="font-size:14px;"></i></a>
+        </sc-if>
+      </div>
+      <sc-for list="{{ paragraphs }}" as="t" hint-placeholder-count="2">
+        <p style="margin:0; font-family:Montserrat, sans-serif; font-weight:500; font-size:17px; line-height:1.72; color:#4D4D4A; text-wrap:pretty;">{{ t }}</p>
+      </sc-for>
+    </div>
+    <aside aria-labelledby="datos-proyecto" style="position:{{ asidePos }}; top:24px; overflow:hidden; isolation:isolate; padding:{{ asidePad }}; border-radius:20px; background:linear-gradient(160deg, #32502A 0%, #1E3B25 60%, #17331F 100%); margin-top:{{ asideTop }}px;">
+      <img src="assets/isotipo-orquidea.png" alt="" aria-hidden="true" style="position:absolute; right:-16px; bottom:-24px; width:150px; opacity:0.12; z-index:-1; pointer-events:none;">
+      <h2 id="datos-proyecto" style="margin:0 0 8px; font-family:Montserrat, sans-serif; font-weight:700; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:#AACC4A;">{{ dataTitle }}</h2>
+      <dl style="margin:0;">
+        <sc-for list="{{ data }}" as="d" hint-placeholder-count="4">
+          <div style="padding:18px 0; border-bottom:{{ d.border }}; display:flex; flex-direction:column; gap:6px;">
+            <dt style="font-family:Montserrat, sans-serif; font-weight:500; font-size:13px; color:rgba(255,255,255,0.75);">{{ d.label }}</dt>
+            <dd style="margin:0; font-family:Poppins, sans-serif; font-weight:600; font-size:{{ ddSize }}px; line-height:1.35; color:#FFFFFF;">{{ d.value }}</dd>
+          </div>
+        </sc-for>
+      </dl>
+    </aside>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Sobre el proyecto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;videoId&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;videoTitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Agua potable para Pacopampa, El Rejo y Las Flores&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;channel&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Fondo Social La Granja&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;dataTitle&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Datos del proyecto&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;paragraphs&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;string[]&quot;},&quot;data&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;{label,value}[]&quot;},&quot;thumb&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { auto: 'laptop', playing: false };
+  rootRef = React.createRef();
+  componentDidMount() {
+    const el = this.rootRef.current;
+    if (!window.ResizeObserver) return;
+    if (!this._iv) this._iv = setInterval(() => { const n = this.rootRef.current; if (n && n !== this._obsEl) this.componentDidMount(); else if (n && this._measure) this._measure(n.offsetWidth); }, 400);
+    if (!el) { this._rt = setTimeout(() => this.componentDidMount(), 100); return; }
+    if (this.ro && this._obsEl === el) return;
+    if (this.ro) this.ro.disconnect();
+    this._obsEl = el;
+    this._measure = (w) => {
+      const d = w < 768 ? 'mobile' : w < 1680 ? 'laptop' : 'desktop';
+      const st = w < 1024;
+      if (d !== this.state.auto || st !== this.state.stack) this.setState({ auto: d, stack: st });
+    };
+    this.ro = new ResizeObserver(([e]) => this._measure(e.contentRect.width));
+    this.ro.observe(el);
+    this._measure(el.offsetWidth);
+    if (!this._onWin) { this._onWin = () => { const n = this.rootRef.current; if (n && this._measure) this._measure(n.offsetWidth); }; window.addEventListener('resize', this._onWin); }
+  }
+  componentWillUnmount() { clearInterval(this._iv); this._onWin && window.removeEventListener('resize', this._onWin); this.ro && this.ro.disconnect(); clearTimeout(this._rt); }
+  renderVals() {
+    const p = this.props;
+    const isAuto = !p.device || p.device === 'auto';
+    const dev = isAuto ? this.state.auto : p.device;
+    const m = dev === 'mobile', d = dev === 'desktop';
+    const stack = m || (isAuto && this.state.stack);
+    const id = p.videoId || '';
+    const thumb = p.thumb || (id ? 'https://i.ytimg.com/vi/' + id + '/hqdefault.jpg' : '');
+    const videoTitle = p.videoTitle ?? 'Agua potable para Pacopampa, El Rejo y Las Flores';
+    const data = (p.data ?? [
+      { label: 'Ubicación', value: 'Pacopampa, El Rejo y Las Flores · Querocoto' },
+      { label: 'Prioridad', value: 'Agua y saneamiento' },
+      { label: 'Inversión', value: 'S/ 452,853.83' },
+      { label: 'Beneficiarios', value: 'Más de 415 personas' }
+    ]).map((x, i, a) => ({ ...x, border: i === a.length - 1 ? 'none' : '1px solid rgba(255,255,255,0.12)' }));
+    const playing = this.state.playing && !!id;
+    return {
+      rootRef: this.rootRef, data,
+      maxW: d ? '1522px' : (stack ? 'none' : '1296px'), mx: m ? 20 : 56, padT: m ? 48 : 96, padB: m ? 64 : 120,
+      cols: stack ? '1fr' : 'minmax(0, 1.84fr) minmax(0, 1fr)', gap: m ? 24 : 32,
+      h2: m ? 28 : (d ? 52 : 44), vidR: m ? 16 : 20,
+      playing, notPlaying: !playing, embedSrc: 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0',
+      play: () => { if (id) this.setState({ playing: true }); else window.open(p.videoUrl || '#', '_blank'); },
+      playAria: 'Reproducir video: ' + videoTitle, videoTitle, channel: p.channel ?? 'Fondo Social La Granja',
+      watchUrl: p.videoUrl || (id ? 'https://www.youtube.com/watch?v=' + id : '#'),
+      hasThumb: !!thumb, noThumb: !thumb, thumb,
+      capTop: m ? 14 : 20, capLeft: m ? 14 : 20, avatar: m ? 30 : 36, capSize: m ? 14 : 18, ytSize: m ? 14 : 15,
+      paragraphs: p.paragraphs ?? [
+        'Gracias a la colaboración de los beneficiarios y del Fondo Social La Granja, se logró gestionar el mantenimiento correctivo del sistema de agua potable, que busca dotar de una mejor calidad del servicio hídrico a más de 415 personas de los sectores de Pacopampa, El Rejo y Las Flores, del distrito de Querocoto, en Chota, Cajamarca.',
+        'Continuamos desarrollando proyectos que mejoren la calidad de vida de la población.'
+      ],
+      asidePos: stack ? 'relative' : 'sticky', asidePad: m ? '28px 28px 12px' : '28px 28px 12px', asideTop: stack ? 0 : 96, ddSize: m ? 15 : 17,
+      title: p.title ?? 'Sobre el proyecto', dataTitle: p.dataTitle ?? 'Datos del proyecto'
+    };
+  }
+}
+</script>
+</body>
+</html>

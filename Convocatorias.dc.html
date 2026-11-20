@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convocatorias · Fondo Social La Granja</title>
+<meta name="description" content="Procesos de selección y licitaciones transparentes.">
+<meta name="theme-color" content="#17331F">
+<link rel="icon" type="image/png" href="assets/isotipo-orquidea.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style id="afslg-critical">html{background:#FDFCF8}html:not(.afslg-done) main{opacity:0;animation:afslgFail 0s 7s forwards}@keyframes afslgFail{to{opacity:1}}</style>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./site.js?v=14"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<style>html{scrollbar-gutter:stable} html.lenis,html.lenis body{height:auto} .lenis.lenis-smooth{scroll-behavior:auto !important} body{margin:0;background:#E2E2E2;overflow-x:clip} a{color:#32502A} a:hover{color:#17331F}</style>
+</helmet>
+<div style="display:flex; justify-content:center; width:100%;">
+  <main style="width:{{ frameW }}; flex:none; zoom:{{ scale }}; background:#FDFCF8;">
+    <dc-import name="EncabezadoInterno" device="{{ device }}" active="Convocatorias" sheet-title="Filtrar convocatorias" years="{{ years }}" kinds="{{ kinds }}" kinds-title="Tipo de proceso" result-label="{{ resultLabel }}" on-filter-change="{{ onFilter }}" hint-size="100%,640px"></dc-import>
+    <dc-import name="GrillaConvocatorias" device="{{ device }}" filter="{{ filter }}" on-total="{{ onTotal }}" hint-size="100%,1540px"></dc-import>
+    <dc-import name="CtaCierre" device="{{ device }}" image="assets/fotos/convocatorias-cta.webp" image-alt="Equipo del Fondo Social La Granja con la comunidad" hint-size="100%,574px"></dc-import>
+    <dc-import name="Footer" device="{{ device }}" hint-size="100%,804px"></dc-import>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;device&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;mobile&quot;,&quot;laptop&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { vw: window.innerWidth, filter: {} };
+  componentDidMount() {
+    this.onR = () => this.setState({ vw: window.innerWidth }); window.addEventListener('resize', this.onR);
+    this.initLenis();
+  }
+  initLenis() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || this.lenis) return;
+    if (!window.Lenis) { this.t = setTimeout(() => this.initLenis(), 200); return; }
+    this.lenis = new window.Lenis({ lerp: 0.09, smoothWheel: true }); window.__lenis = this.lenis;
+    const loop = t => { this.lenis && this.lenis.raf(t); this.raf = requestAnimationFrame(loop); };
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() { window.removeEventListener('resize', this.onR); clearTimeout(this.t); cancelAnimationFrame(this.raf); this.lenis && this.lenis.destroy(); window.__lenis = null; }
+  renderVals() {
+    const device = this.props.device ?? 'auto';
+    const F = { mobile: 390, laptop: 1440, desktop: 1920 }[device];
+    return { device, filter: this.state.filter, onFilter: f => this.setState({ filter: f }), years: ['2026', '2025', '2024', '2023'], kinds: ['Licitación pública', 'Comparativo de precios'], onTotal: n => this.setState({ total: n }), resultLabel: 'Ver ' + (this.state.total ?? 0) + ((this.state.total ?? 0) === 1 ? ' convocatoria' : ' convocatorias'), frameW: F ? F + 'px' : '100%', scale: F ? Math.min(1, this.state.vw / F) : 1 };
+  }
+}
+</script>
+</body>
+</html>
